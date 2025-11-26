@@ -95,7 +95,7 @@ const App: React.FC = () => {
             {/* Google */}
             <div className="flex items-center space-x-4 w-full justify-center md:justify-center p-2">
                <div className="bg-white p-2 rounded-full shadow-sm border border-gray-100">
-                 <IconGoogle className="w-8 h-8" />
+                 <img src="/google-reviews-logo.png" alt="Google" className="w-8 h-8 object-contain" />
                </div>
                <div className="text-left">
                   <div className="flex items-center space-x-1">
@@ -111,7 +111,7 @@ const App: React.FC = () => {
             {/* Booking */}
             <div className="flex items-center space-x-4 w-full justify-center md:justify-center p-2">
                <div className="bg-[#003580] p-2 rounded-lg shadow-sm">
-                 <IconBooking className="w-8 h-8 fill-white" />
+                 <img src="/booking-logo.png" alt="Booking.com" className="w-8 h-8 object-contain" />
                </div>
                <div className="text-left">
                   <div className="flex items-center space-x-2">
@@ -127,7 +127,7 @@ const App: React.FC = () => {
             {/* TripAdvisor */}
             <div className="flex items-center space-x-4 w-full justify-center md:justify-center p-2">
                <div className="relative">
-                 <IconTripAdvisor className="w-10 h-10 text-[#00AA6C]" />
+                 <img src="/tripadvisor-logo.png" alt="TripAdvisor" className="w-10 h-10 object-contain" />
                  <div className="absolute -top-1 -right-1 bg-[#00AA6C] rounded-full p-0.5 border-2 border-white">
                    <IconCheck className="w-3 h-3 text-white" />
                  </div>
