@@ -423,26 +423,27 @@ const App: React.FC = () => {
              ></iframe>
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-4 pointer-events-none">
               <div className="flex items-center space-x-2">
-                <p className="text-white font-serif text-sm drop-shadow-md">"Férias inesquecíveis com as crianças"</p>
+                <p className="text-white font-serif text-sm drop-shadow-md font-bold">Fafá de Belém</p>
               </div>
             </div>
           </div>
 
-          {/* Video 2 */}
+          {/* Video 2 - Gretchen e Esdras */}
           <div className="relative group rounded-sm overflow-hidden border border-solar-gold/30 shadow-2xl bg-black aspect-video">
-            <video 
-              controls 
-              className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-              poster="https://picsum.photos/800/450?image=838" 
-            >
-              {/* Using a sample video link for demonstration purposes */}
-              <source src="https://assets.mixkit.co/videos/preview/mixkit-couple-walking-on-the-beach-at-sunset-4028-large.mp4" type="video/mp4" />
-              Seu navegador não suporta vídeos.
-            </video>
+             <iframe 
+               width="100%" 
+               height="100%" 
+               src="https://www.youtube.com/embed/6tAWZwan-Fw" 
+               title="Depoimento Gretchen e Esdras" 
+               frameBorder="0" 
+               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+               referrerPolicy="strict-origin-when-cross-origin" 
+               allowFullScreen
+               className="w-full h-full"
+             ></iframe>
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-4 pointer-events-none">
-               <div className="flex items-center space-x-2">
-                <IconPlay className="text-solar-gold w-5 h-5" />
-                <p className="text-white font-serif text-sm">"O melhor custo-benefício de Salinas"</p>
+              <div className="flex items-center space-x-2">
+                <p className="text-white font-serif text-sm drop-shadow-md font-bold">Gretchen e Esdras</p>
               </div>
             </div>
           </div>
