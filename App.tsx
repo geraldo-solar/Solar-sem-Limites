@@ -48,9 +48,9 @@ const App: React.FC = () => {
 
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto space-y-8 animate-fade-in-up flex flex-col items-center">
           
-          {/* Company Logo - From Google Drive */}
+          {/* Company Logo */}
           <img 
-            src="https://drive.google.com/uc?export=view&id=1cq2eaKKzxAS-Gh9H3L4o8trdIHP1ThZS" 
+            src="/logoSOLAR2.png" 
             alt="Hotel Solar" 
             className="w-28 md:w-36 mb-4 opacity-95 drop-shadow-2xl hover:opacity-100 transition-all duration-500 hover:scale-105"
           />
