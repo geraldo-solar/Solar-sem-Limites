@@ -47,12 +47,7 @@ const App: React.FC = () => {
 
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto space-y-8 animate-fade-in-up flex flex-col items-center">
           
-          {/* Company Logo */}
-          <img 
-            src="/logoSOLAR2.png" 
-            alt="Hotel Solar" 
-            className="w-28 md:w-36 mb-4 opacity-95 drop-shadow-2xl hover:opacity-100 transition-all duration-500 hover:scale-105"
-          />
+          {/* Logo removida */}
 
           {/* LOGO SECTION - TEXT BASED */}
           <div className="relative w-full mb-4 animate-float">
