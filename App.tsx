@@ -569,7 +569,7 @@ const App: React.FC = () => {
 
       {/* Floating WhatsApp Button */}
       <a
-        href="https://wa.me/5591981229825?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20o%20Solar%20Sem%20Limites"
+        href="https://wa.me/5591981229825?text=Dúvidas%20pacote%20Solar%20sem%20Limites"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-16 h-16 bg-[#25D366] rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 group hover:shadow-[0_0_20px_rgba(37,211,102,0.6)]"
