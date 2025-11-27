@@ -25,9 +25,8 @@ const App: React.FC = () => {
     setOpenFaq(openFaq === index ? null : index);
   };
 
-  const scrollToOffer = () => {
-    const element = document.getElementById('offer');
-    element?.scrollIntoView({ behavior: 'smooth' });
+  const goToCheckout = () => {
+    window.location.href = 'https://checkout-solar-sem-limites.vercel.app';
   };
 
   return (
@@ -77,7 +76,7 @@ const App: React.FC = () => {
             A forma mais inteligente e segura de viajar para Salinópolis o ano inteiro
           </p>
           <div className="pt-8">
-            <Button onClick={scrollToOffer} className="text-lg px-12 py-5 shadow-2xl shadow-solar-gold/20">
+            <Button onClick={goToCheckout} className="text-lg px-12 py-5 shadow-2xl shadow-solar-gold/20">
               Garantir Meu Pacote com Desconto
             </Button>
           </div>
@@ -327,7 +326,7 @@ const App: React.FC = () => {
 
           <p className="text-solar-cream/80 italic mb-10">Somente enquanto durar o lote atual.</p>
 
-          <Button className="w-full md:w-auto text-xl px-16 py-5 shadow-2xl shadow-black/30 animate-heartbeat">
+          <Button onClick={goToCheckout} className="w-full md:w-auto text-xl px-16 py-5 shadow-2xl shadow-black/30 animate-heartbeat">
             QUERO MEU SOLAR SEM LIMITES
           </Button>
         </div>
@@ -541,9 +540,9 @@ const App: React.FC = () => {
            </div>
 
            <div className="pt-8">
-             <Button onClick={scrollToOffer} className="w-full md:w-auto text-xl px-16 py-6 font-bold shadow-2xl shadow-solar-gold/20 animate-heartbeat">
-               GARANTIR MEU PACOTE COM DESCONTO
-             </Button>
+             <Button onClick={goToCheckout} className="w-full md:w-auto text-xl px-16 py-6 font-bold shadow-2xl shadow-solar-gold/20 animate-heartbeat">
+                GARANTIR MEU PACOTE COM DESCONTO
+              </Button>
              <p className="text-xs text-solar-beige/40 mt-4 tracking-widest uppercase">Oferta exclusiva e limitada. Garantias ativas por tempo reduzido.</p>
            </div>
         </div>
