@@ -252,6 +252,13 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="w-full h-px bg-solar-gold/20 my-6"></div>
+                
+                {/* Destaque 5+1 */}
+                <div className="bg-gradient-to-r from-solar-gold/20 to-solar-gold/10 border-2 border-solar-gold/40 rounded-lg p-4 mb-4">
+                  <p className="text-solar-deep font-bold text-lg mb-1">5 Diárias + 1 Bônus</p>
+                  <p className="text-solar-amazon text-sm font-semibold">= 6 Diárias Totais</p>
+                </div>
+                
                 <p className="text-xs text-solar-amazon/60 uppercase tracking-wide font-bold">Por dia até 4 pessoas</p>
                 <p className="text-xs text-solar-amazon/60 italic mt-1">Válido para qualquer data*</p>
               </div>
