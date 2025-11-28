@@ -182,7 +182,7 @@ const App: React.FC = () => {
                className="w-full h-full object-cover rounded-sm shadow-xl border-4 border-solar-gold/20"
              />
              <div className="absolute bottom-8 -left-8 bg-solar-deep p-6 text-solar-gold max-w-xs shadow-2xl hidden md:block">
-                <p className="font-serif italic text-xl">"Luxo é ter o tempo a seu favor."</p>
+                 <p className="font-serif italic text-xl">"Tradição é ter o tempo a seu favor."</p>
              </div>
           </div>
         </div>
@@ -264,9 +264,9 @@ const App: React.FC = () => {
           </div>
 
           <div className="text-center mt-12 animate-float">
-             <p className="font-serif text-xl md:text-2xl text-solar-amazon italic">
-               "Viajar no luxo pagando preço de oportunidade."
-             </p>
+              <p className="font-serif text-xl md:text-2xl text-solar-amazon italic">
+                "Viajar com tradição pagando preço de oportunidade."
+              </p>
           </div>
         </div>
       </Section>
