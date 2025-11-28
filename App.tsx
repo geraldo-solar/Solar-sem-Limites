@@ -461,8 +461,8 @@ const App: React.FC = () => {
             </div>
             <div className="relative group overflow-hidden h-full rounded-sm">
                <img 
-                src="https://picsum.photos/600/400?image=225" 
-                alt="Café da manhã" 
+                src="/hotel-noturno.jpg" 
+                alt="Hotel Solar iluminado à noite" 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
