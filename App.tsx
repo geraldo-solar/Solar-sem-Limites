@@ -86,56 +86,56 @@ const App: React.FC = () => {
       </header>
 
       {/* 1.5 AWARDS / AUTHORITY BAR */}
-      <div className="bg-white border-b border-solar-gold/20 shadow-md relative z-20">
-        <div className="max-w-6xl mx-auto px-6 py-8">
-          <p className="text-center text-solar-amazon/60 text-xs uppercase tracking-widest mb-6 font-bold">
-            Excelência Reconhecida Pelos Hóspedes
+      <div className="bg-gradient-to-b from-white to-solar-beige/20 border-b border-solar-gold/30 shadow-lg relative z-20">
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <p className="text-center text-solar-amazon/70 text-sm uppercase tracking-widest mb-8 font-bold">
+            🏆 Excelência Reconhecida Pelos Hóspedes
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center justify-items-center divide-y md:divide-y-0 md:divide-x divide-gray-100">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center justify-items-center">
             
             {/* Google */}
-            <div className="flex items-center space-x-4 w-full justify-center md:justify-center p-2">
-               <div className="bg-white p-2 rounded-full shadow-sm border border-gray-100">
-                 <img src="/google-reviews-logo.png" alt="Google" className="w-8 h-8 object-contain" />
+            <div className="flex flex-col items-center space-y-4 w-full justify-center p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+               <div className="bg-white p-4 rounded-full shadow-lg border-2 border-gray-200">
+                 <img src="/google-reviews-logo.png" alt="Google" className="w-16 h-16 object-contain" />
                </div>
-               <div className="text-left">
-                  <div className="flex items-center space-x-1">
-                    <span className="font-serif text-2xl font-bold text-gray-800">4.6</span>
-                    <div className="flex">
-                      {[1,2,3,4,5].map(i => <IconStar key={i} className="w-3 h-3 text-[#FBBC05] fill-current" />)}
-                    </div>
+               <div className="text-center">
+                  <div className="flex items-center justify-center space-x-2 mb-2">
+                    <span className="font-serif text-4xl font-bold text-gray-800">4.6</span>
                   </div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide font-bold">Google Reviews</p>
+                  <div className="flex justify-center mb-2">
+                    {[1,2,3,4,5].map(i => <IconStar key={i} className="w-5 h-5 text-[#FBBC05] fill-current" />)}
+                  </div>
+                  <p className="text-sm text-gray-600 uppercase tracking-wide font-bold">Google Reviews</p>
                </div>
             </div>
 
             {/* Booking */}
-            <div className="flex items-center space-x-4 w-full justify-center md:justify-center p-2">
-               <div className="bg-[#003580] p-2 rounded-lg shadow-sm">
-                 <img src="/booking-logo.png" alt="Booking.com" className="w-8 h-8 object-contain" />
+            <div className="flex flex-col items-center space-y-4 w-full justify-center p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+               <div className="bg-[#003580] p-4 rounded-xl shadow-lg">
+                 <img src="/booking-logo.png" alt="Booking.com" className="w-16 h-16 object-contain" />
                </div>
-               <div className="text-left">
-                  <div className="flex items-center space-x-2">
-                    <div className="bg-[#003580] text-white text-sm font-bold px-2 py-0.5 rounded-br-lg rounded-tl-lg">
+               <div className="text-center">
+                  <div className="flex items-center justify-center space-x-2 mb-2">
+                    <div className="bg-[#003580] text-white text-xl font-bold px-4 py-2 rounded-lg shadow-md">
                       8,7
                     </div>
-                    <span className="font-serif text-lg font-bold text-[#003580]">Fabuloso</span>
                   </div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide font-bold mt-1">Booking.com</p>
+                  <span className="font-serif text-2xl font-bold text-[#003580] block mb-2">Fabuloso</span>
+                  <p className="text-sm text-gray-600 uppercase tracking-wide font-bold">Booking.com</p>
                </div>
             </div>
 
             {/* TripAdvisor */}
-            <div className="flex items-center space-x-4 w-full justify-center md:justify-center p-2">
+            <div className="flex flex-col items-center space-y-4 w-full justify-center p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
                <div className="relative">
-                 <img src="/tripadvisor-logo.png" alt="TripAdvisor" className="w-10 h-10 object-contain" />
-                 <div className="absolute -top-1 -right-1 bg-[#00AA6C] rounded-full p-0.5 border-2 border-white">
-                   <IconCheck className="w-3 h-3 text-white" />
+                 <img src="/tripadvisor-logo.png" alt="TripAdvisor" className="w-20 h-20 object-contain" />
+                 <div className="absolute -top-2 -right-2 bg-[#00AA6C] rounded-full p-1.5 border-4 border-white shadow-lg">
+                   <IconCheck className="w-5 h-5 text-white" />
                  </div>
                </div>
-               <div className="text-left">
-                  <p className="font-serif text-sm font-bold text-gray-800 leading-tight">Certificado de<br/>Excelência</p>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide mt-1">TripAdvisor 2019</p>
+               <div className="text-center">
+                  <p className="font-serif text-lg font-bold text-gray-800 leading-tight mb-2">Certificado de<br/>Excelência</p>
+                  <p className="text-sm text-gray-600 uppercase tracking-wide font-bold">TripAdvisor 2019</p>
                </div>
             </div>
 
