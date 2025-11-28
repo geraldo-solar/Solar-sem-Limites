@@ -100,7 +100,9 @@ const App: React.FC = () => {
 
             {/* Booking */}
             <div className="flex items-center justify-center w-full p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-               <img src="/booking-logo.png" alt="Booking.com" className="w-64 h-auto object-contain" />
+               <div className="bg-white p-4 rounded-lg">
+                 <img src="/booking-logo.png" alt="Booking.com" className="w-64 h-auto object-contain" />
+               </div>
             </div>
 
             {/* TripAdvisor */}
