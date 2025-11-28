@@ -95,8 +95,8 @@ const App: React.FC = () => {
             
             {/* Google */}
             <div className="flex flex-col items-center space-y-4 w-full justify-center p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-               <div className="bg-white p-4 rounded-full shadow-lg border-2 border-gray-200">
-                 <img src="/google-reviews-logo.png" alt="Google" className="w-16 h-16 object-contain" />
+               <div className="bg-white p-6 rounded-full shadow-lg border-2 border-gray-200">
+                 <img src="/google-reviews-logo.png" alt="Google" className="w-24 h-24 object-contain" />
                </div>
                <div className="text-center">
                   <div className="flex items-center justify-center space-x-2 mb-2">
@@ -111,8 +111,8 @@ const App: React.FC = () => {
 
             {/* Booking */}
             <div className="flex flex-col items-center space-y-4 w-full justify-center p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-               <div className="bg-[#003580] p-4 rounded-xl shadow-lg">
-                 <img src="/booking-logo.png" alt="Booking.com" className="w-16 h-16 object-contain" />
+               <div className="bg-[#003580] p-6 rounded-xl shadow-lg">
+                 <img src="/booking-logo.png" alt="Booking.com" className="w-24 h-24 object-contain" />
                </div>
                <div className="text-center">
                   <div className="flex items-center justify-center space-x-2 mb-2">
@@ -127,9 +127,9 @@ const App: React.FC = () => {
 
             {/* TripAdvisor */}
             <div className="flex flex-col items-center space-y-4 w-full justify-center p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-               <div className="relative">
-                 <img src="/tripadvisor-logo.png" alt="TripAdvisor" className="w-20 h-20 object-contain" />
-                 <div className="absolute -top-2 -right-2 bg-[#00AA6C] rounded-full p-1.5 border-4 border-white shadow-lg">
+               <div className="relative p-6">
+                 <img src="/tripadvisor-logo.png" alt="TripAdvisor" className="w-24 h-24 object-contain" />
+                 <div className="absolute -top-1 -right-1 bg-[#00AA6C] rounded-full p-1.5 border-4 border-white shadow-lg">
                    <IconCheck className="w-5 h-5 text-white" />
                  </div>
                </div>
