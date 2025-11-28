@@ -290,6 +290,12 @@ const App: React.FC = () => {
             <span className="text-solar-gold text-xl tracking-widest uppercase block mt-2 border-b border-solar-gold/50 inline-block pb-2">Por Tempo Limitado</span>
           </h3>
 
+          {/* Destaque 5+1 */}
+          <div className="bg-gradient-to-r from-solar-gold/30 to-solar-gold/20 border-2 border-solar-gold rounded-lg p-6 mb-8 max-w-md mx-auto">
+            <p className="text-white font-bold text-2xl mb-2">5 Diárias + 1 Bônus</p>
+            <p className="text-solar-gold text-xl font-semibold">= 6 Diárias Totais</p>
+          </div>
+
           <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-8">
             <div className="text-center">
                <span className="block text-solar-beige/60 text-lg line-through mb-1">De R$ 4.200,00</span>
