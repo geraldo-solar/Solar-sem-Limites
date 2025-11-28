@@ -94,49 +94,18 @@ const App: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center justify-items-center">
             
             {/* Google */}
-            <div className="flex flex-col items-center space-y-4 w-full justify-center p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-               <div className="bg-white p-6 rounded-full shadow-lg border-2 border-gray-200">
-                 <img src="/google-reviews-logo.png" alt="Google" className="w-24 h-24 object-contain" />
-               </div>
-               <div className="text-center">
-                  <div className="flex items-center justify-center space-x-2 mb-2">
-                    <span className="font-serif text-4xl font-bold text-gray-800">4.6</span>
-                  </div>
-                  <div className="flex justify-center mb-2">
-                    {[1,2,3,4,5].map(i => <IconStar key={i} className="w-5 h-5 text-[#FBBC05] fill-current" />)}
-                  </div>
-                  <p className="text-sm text-gray-600 uppercase tracking-wide font-bold">Google Reviews</p>
-               </div>
+            <div className="flex items-center justify-center w-full p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+               <img src="/google-reviews-logo.png" alt="Google Reviews" className="w-64 h-auto object-contain" />
             </div>
 
             {/* Booking */}
-            <div className="flex flex-col items-center space-y-4 w-full justify-center p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-               <div className="bg-[#003580] p-6 rounded-xl shadow-lg">
-                 <img src="/booking-logo.png" alt="Booking.com" className="w-24 h-24 object-contain" />
-               </div>
-               <div className="text-center">
-                  <div className="flex items-center justify-center space-x-2 mb-2">
-                    <div className="bg-[#003580] text-white text-xl font-bold px-4 py-2 rounded-lg shadow-md">
-                      8,7
-                    </div>
-                  </div>
-                  <span className="font-serif text-2xl font-bold text-[#003580] block mb-2">Fabuloso</span>
-                  <p className="text-sm text-gray-600 uppercase tracking-wide font-bold">Booking.com</p>
-               </div>
+            <div className="flex items-center justify-center w-full p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+               <img src="/booking-logo.png" alt="Booking.com" className="w-64 h-auto object-contain" />
             </div>
 
             {/* TripAdvisor */}
-            <div className="flex flex-col items-center space-y-4 w-full justify-center p-4 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-               <div className="relative p-6">
-                 <img src="/tripadvisor-logo.png" alt="TripAdvisor" className="w-24 h-24 object-contain" />
-                 <div className="absolute -top-1 -right-1 bg-[#00AA6C] rounded-full p-1.5 border-4 border-white shadow-lg">
-                   <IconCheck className="w-5 h-5 text-white" />
-                 </div>
-               </div>
-               <div className="text-center">
-                  <p className="font-serif text-lg font-bold text-gray-800 leading-tight mb-2">Certificado de<br/>Excelência</p>
-                  <p className="text-sm text-gray-600 uppercase tracking-wide font-bold">TripAdvisor 2019</p>
-               </div>
+            <div className="flex items-center justify-center w-full p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+               <img src="/tripadvisor-logo.png" alt="TripAdvisor Certificado de Excelência 2019" className="w-64 h-auto object-contain" />
             </div>
 
           </div>
