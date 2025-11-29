@@ -650,27 +650,39 @@ const App: React.FC = () => {
            <h3 className="font-serif text-3xl md:text-4xl text-solar-gold">Quem já viveu a experiência</h3>
         </div>
         
-        {/* Testimonial Cards */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {[
-            { quote: "Economizei mais de R$ 1.200 na alta temporada. O atendimento foi impecável do check-in ao check-out.", author: "Ana Paula", location: "Belém, PA" },
-            { quote: "Usei no feriado de julho sem pagar nada a mais. Foi a melhor decisão para nossas férias em família.", author: "Lucas & Camila", location: "Castanhal, PA" },
-            { quote: "Ainda ganhamos o passeio de barco. Valeu demais! A estrutura do hotel é fantástica.", author: "Família Souza", location: "Macapá, AP" },
-          ].map((testi, idx) => (
-            <div key={idx} className="bg-white/5 p-8 rounded border border-solar-gold/20 relative">
-              <span className="absolute top-4 left-6 text-6xl font-serif text-solar-gold/20">"</span>
-              <p className="font-sans text-lg italic mb-6 relative z-10">{testi.quote}</p>
-              <div className="flex items-center space-x-3">
-                 <div className="w-10 h-10 bg-solar-gold rounded-full flex items-center justify-center text-solar-deep font-bold font-serif">
-                    {testi.author[0]}
-                 </div>
-                 <div>
-                    <p className="font-bold text-solar-gold">{testi.author}</p>
-                    <p className="text-xs text-solar-beige/60">{testi.location}</p>
-                 </div>
+        {/* Layout de duas colunas: Foto + Depoimentos */}
+        <div className="grid lg:grid-cols-2 gap-8 items-start mb-16">
+          {/* Foto de Cliente */}
+          <div className="relative">
+            <img 
+              src="/experiencia-cliente.jpg" 
+              alt="Cliente aproveitando o Hotel Solar" 
+              className="w-full h-auto rounded-sm shadow-2xl border-4 border-solar-gold/30 sticky top-8"
+            />
+          </div>
+
+          {/* Testimonial Cards */}
+          <div className="space-y-6">
+            {[
+              { quote: "Economizei mais de R$ 1.200 na alta temporada. O atendimento foi impecável do check-in ao check-out.", author: "Ana Paula", location: "Belém, PA" },
+              { quote: "Usei no feriado de julho sem pagar nada a mais. Foi a melhor decisão para nossas férias em família.", author: "Lucas & Camila", location: "Castanhal, PA" },
+              { quote: "Ainda ganhamos o passeio de barco. Valeu demais! A estrutura do hotel é fantástica.", author: "Família Souza", location: "Macapá, AP" },
+            ].map((testi, idx) => (
+              <div key={idx} className="bg-white/5 p-6 md:p-8 rounded border border-solar-gold/20 relative hover:bg-white/10 transition-colors duration-300">
+                <span className="absolute top-4 left-6 text-6xl font-serif text-solar-gold/20">"</span>
+                <p className="font-sans text-base md:text-lg italic mb-6 relative z-10">{testi.quote}</p>
+                <div className="flex items-center space-x-3">
+                   <div className="w-10 h-10 bg-solar-gold rounded-full flex items-center justify-center text-solar-deep font-bold font-serif">
+                      {testi.author[0]}
+                   </div>
+                   <div>
+                      <p className="font-bold text-solar-gold">{testi.author}</p>
+                      <p className="text-xs text-solar-beige/60">{testi.location}</p>
+                   </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         
         {/* CTA após Depoimentos */}
@@ -678,18 +690,6 @@ const App: React.FC = () => {
           <Button onClick={goToCheckout} className="px-10 py-4 text-base shadow-lg">
             Quero garantir minhas diárias com desconto agora
           </Button>
-        </div>
-
-        {/* Foto de Cliente */}
-        <div className="max-w-4xl mx-auto mb-20">
-          <div className="relative group overflow-hidden rounded-lg shadow-2xl border-4 border-solar-gold/40">
-            <img 
-              src="/experiencia-cliente.jpg" 
-              alt="Cliente aproveitando o Hotel Solar" 
-              className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
         </div>
 
         {/* Video Testimonials */}
