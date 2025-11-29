@@ -11,7 +11,10 @@ import {
   CheckCircle,
   ChevronDown,
   ChevronUp,
-  PlayCircle
+  PlayCircle,
+  Heart,
+  Ban,
+  X
 } from 'lucide-react';
 
 interface IconProps {
@@ -30,6 +33,9 @@ export const IconCheck: React.FC<IconProps> = ({ className }) => <CheckCircle cl
 export const IconChevronDown: React.FC<IconProps> = ({ className }) => <ChevronDown className={className} />;
 export const IconChevronUp: React.FC<IconProps> = ({ className }) => <ChevronUp className={className} />;
 export const IconPlay: React.FC<IconProps> = ({ className }) => <PlayCircle className={className} />;
+export const IconHeart: React.FC<IconProps> = ({ className }) => <Heart className={className} />;
+export const IconBan: React.FC<IconProps> = ({ className }) => <Ban className={className} />;
+export const IconX: React.FC<IconProps> = ({ className }) => <X className={className} />;
 
 export const IconWhatsApp: React.FC<IconProps> = ({ className }) => (
   <svg
