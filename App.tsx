@@ -286,11 +286,11 @@ const App: React.FC = () => {
 
         <div className="relative z-10 max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
           {/* Imagem dos Passeios */}
-          <div className="relative h-96 md:h-[600px] rounded-sm overflow-hidden shadow-2xl border-4 border-solar-gold/30">
+          <div className="relative rounded-sm shadow-2xl border-4 border-solar-gold/30 bg-solar-deep/20 flex items-center justify-center">
             <img 
               src="/passeios-salinopolis.jpg" 
               alt="Passeios de barco em Salinópolis" 
-              className="w-full h-full object-cover"
+              className="w-full h-auto object-contain rounded-sm"
             />
           </div>
 
