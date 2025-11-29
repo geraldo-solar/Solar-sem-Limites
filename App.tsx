@@ -416,7 +416,67 @@ const App: React.FC = () => {
         </div>
       </Section>
 
-      {/* 5. GUARANTEES */}
+      {/* 5. COMO FUNCIONA PASSO A PASSO */}
+      <Section className="bg-solar-deep text-solar-cream">
+        <div className="text-center mb-16">
+          <h3 className="font-serif text-4xl text-solar-gold">Como Funciona Passo a Passo</h3>
+          <div className="w-24 h-1 bg-solar-gold mx-auto mt-4"></div>
+          <p className="text-solar-cream/80 mt-6 max-w-2xl mx-auto font-sans">
+            Simples, rápido e sem complicações. Veja como é fácil garantir suas férias no Hotel Solar.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {[
+            {
+              step: "1",
+              title: "Compre seu pacote",
+              desc: "Escolha a quantidade de diárias e finalize sua compra de forma segura."
+            },
+            {
+              step: "2",
+              title: "Receba seu código",
+              desc: "Imediatamente após a compra, você recebe seu código de uso por e-mail."
+            },
+            {
+              step: "3",
+              title: "Escolha suas datas",
+              desc: "Decida quando quer viajar, com total flexibilidade de datas."
+            },
+            {
+              step: "4",
+              title: "Confirme sua reserva",
+              desc: "Entre em contato com nosso time e confirme sua hospedagem."
+            },
+            {
+              step: "5",
+              title: "Viva a experiência",
+              desc: "Aproveite todo o conforto e estrutura do Hotel Solar em Salinópolis."
+            },
+            {
+              step: "6",
+              title: "Repita quando quiser",
+              desc: "Use suas diárias restantes quantas vezes desejar dentro do prazo."
+            }
+          ].map((item, idx) => (
+            <div key={idx} className="bg-white/5 p-8 border border-solar-gold/20 rounded-sm hover:bg-white/10 transition-all duration-300 flex flex-col items-center text-center group">
+              <div className="w-16 h-16 bg-solar-gold rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <span className="text-solar-deep text-2xl font-bold font-serif">{item.step}</span>
+              </div>
+              <h4 className="font-serif text-xl text-solar-gold mb-4">{item.title}</h4>
+              <p className="text-solar-cream/70 leading-relaxed font-sans text-sm">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <p className="text-solar-gold font-bold text-lg font-sans">
+            ✓ Processo 100% digital e sem burocracia
+          </p>
+        </div>
+      </Section>
+
+      {/* 6. GUARANTEES */}
       <Section className="bg-solar-cream">
         <div className="text-center mb-16">
           <h3 className="font-serif text-4xl text-solar-deep">Tripla Garantia de Risco Zero</h3>
