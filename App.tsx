@@ -521,7 +521,17 @@ const App: React.FC = () => {
 
       {/* 8. FAQ */}
       <Section className="bg-solar-beige bg-fiber-texture">
-        <h3 className="font-serif text-4xl text-center text-solar-deep mb-12">Perguntas Frequentes</h3>
+        <h3 className="font-serif text-4xl text-center text-solar-deep mb-8">Perguntas Frequentes</h3>
+        
+        {/* Imagem de Salinópolis */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <img 
+            src="/faq-salinopolis.jpg" 
+            alt="Belezas de Salinópolis" 
+            className="w-full h-auto rounded-sm shadow-2xl border-4 border-solar-gold/30"
+          />
+        </div>
+
         <div className="max-w-3xl mx-auto space-y-4">
           {faqData.map((item, index) => (
             <div key={index} className="bg-white border border-solar-gold/30 rounded-sm overflow-hidden shadow-sm">
