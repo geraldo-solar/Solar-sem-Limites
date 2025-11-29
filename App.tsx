@@ -177,8 +177,8 @@ const App: React.FC = () => {
           {/* Visual Image */}
           <div className="lg:col-span-5 relative h-full min-h-[400px]">
              <img 
-               src="https://picsum.photos/600/800?image=292" 
-               alt="Detalhe do Quarto" 
+               src="/familia-piscina.jpg" 
+               alt="Família aproveitando a piscina do Hotel Solar" 
                className="w-full h-full object-cover rounded-sm shadow-xl border-4 border-solar-gold/20"
              />
              <div className="absolute bottom-8 -left-8 bg-solar-deep p-6 text-solar-gold max-w-xs shadow-2xl hidden md:block">
