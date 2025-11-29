@@ -909,10 +909,6 @@ const App: React.FC = () => {
           <Button onClick={goToCheckout} className="text-xl px-12 py-5 shadow-2xl shadow-black/50 animate-heartbeat">
             GARANTIR MINHA VAGA AGORA
           </Button>
-          
-          <p className="text-solar-beige/60 text-sm mt-6 italic">
-            Após o encerramento, o pacote volta ao preço normal de R$ 4.200,00
-          </p>
         </div>
       </Section>
 
