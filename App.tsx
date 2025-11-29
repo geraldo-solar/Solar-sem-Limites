@@ -289,34 +289,48 @@ const App: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-white p-10 md:p-12 border-2 border-solar-gold rounded-sm shadow-2xl">
-            <div className="grid md:grid-cols-2 gap-6">
-              {[
-                "6 diárias com validade de 1 ano",
-                "Flexibilidade para usar em qualquer época (exceto réveillon)",
-                "Preço fixado sem aumento nos próximos anos",
-                "Prioridade em eventos da família Solar",
-                "Tripla Garantia (risco zero)",
-                "Suporte direto com time de reservas"
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-start space-x-4 group">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-solar-amazon rounded-full flex items-center justify-center group-hover:bg-solar-gold transition-colors duration-300">
-                      <IconCheck className="w-5 h-5 text-white" />
+          <div className="bg-white p-12 md:p-16 border border-solar-gold/40 rounded-sm shadow-sm relative overflow-hidden">
+            {/* Decorative corner accents */}
+            <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-solar-gold/30"></div>
+            <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-solar-gold/30"></div>
+            
+            <div className="relative z-10">
+              <div className="grid md:grid-cols-2 gap-8">
+                {[
+                  "6 diárias com validade de 1 ano",
+                  "Flexibilidade para usar em qualquer época (exceto réveillon)",
+                  "Preço fixado sem aumento nos próximos anos",
+                  "Prioridade em eventos da família Solar",
+                  "Tripla Garantia (risco zero)",
+                  "Suporte direto com time de reservas"
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start space-x-4 group">
+                    <div className="flex-shrink-0 mt-1">
+                      <div className="w-6 h-6 bg-solar-beige rounded-full flex items-center justify-center group-hover:bg-solar-gold transition-colors duration-300">
+                        <IconCheck className="w-4 h-4 text-solar-deep" />
+                      </div>
                     </div>
+                    <p className="text-solar-deep/80 font-sans text-base leading-relaxed">{item}</p>
                   </div>
-                  <p className="text-solar-deep font-sans text-lg leading-relaxed pt-1">{item}</p>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <div className="mt-10 pt-8 border-t-2 border-solar-gold/30 text-center">
-              <p className="text-solar-gold font-bold text-xl font-serif">
-                Tudo isso por apenas R$ 1.197 à vista ou 12x de R$ 99,75
-              </p>
-              <p className="text-solar-deep/60 text-sm mt-2 font-sans">
-                Economia de mais de 50% comparado à tarifa tradicional
-              </p>
+              <div className="mt-12 pt-10 border-t border-solar-gold/20">
+                <div className="text-center space-y-4">
+                  <p className="text-solar-deep/60 text-sm font-sans uppercase tracking-wider">
+                    Investimento
+                  </p>
+                  <p className="text-solar-gold font-bold text-3xl md:text-4xl font-serif">
+                    R$ 2.800,00
+                  </p>
+                  <p className="text-solar-deep/70 text-lg font-sans">
+                    ou <span className="font-bold text-solar-deep">6x de R$ 513,33</span>
+                  </p>
+                  <p className="text-solar-amazon text-sm font-sans italic mt-6">
+                    Economia de mais de 50% comparado à tarifa tradicional
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
