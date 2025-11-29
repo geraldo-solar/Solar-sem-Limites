@@ -280,6 +280,16 @@ const App: React.FC = () => {
 
       {/* 4. PRICING OFFER */}
       <Section id="offer" className="bg-solar-amazon relative overflow-hidden text-center py-24">
+        {/* Background Image */}
+        <div className="absolute inset-0 opacity-20">
+          <img 
+            src="/passeios-salinopolis.jpg" 
+            alt="Passeios de barco em Salinópolis" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-solar-amazon/80 via-solar-amazon/90 to-solar-amazon"></div>
+        
         {/* Background Accents */}
         <div className="absolute top-0 left-0 w-64 h-64 bg-solar-gold/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-solar-deep/50 rounded-full blur-3xl"></div>
