@@ -667,6 +667,7 @@ const App: React.FC = () => {
               { quote: "Economizei mais de R$ 1.200 na alta temporada. O atendimento foi impecável do check-in ao check-out.", author: "Ana Paula", location: "Belém, PA" },
               { quote: "Usei no feriado de julho sem pagar nada a mais. Foi a melhor decisão para nossas férias em família.", author: "Lucas & Camila", location: "Castanhal, PA" },
               { quote: "Ainda ganhamos o passeio de barco. Valeu demais! A estrutura do hotel é fantástica.", author: "Família Souza", location: "Macapá, AP" },
+              { quote: "Comprei em dezembro e já usei 3 diárias. O melhor investimento que fiz para lazer da família!", author: "Roberto Silva", location: "Santarém, PA" },
             ].map((testi, idx) => (
               <div key={idx} className="bg-white/5 p-6 md:p-8 rounded border border-solar-gold/20 relative hover:bg-white/10 transition-colors duration-300">
                 <span className="absolute top-4 left-6 text-6xl font-serif text-solar-gold/20">"</span>
