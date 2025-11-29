@@ -5,7 +5,7 @@ import {
   IconCalendar, IconCoffee, IconStar, IconUsers, 
   IconShip, IconTransfer, IconShield, IconCheck, IconX,
   IconChevronDown, IconChevronUp, IconClock, IconPlay, IconWhatsApp,
-  IconGoogle, IconBooking, IconTripAdvisor
+  IconGoogle, IconBooking, IconTripAdvisor, IconHeart, IconBan
 } from './components/Icons';
 
 // FAQ Data
@@ -290,7 +290,7 @@ const App: React.FC = () => {
           <div className="bg-white p-8 border border-solar-gold/40 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col group">
             <div className="flex items-center mb-6">
               <div className="w-16 h-16 bg-solar-beige rounded-full flex items-center justify-center mr-4 group-hover:bg-solar-gold transition-colors duration-300">
-                <IconCheck className="w-8 h-8 text-solar-deep" />
+                <IconHeart className="w-8 h-8 text-solar-deep" />
               </div>
               <h4 className="font-serif text-2xl text-solar-deep">Para Quem É</h4>
             </div>
@@ -327,7 +327,7 @@ const App: React.FC = () => {
           <div className="bg-white p-8 border border-solar-gold/40 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col group">
             <div className="flex items-center mb-6">
               <div className="w-16 h-16 bg-solar-beige rounded-full flex items-center justify-center mr-4 group-hover:bg-solar-gold transition-colors duration-300">
-                <IconX className="w-8 h-8 text-solar-deep" />
+                <IconBan className="w-8 h-8 text-solar-deep" />
               </div>
               <h4 className="font-serif text-2xl text-solar-deep">Para Quem Não É</h4>
             </div>
