@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from './components/Button';
 import { Section } from './components/Section';
 import { 
@@ -20,10 +20,37 @@ const faqData = [
 
 const App: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
   };
+
+  // Countdown timer
+  useEffect(() => {
+    const targetDate = new Date('2025-12-23T23:59:59').getTime();
+    
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+      
+      if (distance > 0) {
+        setTimeLeft({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000)
+        });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    };
+    
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   const goToCheckout = () => {
     window.location.href = 'https://checkout-solar-sem-limites.vercel.app';
@@ -440,10 +467,33 @@ const App: React.FC = () => {
 
           {/* Conteúdo de Preço */}
           <div className="text-center border border-solar-gold/30 bg-solar-deep/40 backdrop-blur-sm p-8 md:p-12 rounded-sm">
-          <h3 className="font-serif text-3xl md:text-4xl text-white mb-8">
+          <h3 className="font-serif text-3xl md:text-4xl text-white mb-4">
             PREÇO ESPECIAL DE LANÇAMENTO <br/>
             <span className="text-solar-gold text-xl tracking-widest uppercase block mt-2 border-b border-solar-gold/50 inline-block pb-2">Por Tempo Limitado</span>
           </h3>
+          
+          {/* Contador Regressivo */}
+          <div className="mb-8">
+            <p className="text-solar-beige/80 text-sm mb-4">Oferta válida até 23/12/2025 às 23h59</p>
+            <div className="flex justify-center gap-3 md:gap-6">
+              <div className="bg-solar-gold/20 border border-solar-gold/40 rounded-lg p-3 md:p-4 min-w-[70px] md:min-w-[90px]">
+                <div className="text-3xl md:text-5xl font-serif text-solar-gold font-bold">{timeLeft.days}</div>
+                <div className="text-xs md:text-sm text-solar-beige/60 uppercase tracking-wider mt-1">Dias</div>
+              </div>
+              <div className="bg-solar-gold/20 border border-solar-gold/40 rounded-lg p-3 md:p-4 min-w-[70px] md:min-w-[90px]">
+                <div className="text-3xl md:text-5xl font-serif text-solar-gold font-bold">{timeLeft.hours}</div>
+                <div className="text-xs md:text-sm text-solar-beige/60 uppercase tracking-wider mt-1">Horas</div>
+              </div>
+              <div className="bg-solar-gold/20 border border-solar-gold/40 rounded-lg p-3 md:p-4 min-w-[70px] md:min-w-[90px]">
+                <div className="text-3xl md:text-5xl font-serif text-solar-gold font-bold">{timeLeft.minutes}</div>
+                <div className="text-xs md:text-sm text-solar-beige/60 uppercase tracking-wider mt-1">Min</div>
+              </div>
+              <div className="bg-solar-gold/20 border border-solar-gold/40 rounded-lg p-3 md:p-4 min-w-[70px] md:min-w-[90px]">
+                <div className="text-3xl md:text-5xl font-serif text-solar-gold font-bold animate-pulse">{timeLeft.seconds}</div>
+                <div className="text-xs md:text-sm text-solar-beige/60 uppercase tracking-wider mt-1">Seg</div>
+              </div>
+            </div>
+          </div>
 
           {/* Destaque 5+1 */}
           <div className="bg-gradient-to-r from-solar-gold/30 to-solar-gold/20 border-2 border-solar-gold rounded-lg p-6 mb-8 max-w-md mx-auto">
@@ -820,6 +870,49 @@ const App: React.FC = () => {
               </Button>
              <p className="text-xs text-solar-beige/40 mt-4 tracking-widest uppercase">Oferta exclusiva e limitada. Garantias ativas por tempo reduzido.</p>
            </div>
+        </div>
+      </Section>
+
+      {/* Urgência Final com Contador */}
+      <Section className="bg-gradient-to-b from-solar-deep to-[#051F17] text-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h3 className="font-serif text-3xl md:text-5xl text-solar-gold mb-4">
+            ⚡ Últimas Horas da Oferta!
+          </h3>
+          <p className="text-solar-beige/80 text-lg mb-8">
+            Não perca essa oportunidade única. A oferta encerra em:
+          </p>
+          
+          {/* Contador Regressivo Grande */}
+          <div className="bg-solar-deep/60 border-2 border-solar-gold/40 rounded-lg p-8 mb-8">
+            <p className="text-solar-gold text-sm md:text-base mb-6 tracking-widest uppercase">Oferta válida até 23/12/2025 às 23h59</p>
+            <div className="flex justify-center gap-4 md:gap-8">
+              <div className="bg-gradient-to-b from-solar-gold/30 to-solar-gold/10 border-2 border-solar-gold rounded-xl p-4 md:p-6 min-w-[80px] md:min-w-[120px] shadow-lg">
+                <div className="text-4xl md:text-6xl font-serif text-solar-gold font-bold">{timeLeft.days}</div>
+                <div className="text-xs md:text-base text-white uppercase tracking-widest mt-2">Dias</div>
+              </div>
+              <div className="bg-gradient-to-b from-solar-gold/30 to-solar-gold/10 border-2 border-solar-gold rounded-xl p-4 md:p-6 min-w-[80px] md:min-w-[120px] shadow-lg">
+                <div className="text-4xl md:text-6xl font-serif text-solar-gold font-bold">{timeLeft.hours}</div>
+                <div className="text-xs md:text-base text-white uppercase tracking-widest mt-2">Horas</div>
+              </div>
+              <div className="bg-gradient-to-b from-solar-gold/30 to-solar-gold/10 border-2 border-solar-gold rounded-xl p-4 md:p-6 min-w-[80px] md:min-w-[120px] shadow-lg">
+                <div className="text-4xl md:text-6xl font-serif text-solar-gold font-bold">{timeLeft.minutes}</div>
+                <div className="text-xs md:text-base text-white uppercase tracking-widest mt-2">Min</div>
+              </div>
+              <div className="bg-gradient-to-b from-solar-gold/30 to-solar-gold/10 border-2 border-solar-gold rounded-xl p-4 md:p-6 min-w-[80px] md:min-w-[120px] shadow-lg animate-pulse">
+                <div className="text-4xl md:text-6xl font-serif text-solar-gold font-bold">{timeLeft.seconds}</div>
+                <div className="text-xs md:text-base text-white uppercase tracking-widest mt-2">Seg</div>
+              </div>
+            </div>
+          </div>
+          
+          <Button onClick={goToCheckout} className="text-xl px-12 py-5 shadow-2xl shadow-black/50 animate-heartbeat">
+            GARANTIR MINHA VAGA AGORA
+          </Button>
+          
+          <p className="text-solar-beige/60 text-sm mt-6 italic">
+            Após o encerramento, o pacote volta ao preço normal de R$ 4.200,00
+          </p>
         </div>
       </Section>
 
