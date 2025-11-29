@@ -681,14 +681,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Galeria de Fotos */}
-        <div className="relative mb-16">
-          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-solar-gold/20 z-0"></div>
-          <h4 className="relative z-10 inline-block bg-solar-deep px-6 font-serif text-2xl text-solar-gold mb-8">
-            Momentos Inesquecíveis
-          </h4>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-20">
+        <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto mb-20">
           <div className="relative group overflow-hidden rounded-sm shadow-2xl border-4 border-solar-gold/30">
             <img 
               src="/experiencia-1.jpg" 
@@ -707,6 +700,13 @@ const App: React.FC = () => {
             <img 
               src="/experiencia-3.jpg" 
               alt="Restaurante palafita" 
+              className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          </div>
+          <div className="relative group overflow-hidden rounded-sm shadow-2xl border-4 border-solar-gold/30">
+            <img 
+              src="/experiencia-cliente.jpg" 
+              alt="Cliente aproveitando o Hotel Solar" 
               className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-105"
             />
           </div>
