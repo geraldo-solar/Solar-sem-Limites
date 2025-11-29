@@ -278,7 +278,93 @@ const App: React.FC = () => {
         </div>
       </Section>
 
-      {/* 4. PRICING OFFER */}
+      {/* 4. PARA QUEM É / PARA QUEM NÃO É */}
+      <Section className="bg-gradient-to-b from-solar-beige to-solar-cream">
+        <h3 className="font-serif text-4xl text-center text-solar-deep mb-4">Este Pacote é Para Você?</h3>
+        <p className="text-center text-solar-deep/70 mb-12 max-w-2xl mx-auto">
+          Descubra se o Solar Sem Limites é a escolha perfeita para suas próximas férias
+        </p>
+        
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* Para Quem É */}
+          <div className="bg-white rounded-lg shadow-xl border-2 border-solar-amazon p-8">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-solar-amazon rounded-full flex items-center justify-center mr-4">
+                <span className="text-white text-2xl">✔️</span>
+              </div>
+              <h4 className="font-serif text-2xl text-solar-amazon font-bold">Para Quem É</h4>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <span className="text-solar-amazon mr-3 mt-1">•</span>
+                <span className="text-solar-deep font-semibold">Famílias que viajam todos os anos para Salinas</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-solar-amazon mr-3 mt-1">•</span>
+                <span className="text-solar-deep font-semibold">Casais que gostam de conforto e previsibilidade</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-solar-amazon mr-3 mt-1">•</span>
+                <span className="text-solar-deep font-semibold">Pessoas que querem pagar menos usando inteligência financeira</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-solar-amazon mr-3 mt-1">•</span>
+                <span className="text-solar-deep font-semibold">Quem deseja escolher datas com flexibilidade</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-solar-amazon mr-3 mt-1">•</span>
+                <span className="text-solar-deep font-semibold">Quem já ama o Hotel Solar e quer garantir presença nos próximos anos</span>
+              </li>
+            </ul>
+            <div className="mt-6 p-4 bg-solar-amazon/10 rounded-lg">
+              <p className="text-solar-deep text-sm italic text-center">
+                Se você se identificou com pelo menos 2 itens acima, este pacote foi feito para você! 🌴
+              </p>
+            </div>
+          </div>
+          
+          {/* Para Quem NÃO É */}
+          <div className="bg-white rounded-lg shadow-xl border-2 border-red-800 p-8">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-red-800 rounded-full flex items-center justify-center mr-4">
+                <span className="text-white text-2xl">❌</span>
+              </div>
+              <h4 className="font-serif text-2xl text-red-800 font-bold">Para Quem Não É</h4>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <span className="text-red-800 mr-3 mt-1">•</span>
+                <span className="text-solar-deep font-semibold">Pessoas que só viajam no Réveillon</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-red-800 mr-3 mt-1">•</span>
+                <span className="text-solar-deep font-semibold">Quem não consegue planejar minimamente suas viagens</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-red-800 mr-3 mt-1">•</span>
+                <span className="text-solar-deep font-semibold">Quem quer apenas uma diária avulsa</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-red-800 mr-3 mt-1">•</span>
+                <span className="text-solar-deep font-semibold">Quem não gosta de viajar para praia</span>
+              </li>
+            </ul>
+            <div className="mt-6 p-4 bg-red-800/10 rounded-lg">
+              <p className="text-solar-deep text-sm italic text-center">
+                Se este é o seu caso, talvez uma reserva tradicional seja mais adequada para você.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-12 text-center">
+          <p className="text-solar-deep font-bold text-lg mb-4">
+            🎯 Este pacote foi criado para quem valoriza <span className="text-solar-amazon">economia inteligente</span> e <span className="text-solar-amazon">experiências inesquecíveis</span>.
+          </p>
+        </div>
+      </Section>
+
+      {/* 5. PRICING OFFER */}
       <Section id="offer" className="bg-solar-amazon relative overflow-hidden py-24">
         {/* Background Accents */}
         <div className="absolute top-0 left-0 w-64 h-64 bg-solar-gold/10 rounded-full blur-3xl"></div>
