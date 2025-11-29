@@ -680,35 +680,15 @@ const App: React.FC = () => {
           </Button>
         </div>
 
-        {/* Galeria de Fotos */}
-        <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto mb-20">
-          <div className="relative group overflow-hidden rounded-sm shadow-2xl border-4 border-solar-gold/30">
-            <img 
-              src="/experiencia-1.jpg" 
-              alt="Pier e restaurante sobre o mar" 
-              className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-          </div>
-          <div className="relative group overflow-hidden rounded-sm shadow-2xl border-4 border-solar-gold/30">
-            <img 
-              src="/experiencia-2.jpg" 
-              alt="Praia de Salinópolis" 
-              className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-          </div>
-          <div className="relative group overflow-hidden rounded-sm shadow-2xl border-4 border-solar-gold/30">
-            <img 
-              src="/experiencia-3.jpg" 
-              alt="Restaurante palafita" 
-              className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-          </div>
-          <div className="relative group overflow-hidden rounded-sm shadow-2xl border-4 border-solar-gold/30">
+        {/* Foto de Cliente */}
+        <div className="max-w-4xl mx-auto mb-20">
+          <div className="relative group overflow-hidden rounded-lg shadow-2xl border-4 border-solar-gold/40">
             <img 
               src="/experiencia-cliente.jpg" 
               alt="Cliente aproveitando o Hotel Solar" 
-              className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-105"
+              className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </div>
         </div>
 
