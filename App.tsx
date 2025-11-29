@@ -279,22 +279,23 @@ const App: React.FC = () => {
       </Section>
 
       {/* 4. PRICING OFFER */}
-      <Section id="offer" className="bg-solar-amazon relative overflow-hidden text-center py-24">
-        {/* Background Image */}
-        <div className="absolute inset-0 opacity-20">
-          <img 
-            src="/passeios-salinopolis.jpg" 
-            alt="Passeios de barco em Salinópolis" 
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-solar-amazon/80 via-solar-amazon/90 to-solar-amazon"></div>
-        
+      <Section id="offer" className="bg-solar-amazon relative overflow-hidden py-24">
         {/* Background Accents */}
         <div className="absolute top-0 left-0 w-64 h-64 bg-solar-gold/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-solar-deep/50 rounded-full blur-3xl"></div>
 
-        <div className="relative z-10 max-w-4xl mx-auto border border-solar-gold/30 bg-solar-deep/40 backdrop-blur-sm p-8 md:p-16 rounded-sm">
+        <div className="relative z-10 max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+          {/* Imagem dos Passeios */}
+          <div className="relative h-96 md:h-[600px] rounded-sm overflow-hidden shadow-2xl border-4 border-solar-gold/30">
+            <img 
+              src="/passeios-salinopolis.jpg" 
+              alt="Passeios de barco em Salinópolis" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Conteúdo de Preço */}
+          <div className="text-center border border-solar-gold/30 bg-solar-deep/40 backdrop-blur-sm p-8 md:p-12 rounded-sm">
           <h3 className="font-serif text-3xl md:text-4xl text-white mb-8">
             PREÇO ESPECIAL DE LANÇAMENTO <br/>
             <span className="text-solar-gold text-xl tracking-widest uppercase block mt-2 border-b border-solar-gold/50 inline-block pb-2">Por Tempo Limitado</span>
@@ -325,6 +326,7 @@ const App: React.FC = () => {
           <Button onClick={goToCheckout} className="w-full md:w-auto text-xl px-16 py-5 shadow-2xl shadow-black/30 animate-heartbeat">
             QUERO MEU SOLAR SEM LIMITES
           </Button>
+          </div>
         </div>
       </Section>
 
