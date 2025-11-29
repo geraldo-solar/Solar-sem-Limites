@@ -78,8 +78,8 @@ const App: React.FC = () => {
             A forma mais inteligente e segura de viajar para Salinópolis o ano inteiro
           </p>
           <div className="pt-8">
-            <Button onClick={goToCheckout} className="text-lg px-12 py-5 shadow-2xl shadow-solar-gold/20">
-              Garantir Meu Pacote com Desconto
+            <Button onClick={goToCheckout} className="text-lg md:text-xl px-12 md:px-16 py-5 md:py-6 shadow-2xl shadow-solar-gold/20 animate-heartbeat">
+              Quero garantir minhas diárias com desconto agora
             </Button>
           </div>
         </div>
