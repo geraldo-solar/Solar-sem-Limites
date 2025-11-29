@@ -278,6 +278,50 @@ const App: React.FC = () => {
         </div>
       </Section>
 
+      {/* 3.5 RESUMO DA OFERTA */}
+      <Section className="bg-gradient-to-b from-solar-gold/10 to-solar-beige">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h3 className="font-serif text-4xl text-solar-deep mb-4">Resumo da Oferta</h3>
+            <div className="w-24 h-1 bg-solar-gold mx-auto"></div>
+            <p className="text-solar-deep/70 mt-6 font-sans text-lg">
+              Veja tudo que você leva com o pacote Solar Sem Limites
+            </p>
+          </div>
+
+          <div className="bg-white p-10 md:p-12 border-2 border-solar-gold rounded-sm shadow-2xl">
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                "6 diárias com validade de 1 ano",
+                "Flexibilidade para usar em qualquer época (exceto réveillon)",
+                "Preço fixado sem aumento nos próximos anos",
+                "Prioridade em eventos da família Solar",
+                "Tripla Garantia (risco zero)",
+                "Suporte direto com time de reservas"
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-start space-x-4 group">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 bg-solar-amazon rounded-full flex items-center justify-center group-hover:bg-solar-gold transition-colors duration-300">
+                      <IconCheck className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <p className="text-solar-deep font-sans text-lg leading-relaxed pt-1">{item}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 pt-8 border-t-2 border-solar-gold/30 text-center">
+              <p className="text-solar-gold font-bold text-xl font-serif">
+                Tudo isso por apenas R$ 1.197 à vista ou 12x de R$ 99,75
+              </p>
+              <p className="text-solar-deep/60 text-sm mt-2 font-sans">
+                Economia de mais de 50% comparado à tarifa tradicional
+              </p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* 4. PARA QUEM É / PARA QUEM NÃO É */}
       <Section className="bg-solar-cream">
         <div className="text-center mb-16">
