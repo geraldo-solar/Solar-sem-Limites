@@ -465,8 +465,8 @@ const App: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-1 md:grid-rows-2 gap-6 h-48 md:h-[500px]">
             <div className="relative group overflow-hidden h-full rounded-sm">
               <img 
-                src="/vinho-piscina.png" 
-                alt="Vinho e petiscos à beira da piscina" 
+                src="/bicicletas-salinopolis.jpg" 
+                alt="Passeio de bicicleta em Salinópolis" 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
