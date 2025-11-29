@@ -579,36 +579,59 @@ const App: React.FC = () => {
 
       {/* 6. GUARANTEES */}
       <Section className="bg-solar-cream">
-        <div className="text-center mb-16">
-          <h3 className="font-serif text-4xl text-solar-deep">Tripla Garantia de Risco Zero</h3>
+        <div className="text-center mb-12">
+          <h3 className="font-serif text-4xl md:text-5xl text-solar-deep">Tripla Garantia de Risco Zero</h3>
           <div className="w-24 h-1 bg-solar-gold mx-auto mt-4"></div>
+          <p className="text-solar-deep/70 mt-6 max-w-2xl mx-auto font-sans text-lg">
+            Sua compra está 100% protegida. Você não corre nenhum risco.
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* Destaque Risco Zero */}
+        <div className="max-w-5xl mx-auto mb-12">
+          <div className="bg-gradient-to-r from-solar-gold/20 via-solar-gold/10 to-solar-gold/20 border-2 border-solar-gold rounded-lg p-6 md:p-8">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-solar-gold rounded-full flex items-center justify-center shadow-lg">
+                <IconShield className="w-10 h-10 md:w-12 md:h-12 text-white" />
+              </div>
+              <div>
+                <h4 className="font-serif text-2xl md:text-3xl text-solar-deep font-bold">RISCO ZERO</h4>
+                <p className="text-solar-deep/70 text-sm md:text-base">Seu investimento está completamente protegido</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
           {[
             {
               title: "Garantia Incondicional",
               days: "30 Dias",
-              desc: "Cancelou dentro de 30 dias após a compra? Devolvemos 100% do seu valor sem perguntas e sem burocracia."
+              desc: "Cancelou dentro de 30 dias após a compra? Devolvemos 100% do seu valor sem perguntas e sem burocracia.",
+              icon: "shield"
             },
             {
               title: "Garantia Pós-Primeira Diária",
               days: "Satisfação",
-              desc: "Usou a primeira diária e sentiu que não era para você? Reembolsamos o valor restante proporcionalmente."
+              desc: "Usou a primeira diária e sentiu que não era para você? Reembolsamos o valor restante proporcionalmente.",
+              icon: "check"
             },
             {
               title: "Garantia de Crédito",
               days: "Vitalício",
-              desc: "Não conseguiu usar tudo no prazo estipulado? O valor pago vira crédito integral para abater em diárias futuras."
+              desc: "Não conseguiu usar tudo no prazo estipulado? O valor pago vira crédito integral para abater em diárias futuras.",
+              icon: "star"
             }
           ].map((card, idx) => (
-            <div key={idx} className="bg-white p-8 border border-solar-gold/40 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col items-center text-center group">
-              <div className="w-16 h-16 bg-solar-beige rounded-full flex items-center justify-center mb-6 group-hover:bg-solar-gold transition-colors duration-300">
-                <IconShield className="w-8 h-8 text-solar-deep" />
+            <div key={idx} className="bg-white p-6 md:p-8 border-2 border-solar-gold/30 rounded-lg shadow-md hover:shadow-2xl hover:border-solar-gold transition-all duration-300 flex flex-col items-center text-center group">
+              <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-solar-gold to-solar-gold/70 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                {card.icon === 'shield' && <IconShield className="w-12 h-12 md:w-14 md:h-14 text-white" />}
+                {card.icon === 'check' && <IconCheck className="w-12 h-12 md:w-14 md:h-14 text-white" />}
+                {card.icon === 'star' && <IconStar className="w-12 h-12 md:w-14 md:h-14 text-white" />}
               </div>
-              <span className="text-xs font-bold tracking-widest text-solar-gold uppercase mb-2">{card.days}</span>
-              <h4 className="font-serif text-2xl text-solar-deep mb-4">{card.title}</h4>
-              <p className="text-solar-deep/70 leading-relaxed font-sans">{card.desc}</p>
+              <span className="text-xs md:text-sm font-bold tracking-widest text-solar-gold uppercase mb-3 bg-solar-gold/10 px-4 py-1 rounded-full">{card.days}</span>
+              <h4 className="font-serif text-xl md:text-2xl text-solar-deep mb-4 font-bold">{card.title}</h4>
+              <p className="text-solar-deep/70 leading-relaxed font-sans text-sm md:text-base">{card.desc}</p>
             </div>
           ))}
         </div>
