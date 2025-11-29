@@ -562,6 +562,13 @@ const App: React.FC = () => {
             </div>
           ))}
         </div>
+        
+        {/* CTA após Tripla Garantia */}
+        <div className="text-center mt-16">
+          <Button onClick={goToCheckout} className="px-10 py-4 text-base shadow-lg">
+            Quero garantir minhas diárias com desconto agora
+          </Button>
+        </div>
       </Section>
 
       {/* 6. SOCIAL PROOF */}
@@ -591,6 +598,13 @@ const App: React.FC = () => {
               </div>
             </div>
           ))}
+        </div>
+        
+        {/* CTA após Depoimentos */}
+        <div className="text-center mt-12 mb-16">
+          <Button onClick={goToCheckout} className="px-10 py-4 text-base shadow-lg">
+            Quero garantir minhas diárias com desconto agora
+          </Button>
         </div>
 
         {/* Galeria de Fotos */}
@@ -674,6 +688,13 @@ const App: React.FC = () => {
             </div>
           </div>
         </div>
+        
+        {/* CTA após Histórias Reais */}
+        <div className="text-center mt-16">
+          <Button onClick={goToCheckout} className="px-10 py-4 text-base shadow-lg">
+            Quero garantir minhas diárias com desconto agora
+          </Button>
+        </div>
 
       </Section>
 
@@ -714,6 +735,13 @@ const App: React.FC = () => {
             “Imagine viver tudo isso pagando <span className="text-solar-amazon font-bold decoration-solar-gold underline decoration-2 underline-offset-4">menos</span> e com datas flexíveis.”
           </p>
         </div>
+        
+        {/* CTA após Galeria */}
+        <div className="text-center mt-16">
+          <Button onClick={goToCheckout} className="px-10 py-4 text-base shadow-lg">
+            Quero garantir minhas diárias com desconto agora
+          </Button>
+        </div>
       </Section>
 
       {/* 8. FAQ */}
@@ -753,6 +781,13 @@ const App: React.FC = () => {
             </div>
           ))}
           </div>
+        </div>
+        
+        {/* CTA após FAQ */}
+        <div className="text-center mt-16">
+          <Button onClick={goToCheckout} className="px-10 py-4 text-base shadow-lg">
+            Quero garantir minhas diárias com desconto agora
+          </Button>
         </div>
       </Section>
 
