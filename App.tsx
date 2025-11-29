@@ -430,41 +430,34 @@ const App: React.FC = () => {
           {[
             {
               step: "1",
-              title: "Compre seu pacote",
-              desc: "Escolha a quantidade de diárias e finalize sua compra de forma segura."
+              title: "Compre seu pacote Solar Sem Limites"
             },
             {
               step: "2",
-              title: "Receba seu código",
-              desc: "Imediatamente após a compra, você recebe seu código de uso por e-mail."
+              title: "Receba imediatamente seu código de uso por e-mail"
             },
             {
               step: "3",
-              title: "Escolha suas datas",
-              desc: "Decida quando quer viajar, com total flexibilidade de datas."
+              title: "Escolha suas datas quando quiser"
             },
             {
               step: "4",
-              title: "Confirme sua reserva",
-              desc: "Entre em contato com nosso time e confirme sua hospedagem."
+              title: "Fale com nosso time de reservas e confirme sua hospedagem"
             },
             {
               step: "5",
-              title: "Viva a experiência",
-              desc: "Aproveite todo o conforto e estrutura do Hotel Solar em Salinópolis."
+              title: "Viva sua experiência no Hotel Solar"
             },
             {
               step: "6",
-              title: "Repita quando quiser",
-              desc: "Use suas diárias restantes quantas vezes desejar dentro do prazo."
+              title: "Repita quantas vezes quiser dentro do seu pacote"
             }
           ].map((item, idx) => (
             <div key={idx} className="bg-white/5 p-8 border border-solar-gold/20 rounded-sm hover:bg-white/10 transition-all duration-300 flex flex-col items-center text-center group">
               <div className="w-16 h-16 bg-solar-gold rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <span className="text-solar-deep text-2xl font-bold font-serif">{item.step}</span>
               </div>
-              <h4 className="font-serif text-xl text-solar-gold mb-4">{item.title}</h4>
-              <p className="text-solar-cream/70 leading-relaxed font-sans text-sm">{item.desc}</p>
+              <h4 className="font-serif text-lg text-solar-gold leading-relaxed">{item.title}</h4>
             </div>
           ))}
         </div>
