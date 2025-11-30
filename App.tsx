@@ -629,9 +629,9 @@ const App: React.FC = () => {
         </div>
 
         {/* Grid de Fotos */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-7xl mx-auto">
           {/* Foto 1 - Vista Aérea (destaque maior) */}
-          <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500">
+          <div className="col-span-2 md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500 h-64 md:h-auto">
             <img 
               src="/hotel-vista-aerea.jpg" 
               alt="Vista aérea do Hotel Solar com piscina e área de lazer"
