@@ -336,7 +336,7 @@ const App: React.FC = () => {
             <div className="relative z-10">
               <div className="grid md:grid-cols-2 gap-8">
                 {[
-                  "6 diárias com validade de 1 ano",
+                  "6 diárias com validade de 1 ano (2 anos a partir de 2 pacotes)",
                   "Flexibilidade para usar em qualquer época (exceto réveillon)",
                   "Preço fixado sem aumento nos próximos anos",
                   "Prioridade em eventos da família Solar",
@@ -515,7 +515,6 @@ const App: React.FC = () => {
 
           <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-8">
             <div className="text-center">
-               <span className="block text-solar-beige/60 text-lg line-through mb-1">De R$ 4.200,00</span>
                <div className="text-5xl md:text-7xl font-serif text-solar-gold">R$ 2.800</div>
                <span className="text-white font-sans text-sm tracking-wide bg-solar-gold/20 px-3 py-1 rounded-full mt-2 inline-block">NO PIX À VISTA</span>
             </div>
@@ -527,9 +526,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <p className="text-solar-cream/80 italic mb-10">Somente enquanto durar o lote atual.</p>
-
-          <Button onClick={goToCheckout} className="w-full md:w-auto text-xl px-16 py-5 shadow-2xl shadow-black/30 animate-heartbeat">
+          <Button onClick={goToCheckout} className="w-full md:w-auto text-xl px-16 py-5 shadow-2xl shadow-black/30 animate-heartbeat mt-6">
             QUERO MEU SOLAR SEM LIMITES
           </Button>
           </div>
