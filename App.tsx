@@ -786,7 +786,7 @@ const App: React.FC = () => {
             </div>
             <div className="relative group overflow-hidden h-full rounded-sm">
                <img 
-                src="/quarto-hotel.jpg" 
+                src="/quarto-hotel-solar.jpg" 
                 alt="Quarto confortável do Hotel Solar" 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
