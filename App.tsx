@@ -344,12 +344,12 @@ const App: React.FC = () => {
                   "Suporte direto com time de reservas"
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-start space-x-4 group">
-                    <div className="flex-shrink-0 mt-1">
-                      <div className="w-6 h-6 bg-solar-beige rounded-full flex items-center justify-center group-hover:bg-solar-gold transition-colors duration-300">
-                        <IconCheck className="w-4 h-4 text-solar-deep" />
+                    <div className="flex-shrink-0 mt-0.5">
+                      <div className="w-8 h-8 bg-gradient-to-br from-solar-gold to-solar-gold/80 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
+                        <IconCheck className="w-5 h-5 text-white font-bold stroke-[3]" />
                       </div>
                     </div>
-                    <p className="text-solar-deep/80 font-sans text-base leading-relaxed">{item}</p>
+                    <p className="text-solar-deep/90 font-sans text-base md:text-lg leading-relaxed font-medium">{item}</p>
                   </div>
                 ))}
               </div>
