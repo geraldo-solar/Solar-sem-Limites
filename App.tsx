@@ -563,38 +563,74 @@ const App: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 md:gap-12 max-w-6xl mx-auto relative">
           {[
             {
               step: "1",
-              title: "Compre seu pacote Solar Sem Limites"
+              icon: "M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z",
+              title: "Compre seu pacote",
+              desc: "Solar Sem Limites com desconto exclusivo"
             },
             {
               step: "2",
-              title: "Receba imediatamente seu código de uso por e-mail"
+              icon: "M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75",
+              title: "Receba seu código",
+              desc: "Imediatamente por e-mail"
             },
             {
               step: "3",
-              title: "Escolha suas datas quando quiser"
+              icon: "M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5",
+              title: "Escolha suas datas",
+              desc: "Quando quiser, com flexibilidade total"
             },
             {
               step: "4",
-              title: "Fale com nosso time de reservas e confirme sua hospedagem"
+              icon: "M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z",
+              title: "Confirme sua reserva",
+              desc: "Fale com nosso time de atendimento"
             },
             {
               step: "5",
-              title: "Viva sua experiência no Hotel Solar"
+              icon: "M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z",
+              title: "Viva a experiência",
+              desc: "Aproveite o Hotel Solar"
             },
             {
               step: "6",
-              title: "Repita quantas vezes quiser dentro do seu pacote"
+              icon: "M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99",
+              title: "Repita quando quiser",
+              desc: "Use todas as diárias do seu pacote"
             }
           ].map((item, idx) => (
-            <div key={idx} className="bg-white/5 p-8 border border-solar-gold/20 rounded-sm hover:bg-white/10 transition-all duration-300 flex flex-col items-center text-center group">
-              <div className="w-16 h-16 bg-solar-gold rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-solar-deep text-2xl font-bold font-serif">{item.step}</span>
+            <div key={idx} className="relative">
+              {/* Seta conectora (apenas desktop e não no último item de cada linha) */}
+              {idx < 5 && idx !== 2 && (
+                <div className="hidden md:block absolute top-24 -right-6 lg:-right-8 z-0">
+                  <svg className="w-12 h-12 lg:w-16 lg:h-16 text-solar-gold/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </div>
+              )}
+              
+              <div className="bg-gradient-to-br from-white/10 to-white/5 p-8 border-2 border-solar-gold/30 rounded-lg hover:border-solar-gold hover:shadow-2xl hover:shadow-solar-gold/20 transition-all duration-300 flex flex-col items-center text-center group relative z-10">
+                {/* Número do passo em destaque */}
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                  <div className="w-12 h-12 bg-gradient-to-br from-solar-gold to-solar-gold/80 rounded-full flex items-center justify-center shadow-lg group-hover:scale-125 transition-transform duration-300 border-4 border-solar-deep">
+                    <span className="text-solar-deep text-xl font-bold font-serif">{item.step}</span>
+                  </div>
+                </div>
+                
+                {/* Ícone SVG */}
+                <div className="mt-4 mb-6">
+                  <svg className="w-16 h-16 text-solar-gold group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+                  </svg>
+                </div>
+                
+                {/* Título e descrição */}
+                <h4 className="font-serif text-xl text-solar-gold mb-2 leading-tight">{item.title}</h4>
+                <p className="text-solar-cream/70 text-sm font-sans">{item.desc}</p>
               </div>
-              <h4 className="font-serif text-lg text-solar-gold leading-relaxed">{item.title}</h4>
             </div>
           ))}
         </div>
