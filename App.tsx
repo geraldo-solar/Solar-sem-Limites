@@ -586,6 +586,114 @@ const App: React.FC = () => {
         </div>
       </Section>
 
+      {/* 5.5 CONHEÇA O HOTEL SOLAR */}
+      <Section className="bg-gradient-to-b from-solar-beige to-solar-cream">
+        <div className="text-center mb-16">
+          <h3 className="font-serif text-4xl md:text-5xl text-solar-deep">Conheça o Hotel Solar</h3>
+          <div className="w-24 h-1 bg-solar-gold mx-auto mt-4"></div>
+          <p className="text-solar-deep/70 mt-6 max-w-2xl mx-auto font-sans text-lg">
+            Estrutura completa para você e sua família aproveitarem cada momento
+          </p>
+        </div>
+
+        {/* Grid de Fotos */}
+        <div className="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {/* Foto 1 - Vista Aérea (destaque maior) */}
+          <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500">
+            <img 
+              src="/hotel-vista-aerea.jpg" 
+              alt="Vista aérea do Hotel Solar com piscina e área de lazer"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h4 className="font-serif text-2xl font-bold mb-2">Vista Aérea</h4>
+              <p className="text-sm">Estrutura completa com piscina, área de lazer e energia solar</p>
+            </div>
+          </div>
+
+          {/* Foto 2 - Café da Manhã */}
+          <div className="relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500 h-64 md:h-auto">
+            <img 
+              src="/hotel-cafe-manha.jpg" 
+              alt="Café da manhã farto e delicioso"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h4 className="font-serif text-lg font-bold mb-1">Café da Manhã</h4>
+              <p className="text-xs">Buffet completo e delicioso</p>
+            </div>
+          </div>
+
+          {/* Foto 3 - Fachada */}
+          <div className="relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500 h-64 md:h-auto">
+            <img 
+              src="/hotel-fachada.jpg" 
+              alt="Fachada do Hotel Solar"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h4 className="font-serif text-lg font-bold mb-1">Fachada</h4>
+              <p className="text-xs">Arquitetura charmosa e acolhedora</p>
+            </div>
+          </div>
+
+          {/* Foto 4 - Piscina */}
+          <div className="relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500 h-64 md:h-auto">
+            <img 
+              src="/hotel-piscina.jpg" 
+              alt="Área da piscina"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h4 className="font-serif text-lg font-bold mb-1">Área de Lazer</h4>
+              <p className="text-xs">Piscina e espaço para relaxar</p>
+            </div>
+          </div>
+
+          {/* Foto 5 - Bicicletas */}
+          <div className="relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500 h-64 md:h-auto">
+            <img 
+              src="/hotel-bicicletas.jpg" 
+              alt="Passeio de bicicleta na orla"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h4 className="font-serif text-lg font-bold mb-1">Lazer em Família</h4>
+              <p className="text-xs">Bicicletas e passeios na orla</p>
+            </div>
+          </div>
+
+          {/* Foto 6 - Capela */}
+          <div className="relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500 h-64 md:h-auto">
+            <img 
+              src="/hotel-capela.jpg" 
+              alt="Capela do Hotel Solar"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h4 className="font-serif text-lg font-bold mb-1">Capela</h4>
+              <p className="text-xs">Espaço para momentos especiais</p>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA após fotos */}
+        <div className="text-center mt-16">
+          <p className="text-solar-deep/80 font-sans text-lg mb-6">
+            🌴 Tudo isso te esperando em Salinópolis, o paraíso paraense
+          </p>
+          <Button onClick={goToCheckout} className="text-lg px-12 py-4 shadow-xl">
+            QUERO CONHECER O HOTEL SOLAR
+          </Button>
+        </div>
+      </Section>
+
       {/* 6. GUARANTEES */}
       <Section className="bg-solar-cream">
         <div className="text-center mb-12">
