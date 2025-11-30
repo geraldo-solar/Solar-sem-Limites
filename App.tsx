@@ -713,6 +713,48 @@ const App: React.FC = () => {
               <p className="text-xs">Espaço para momentos especiais</p>
             </div>
           </div>
+
+          {/* Foto 7 - Área de Jogos */}
+          <div className="relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500 h-64 md:h-auto">
+            <img 
+              src="/hotel-area-jogos.jpg" 
+              alt="Área de jogos com pebolim, sinuca e ping-pong"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h4 className="font-serif text-lg font-bold mb-1">Área de Jogos</h4>
+              <p className="text-xs">Pebolim, sinuca e ping-pong</p>
+            </div>
+          </div>
+
+          {/* Foto 8 - Quadra de Esportes */}
+          <div className="relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500 h-64 md:h-auto">
+            <img 
+              src="/hotel-quadra-esportes.jpg" 
+              alt="Quadra de vôlei e esportes"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h4 className="font-serif text-lg font-bold mb-1">Quadra de Esportes</h4>
+              <p className="text-xs">Vôlei e atividades ao ar livre</p>
+            </div>
+          </div>
+
+          {/* Foto 9 - Playground */}
+          <div className="relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500 h-64 md:h-auto">
+            <img 
+              src="/hotel-playground-criancas.jpg" 
+              alt="Crianças brincando no playground"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+              <h4 className="font-serif text-lg font-bold mb-1">Playground</h4>
+              <p className="text-xs">Diversão garantida para as crianças</p>
+            </div>
+          </div>
         </div>
 
         {/* CTA após fotos */}
