@@ -474,8 +474,6 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        </div>
-
         <div className="mt-12 text-center">
           <p className="text-solar-deep/70 font-sans text-lg leading-relaxed max-w-3xl mx-auto">
             Este pacote foi criado para quem valoriza <span className="text-solar-gold font-bold">economia inteligente</span> e <span className="text-solar-gold font-bold">experiências inesquecíveis</span>.
