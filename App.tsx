@@ -121,14 +121,26 @@ const App: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center justify-items-center">
             
             {/* Google */}
-            <div className="flex items-center justify-center w-full p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-               <img src="/google-reviews-logo.png" alt="Google Reviews" className="w-64 h-auto object-contain" />
+            <div className="flex flex-col items-center justify-center w-full p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+               <img src="/google-reviews-logo.png" alt="Google Reviews" className="w-64 h-auto object-contain mb-3" />
+               <div className="flex items-center gap-2">
+                 <div className="flex items-center">
+                   {[1, 2, 3, 4, 5].map((star) => (
+                     <IconStar key={star} className={`w-5 h-5 ${star <= 4 ? 'text-yellow-400 fill-yellow-400' : star === 5 ? 'text-yellow-400 fill-yellow-400 opacity-60' : 'text-gray-300'}`} />
+                   ))}
+                 </div>
+                 <span className="text-2xl font-bold text-solar-deep">4.6</span>
+               </div>
             </div>
 
             {/* Booking */}
-            <div className="flex items-center justify-center w-full p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
-               <div className="bg-white p-4 rounded-lg">
+            <div className="flex flex-col items-center justify-center w-full p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300">
+               <div className="bg-white p-4 rounded-lg mb-3">
                  <img src="/booking-logo.png" alt="Booking.com" className="w-64 h-auto object-contain" />
+               </div>
+               <div className="flex items-center gap-2">
+                 <div className="bg-[#003580] text-white px-3 py-1 rounded font-bold text-xl">8.7</div>
+                 <span className="text-sm font-semibold text-solar-deep">Fabuloso</span>
                </div>
             </div>
 
