@@ -1033,8 +1033,8 @@ const App: React.FC = () => {
           {/* Imagem de Salinópolis */}
           <div className="relative">
             <img 
-              src="/faq-salinopolis.jpg" 
-              alt="Belezas de Salinópolis" 
+              src="/faq-salinas-colagem.jpg" 
+              alt="Belezas de Salinópolis - Praia, Barracas e Restaurante" 
               className="w-full h-auto rounded-sm shadow-2xl border-4 border-solar-gold/30 sticky top-8"
             />
           </div>
