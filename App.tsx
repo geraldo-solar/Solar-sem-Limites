@@ -608,6 +608,19 @@ const App: React.FC = () => {
 
       {/* 5.5 CONHEÇA O HOTEL SOLAR */}
       <Section className="bg-gradient-to-b from-solar-beige to-solar-cream">
+        {/* Foto Panorâmica do Restaurante sobre o Rio */}
+        <div className="mb-16 -mx-4 md:-mx-8 lg:-mx-16">
+          <div className="relative w-full overflow-hidden rounded-lg border-4 border-solar-gold/30 shadow-2xl">
+            <img 
+              src="/hotel-panoramica-rio.jpg" 
+              alt="Vista panorâmica do restaurante sobre o rio em Salinópolis"
+              className="w-full h-auto object-contain"
+              style={{ maxHeight: '500px' }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+          </div>
+        </div>
+
         <div className="text-center mb-16">
           <h3 className="font-serif text-4xl md:text-5xl text-solar-deep">Conheça o Hotel Solar</h3>
           <div className="w-24 h-1 bg-solar-gold mx-auto mt-4"></div>
