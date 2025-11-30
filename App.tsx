@@ -382,93 +382,98 @@ const App: React.FC = () => {
           <div className="w-24 h-1 bg-solar-gold mx-auto mt-4"></div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Para Quem É */}
-          <div className="bg-white p-8 border border-solar-gold/40 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col group">
-            <div className="flex items-center mb-6">
-              <div className="w-16 h-16 bg-solar-beige rounded-full flex items-center justify-center mr-4 group-hover:bg-solar-gold transition-colors duration-300">
-                <IconHeart className="w-8 h-8 text-solar-deep" />
+        <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+          {/* Foto à Esquerda */}
+          <div className="lg:sticky lg:top-8 h-fit">
+            <div className="relative rounded-lg overflow-hidden border-4 border-solar-gold/40 shadow-2xl">
+              <img 
+                src="/hotel-hidromassagem.jpg" 
+                alt="Casal relaxando na hidromassagem do Hotel Solar"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+                <p className="text-white text-lg md:text-xl font-serif italic drop-shadow-lg">
+                  "Momentos assim merecem ser vividos sem preocupação com preços"
+                </p>
               </div>
-              <h4 className="font-serif text-2xl text-solar-deep">Para Quem É</h4>
-            </div>
-            <ul className="space-y-4 flex-grow">
-              <li className="flex items-start">
-                <span className="text-solar-gold mr-3 mt-1 text-lg">→</span>
-                <span className="text-solar-deep/70 leading-relaxed font-sans">Famílias que viajam todos os anos para Salinas</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-solar-gold mr-3 mt-1 text-lg">→</span>
-                <span className="text-solar-deep/70 leading-relaxed font-sans">Casais que gostam de conforto e previsibilidade</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-solar-gold mr-3 mt-1 text-lg">→</span>
-                <span className="text-solar-deep/70 leading-relaxed font-sans">Pessoas que querem pagar menos usando inteligência financeira</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-solar-gold mr-3 mt-1 text-lg">→</span>
-                <span className="text-solar-deep/70 leading-relaxed font-sans">Quem deseja escolher datas com flexibilidade</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-solar-gold mr-3 mt-1 text-lg">→</span>
-                <span className="text-solar-deep/70 leading-relaxed font-sans">Quem já ama o Hotel Solar e quer garantir presença nos próximos anos</span>
-              </li>
-            </ul>
-            <div className="mt-6 pt-6 border-t border-solar-gold/20">
-              <p className="text-solar-deep/60 text-sm italic text-center font-sans">
-                Se você se identificou com pelo menos 2 itens acima, este pacote foi feito para você!
-              </p>
             </div>
           </div>
-          
-          {/* Para Quem NÃO É */}
-          <div className="bg-white p-8 border border-solar-gold/40 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col group">
-            <div className="flex items-center mb-6">
-              <div className="w-16 h-16 bg-solar-beige rounded-full flex items-center justify-center mr-4 group-hover:bg-solar-gold transition-colors duration-300">
-                <IconBan className="w-8 h-8 text-solar-deep" />
+
+          {/* Quadros à Direita */}
+          <div className="space-y-8">
+            {/* Para Quem É */}
+            <div className="bg-white p-8 border border-solar-gold/40 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col group">
+              <div className="flex items-center mb-6">
+                <div className="w-16 h-16 bg-solar-beige rounded-full flex items-center justify-center mr-4 group-hover:bg-solar-gold transition-colors duration-300">
+                  <IconHeart className="w-8 h-8 text-solar-deep" />
+                </div>
+                <h4 className="font-serif text-2xl text-solar-deep">Para Quem É</h4>
               </div>
-              <h4 className="font-serif text-2xl text-solar-deep">Para Quem Não É</h4>
+              <ul className="space-y-4 flex-grow">
+                <li className="flex items-start">
+                  <span className="text-solar-gold mr-3 mt-1 text-lg">→</span>
+                  <span className="text-solar-deep/70 leading-relaxed font-sans">Famílias que viajam todos os anos para Salinas</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-solar-gold mr-3 mt-1 text-lg">→</span>
+                  <span className="text-solar-deep/70 leading-relaxed font-sans">Casais que gostam de conforto e previsibilidade</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-solar-gold mr-3 mt-1 text-lg">→</span>
+                  <span className="text-solar-deep/70 leading-relaxed font-sans">Pessoas que querem pagar menos usando inteligência financeira</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-solar-gold mr-3 mt-1 text-lg">→</span>
+                  <span className="text-solar-deep/70 leading-relaxed font-sans">Quem deseja escolher datas com flexibilidade</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-solar-gold mr-3 mt-1 text-lg">→</span>
+                  <span className="text-solar-deep/70 leading-relaxed font-sans">Quem já ama o Hotel Solar e quer garantir presença nos próximos anos</span>
+                </li>
+              </ul>
+              <div className="mt-6 pt-6 border-t border-solar-gold/20">
+                <p className="text-solar-deep/60 text-sm italic text-center font-sans">
+                  Se você se identificou com pelo menos 2 itens acima, este pacote foi feito para você!
+                </p>
+              </div>
             </div>
-            <ul className="space-y-4 flex-grow">
-              <li className="flex items-start">
-                <span className="text-solar-deep/40 mr-3 mt-1 text-lg">×</span>
-                <span className="text-solar-deep/70 leading-relaxed font-sans">Pessoas que só viajam no Réveillon</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-solar-deep/40 mr-3 mt-1 text-lg">×</span>
-                <span className="text-solar-deep/70 leading-relaxed font-sans">Quem não consegue planejar minimamente suas viagens</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-solar-deep/40 mr-3 mt-1 text-lg">×</span>
-                <span className="text-solar-deep/70 leading-relaxed font-sans">Quem quer apenas uma diária avulsa</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-solar-deep/40 mr-3 mt-1 text-lg">×</span>
-                <span className="text-solar-deep/70 leading-relaxed font-sans">Quem não gosta de viajar para praia</span>
-              </li>
-            </ul>
-            <div className="mt-6 pt-6 border-t border-solar-gold/20">
-              <p className="text-solar-deep/60 text-sm italic text-center font-sans">
-                Se este é o seu caso, talvez uma reserva tradicional seja mais adequada para você.
-              </p>
+          
+            {/* Para Quem NÃO É */}
+            <div className="bg-white p-8 border border-solar-gold/40 rounded-sm shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col group">
+              <div className="flex items-center mb-6">
+                <div className="w-16 h-16 bg-solar-beige rounded-full flex items-center justify-center mr-4 group-hover:bg-solar-gold transition-colors duration-300">
+                  <IconBan className="w-8 h-8 text-solar-deep" />
+                </div>
+                <h4 className="font-serif text-2xl text-solar-deep">Para Quem Não É</h4>
+              </div>
+              <ul className="space-y-4 flex-grow">
+                <li className="flex items-start">
+                  <span className="text-solar-deep/40 mr-3 mt-1 text-lg">×</span>
+                  <span className="text-solar-deep/70 leading-relaxed font-sans">Pessoas que só viajam no Réveillon</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-solar-deep/40 mr-3 mt-1 text-lg">×</span>
+                  <span className="text-solar-deep/70 leading-relaxed font-sans">Quem não consegue planejar minimamente suas viagens</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-solar-deep/40 mr-3 mt-1 text-lg">×</span>
+                  <span className="text-solar-deep/70 leading-relaxed font-sans">Quem quer apenas uma diária avulsa</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-solar-deep/40 mr-3 mt-1 text-lg">×</span>
+                  <span className="text-solar-deep/70 leading-relaxed font-sans">Quem não gosta de viajar para praia</span>
+                </li>
+              </ul>
+              <div className="mt-6 pt-6 border-t border-solar-gold/20">
+                <p className="text-solar-deep/60 text-sm italic text-center font-sans">
+                  Se este é o seu caso, talvez uma reserva tradicional seja mais adequada para você.
+                </p>
+              </div>
             </div>
           </div>
         </div>
-        
-        {/* Foto de Inspiração */}
-        <div className="mt-16 max-w-5xl mx-auto">
-          <div className="relative rounded-lg overflow-hidden border-4 border-solar-gold/40 shadow-2xl">
-            <img 
-              src="/hotel-hidromassagem.jpg" 
-              alt="Casal relaxando na hidromassagem do Hotel Solar"
-              className="w-full h-auto object-contain"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-8 text-center">
-              <p className="text-white text-xl md:text-2xl font-serif italic drop-shadow-lg">
-                "Momentos assim merecem ser vividos sem preocupação com preços"
-              </p>
-            </div>
-          </div>
+
         </div>
 
         <div className="mt-12 text-center">
