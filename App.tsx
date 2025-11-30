@@ -454,6 +454,23 @@ const App: React.FC = () => {
           </div>
         </div>
         
+        {/* Foto de Inspiração */}
+        <div className="mt-16 max-w-5xl mx-auto">
+          <div className="relative rounded-lg overflow-hidden border-4 border-solar-gold/40 shadow-2xl">
+            <img 
+              src="/hotel-hidromassagem.jpg" 
+              alt="Casal relaxando na hidromassagem do Hotel Solar"
+              className="w-full h-auto object-contain"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-8 text-center">
+              <p className="text-white text-xl md:text-2xl font-serif italic drop-shadow-lg">
+                "Momentos assim merecem ser vividos sem preocupação com preços"
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="mt-12 text-center">
           <p className="text-solar-deep/70 font-sans text-lg leading-relaxed max-w-3xl mx-auto">
             Este pacote foi criado para quem valoriza <span className="text-solar-gold font-bold">economia inteligente</span> e <span className="text-solar-gold font-bold">experiências inesquecíveis</span>.
@@ -679,20 +696,6 @@ const App: React.FC = () => {
             <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
               <h4 className="font-serif text-lg font-bold mb-1">Capela</h4>
               <p className="text-xs">Espaço para momentos especiais</p>
-            </div>
-          </div>
-
-          {/* Foto 7 - Hidromassagem */}
-          <div className="md:col-span-3 relative group overflow-hidden rounded-lg border-4 border-solar-gold/30 hover:border-solar-gold transition-all duration-500 h-96">
-            <img 
-              src="/hotel-hidromassagem.jpg" 
-              alt="Casal relaxando na hidromassagem"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-              <h4 className="font-serif text-2xl font-bold mb-2">Hidromassagem</h4>
-              <p className="text-sm">Momentos de relaxamento e romance em casal</p>
             </div>
           </div>
         </div>
