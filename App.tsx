@@ -238,76 +238,12 @@ const App: React.FC = () => {
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-6 items-end">
-            
-            {/* Card 1: Alta Temporada */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden opacity-80 hover:opacity-100 transition-opacity duration-300">
-              <div className="bg-[#1e3a8a] py-4 text-center">
-                <h4 className="text-white font-bold tracking-wider text-sm uppercase">Alta Temporada</h4>
-                <p className="text-blue-200 text-xs">(Julho/Feriados)</p>
-              </div>
-              <div className="p-8 text-center space-y-4">
-                <p className="text-gray-500 text-sm">Valor da diária</p>
-                <div className="text-4xl font-serif text-gray-700">R$ 1.833</div>
-                <div className="w-full h-px bg-gray-100 my-4"></div>
-                <p className="text-xs text-gray-400 uppercase tracking-wide">Por dia até 4 pessoas</p>
-              </div>
-            </div>
-
-            {/* Card 2: Baixa Temporada */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden opacity-80 hover:opacity-100 transition-opacity duration-300">
-              <div className="bg-[#0d9488] py-4 text-center">
-                <h4 className="text-white font-bold tracking-wider text-sm uppercase">Baixa Temporada</h4>
-                <p className="text-teal-100 text-xs">(Dias comuns)</p>
-              </div>
-              <div className="p-8 text-center space-y-4">
-                <p className="text-gray-500 text-sm">Valor da diária</p>
-                <div className="text-4xl font-serif text-gray-700">R$ 809</div>
-                <div className="w-full h-px bg-gray-100 my-4"></div>
-                <p className="text-xs text-gray-400 uppercase tracking-wide">Por dia até 4 pessoas</p>
-              </div>
-            </div>
-
-            {/* Card 3: Solar Sem Limites (Winner) */}
-            <div className="bg-white rounded-lg shadow-2xl border-2 border-solar-gold overflow-hidden transform md:-translate-y-4 relative z-10 group">
-              {/* Badge */}
-              <div className="absolute top-0 right-0 bg-green-500 text-white font-bold text-xs px-3 py-1 rounded-bl-lg z-20 shadow-sm">
-                MELHOR ESCOLHA
-              </div>
-              
-              <div className="bg-gradient-to-r from-green-500 to-emerald-600 py-6 text-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-solar-gold/10"></div>
-                <h4 className="text-white font-bold tracking-wider text-lg uppercase relative z-10 drop-shadow-md">Solar Sem Limites</h4>
-              </div>
-              
-              <div className="p-8 text-center space-y-2 bg-gradient-to-b from-green-50 to-white relative">
-                <p className="text-solar-amazon font-semibold text-sm">Valor da diária no pacote</p>
-                <div className="text-6xl font-serif text-solar-deep font-bold tracking-tight">R$ 467</div>
-                
-                {/* Discount Tag */}
-                <div className="inline-flex items-center justify-center bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm font-bold mt-2 border border-green-200">
-                   ECONOMIA DE 75%
-                </div>
-
-                <div className="w-full h-px bg-solar-gold/20 my-6"></div>
-                
-                {/* Destaque 5+1 */}
-                <div className="bg-gradient-to-r from-solar-gold/20 to-solar-gold/10 border-2 border-solar-gold/40 rounded-lg p-4 mb-4">
-                  <p className="text-solar-deep font-bold text-lg mb-1">5 Diárias + 1 Bônus</p>
-                  <p className="text-solar-amazon text-sm font-semibold">= 6 Diárias Totais</p>
-                </div>
-                
-                <p className="text-xs text-solar-amazon/60 uppercase tracking-wide font-bold">Por dia até 4 pessoas</p>
-                <p className="text-xs text-solar-amazon/60 italic mt-1">Válido para qualquer data*</p>
-              </div>
-              
-              <div className="bg-solar-deep text-solar-gold text-center py-2 text-xs font-bold tracking-widest uppercase">
-                Garantia de Menor Preço
-              </div>
-            </div>
-
-          </div>
+        <div className="max-w-5xl mx-auto">
+          <img 
+            src="/economia-comparacao.jpg" 
+            alt="Economia Real - Solar Sem Limites: até 75% de economia comparado à diária comum"
+            className="w-full h-auto rounded-xl shadow-2xl"
+          />
 
           <div className="text-center mt-12 animate-float">
               <p className="font-serif text-xl md:text-2xl text-solar-amazon italic">
