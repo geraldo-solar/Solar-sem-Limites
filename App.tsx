@@ -28,7 +28,7 @@ const App: React.FC = () => {
 
   // Countdown timer
   useEffect(() => {
-    const targetDate = new Date('2025-12-23T23:59:59').getTime();
+    const targetDate = new Date('2025-12-20T23:59:59').getTime();
     
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -442,7 +442,7 @@ const App: React.FC = () => {
           
           {/* Contador Regressivo */}
           <div className="mb-8">
-            <p className="text-solar-beige/80 text-sm mb-4">Oferta válida até 23/12/2025 às 23h59</p>
+            <p className="text-solar-beige/80 text-sm mb-4">Oferta válida até 20/12/2025 às 23h59</p>
             <div className="flex justify-center gap-3 md:gap-6">
               <div className="bg-solar-gold/20 border border-solar-gold/40 rounded-lg p-3 md:p-4 min-w-[70px] md:min-w-[90px]">
                 <div className="text-3xl md:text-5xl font-serif text-solar-gold font-bold">{timeLeft.days}</div>
@@ -1047,7 +1047,7 @@ const App: React.FC = () => {
           
           {/* Contador Regressivo Grande */}
           <div className="bg-solar-deep/60 border-2 border-solar-gold/40 rounded-lg p-8 mb-8">
-            <p className="text-solar-gold text-sm md:text-base mb-6 tracking-widest uppercase">Oferta válida até 23/12/2025 às 23h59</p>
+            <p className="text-solar-gold text-sm md:text-base mb-6 tracking-widest uppercase">Oferta válida até 20/12/2025 às 23h59</p>
             <div className="flex justify-center gap-4 md:gap-8">
               <div className="bg-gradient-to-b from-solar-gold/30 to-solar-gold/10 border-2 border-solar-gold rounded-xl p-4 md:p-6 min-w-[80px] md:min-w-[120px] shadow-lg">
                 <div className="text-4xl md:text-6xl font-serif text-solar-gold font-bold">{timeLeft.days}</div>
