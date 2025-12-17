@@ -155,7 +155,7 @@ const App: React.FC = () => {
 
       {/* 2. STORYTELLING */}
       <Section className="bg-solar-beige bg-fiber-texture">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-4xl mx-auto">
           <div className="space-y-6">
             <h3 className="font-serif text-4xl text-solar-deep mb-6 relative inline-block">
               A Origem do <span className="text-solar-amazon italic">Privilégio</span>
@@ -173,14 +173,7 @@ const App: React.FC = () => {
               </p>
             </div>
           </div>
-          <div className="relative h-96 md:h-[500px] w-full group">
-             <div className="absolute inset-0 border-2 border-solar-gold transform translate-x-4 translate-y-4 transition-transform duration-500 group-hover:translate-x-6 group-hover:translate-y-6"></div>
-             <img 
-               src="https://picsum.photos/800/1000?image=433" 
-               alt="História do Hotel" 
-               className="w-full h-full object-cover shadow-2xl relative z-10 grayscale hover:grayscale-0 transition-all duration-700"
-             />
-          </div>
+
         </div>
       </Section>
 
