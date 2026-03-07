@@ -14,7 +14,7 @@ const faqData = [
   { question: "Posso usar mais de um apartamento?", answer: "Sim. Se você viajar com um grupo maior, pode utilizar seus créditos de diárias para reservar múltiplos apartamentos simultaneamente na baixa temporada." },
   { question: "Posso presentear alguém com as diárias?", answer: "Com certeza. O pacote permite a transferência parcial ou total das diárias para terceiros, tornando-o um presente inesquecível." },
   { question: "O que acontece se não houver disponibilidade?", answer: "Trabalhamos com prioridade para membros Solar Sem Limites. Caso a data exata esteja lotada, nossa equipe oferecerá as datas mais próximas ou upgrades disponíveis." },
-  { question: "É seguro comprar antecipado?", answer: "Totalmente. O Hotel Solar tem 52 anos de tradição. Além disso, oferecemos uma garantia incondicional de 30 dias para devolução do seu dinheiro." },
+  { question: "É seguro aderir antecipadamente?", answer: "Totalmente. O Hotel Solar tem 52 anos de tradição. Além disso, oferecemos uma garantia incondicional de 30 dias para devolução do seu dinheiro." },
   { question: "Como funciona o passeio incluso?", answer: "Você ganha um voucher para um passeio de barco exclusivo pela orla de Salinópolis. Basta agendar na recepção durante sua estadia." }
 ];
 
@@ -201,7 +201,77 @@ const App: React.FC = () => {
               <p className="font-semibold text-solar-amazon">
                 Por isso, decidimos reunir esses poucos acessos que voltaram e reabrir os convites por exatas 48 horas (ou até eles esgotarem novamente). Esta é a sua oportunidade exclusiva de garantir o status de Membro VIP e viajar pagando muito menos.
               </p>
+              <p className="font-semibold text-solar-amazon mt-4 border-l-4 border-solar-gold pl-4 italic">
+                Atenção: Para garantir que mais famílias tenham a chance de participar dessa oportunidade única, limitamos a aquisição a no máximo 2 pacotes por pessoa.
+              </p>
             </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* 2.5 DORES E A SOLUÇÃO VIP (NOVA SEÇÃO PAS) */}
+      <Section className="bg-solar-deep text-solar-cream py-20 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-solar-gold/5 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-solar-gold/5 rounded-full blur-3xl"></div>
+
+        <div className="max-w-4xl mx-auto relative z-10 text-center mb-16">
+          <h3 className="font-serif text-3xl md:text-5xl text-solar-gold mb-6 leading-tight">
+            Você já calculou o verdadeiro custo (e estresse) de viajar para Salinas na Alta Temporada?
+          </h3>
+          <p className="text-lg md:text-xl font-light text-solar-cream/80 max-w-3xl mx-auto">
+            Se você gosta de trazer sua família para Salinas nas épocas mais desejadas do ano, já deve ter percebido que o modelo tradicional de reservas está desenhado contra você:
+          </p>
+        </div>
+
+        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mb-16 relative z-10">
+          {/* Dor 1 */}
+          <div className="bg-[#0b271a] p-8 rounded-xl border border-solar-gold/20 shadow-xl hover:border-solar-gold/50 transition-colors">
+            <div className="w-12 h-12 bg-red-900/30 rounded-full flex items-center justify-center mb-6 border border-red-500/30">
+              <span className="text-red-400 text-xl font-bold">R$</span>
+            </div>
+            <h4 className="text-xl font-serif text-solar-gold mb-3">Tarifas Abusivas</h4>
+            <p className="text-solar-cream/70 text-sm md:text-base leading-relaxed">
+              Na alta temporada e feriados, os hotéis simplesmente dobram ou triplicam o valor das diárias. Uma viagem curta acaba consumindo o orçamento de lazer do ano inteiro.
+            </p>
+          </div>
+
+          {/* Dor 2 */}
+          <div className="bg-[#0b271a] p-8 rounded-xl border border-solar-gold/20 shadow-xl hover:border-solar-gold/50 transition-colors">
+            <div className="w-12 h-12 bg-orange-900/30 rounded-full flex items-center justify-center mb-6 border border-orange-500/30">
+              <IconCalendar className="text-orange-400 w-6 h-6" />
+            </div>
+            <h4 className="text-xl font-serif text-solar-gold mb-3">A Luta por Vagas</h4>
+            <p className="text-solar-cream/70 text-sm md:text-base leading-relaxed">
+              Se você não planejar com meses de antecedência, os melhores hotéis (como o Solar) esgotam. Você acaba tendo que se contentar com lugares inferiores pagando caro.
+            </p>
+          </div>
+
+          {/* Dor 3 */}
+          <div className="bg-[#0b271a] p-8 rounded-xl border border-solar-gold/20 shadow-xl hover:border-solar-gold/50 transition-colors">
+            <div className="w-12 h-12 bg-yellow-900/30 rounded-full flex items-center justify-center mb-6 border border-yellow-500/30">
+              <IconBan className="text-yellow-400 w-6 h-6" />
+            </div>
+            <h4 className="text-xl font-serif text-solar-gold mb-3">Prisão do Cancelamento</h4>
+            <p className="text-solar-cream/70 text-sm md:text-base leading-relaxed">
+              Imprevistos acontecem. Crianças ficam doentes, o trabalho exige sua presença. Na reserva comum, se precisar alterar a data, você perde dinheiro ou paga multas absurdas.
+            </p>
+          </div>
+        </div>
+
+        {/* A Ponte (A Solução VIP) */}
+        <div className="max-w-4xl mx-auto relative z-10 text-center bg-gradient-to-br from-solar-gold/20 to-transparent p-1 border border-solar-gold/30 rounded-2xl">
+          <div className="bg-solar-deep p-8 md:p-12 rounded-xl">
+            <h4 className="font-serif text-2xl md:text-3xl text-white mb-4">
+              O Fim da Dor de Cabeça e o Início das Férias Inteligentes
+            </h4>
+            <div className="w-16 h-1 bg-solar-gold mx-auto mb-6"></div>
+            <p className="text-solar-cream/90 text-lg leading-relaxed mb-8">
+              O Programa <strong className="text-solar-gold">Solar Sem Limites</strong> foi criado exatamente para quebrar esse ciclo. Nós oferecemos a hóspedes selecionados a chance de comprar um lote de diárias agora, congelando o preço promocional, e usar quando quiser, blindando sua família contra a inflação hoteleira e a falta de vagas.
+            </p>
+            <button onClick={goToCheckout} className="bg-solar-gold hover:bg-gold-600 text-solar-deep font-bold py-4 px-8 rounded-md transition-all shadow-lg hover:shadow-solar-gold/20 transform hover:-translate-y-1">
+              Quero Blindar Minhas Férias Agora
+            </button>
           </div>
         </div>
       </Section>
@@ -261,11 +331,92 @@ const App: React.FC = () => {
         </div>
 
         <div className="max-w-5xl mx-auto">
-          <img
-            src="/economia-comparacao.jpg"
-            alt="Economia Real - Solar Sem Limites: até 75% de economia comparado à diária comum"
-            className="w-full h-auto rounded-xl shadow-2xl"
-          />
+          {/* Tabela de Comparação Responsiva (Substitui imagem estática) */}
+          <div className="bg-[#0b271a] rounded-xl shadow-2xl overflow-hidden border border-solar-gold/30 my-8">
+            <div className="text-center py-6 border-b border-solar-gold/20 bg-[#061810]">
+              <h4 className="font-serif text-2xl md:text-3xl text-solar-gold uppercase tracking-widest">
+                Economia Real - Solar Sem Limites
+              </h4>
+            </div>
+
+            <div className="flex flex-col">
+              {/* Janeiro */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 p-6 md:p-8 border-b border-solar-gold/10 hover:bg-white/5 transition-colors items-center">
+                <div className="flex flex-col justify-center text-center md:text-right md:border-r border-solar-gold/20 md:pr-8">
+                  <h5 className="text-solar-beige/60 text-sm tracking-widest uppercase mb-3">Diária Comum</h5>
+                  <div className="text-white/90 font-medium text-lg">Casal R$ 550,00</div>
+                  <div className="text-white/90 font-medium text-lg">Quádruplo R$ 735,00</div>
+                </div>
+
+                <div className="flex flex-col items-center justify-center py-2 md:py-0">
+                  <div className="flex items-center gap-3">
+                    <IconCalendar className="text-solar-gold w-6 h-6" />
+                    <div className="text-solar-gold font-serif text-2xl">Janeiro</div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col justify-center text-center md:text-left md:border-l border-solar-gold/20 md:pl-8">
+                  <h5 className="text-solar-beige/60 text-sm tracking-widest uppercase mb-1">Solar Sem Limites</h5>
+                  <div className="text-solar-gold font-bold text-3xl mb-1">R$ 467,00</div>
+                  <div className="text-[#4ade80] font-bold text-lg">
+                    15% a 36% ECONOMIA
+                  </div>
+                </div>
+              </div>
+
+              {/* Carnaval */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 p-6 md:p-8 border-b border-solar-gold/10 hover:bg-white/5 transition-colors items-center">
+                <div className="flex flex-col justify-center text-center md:text-right md:border-r border-solar-gold/20 md:pr-8">
+                  <h5 className="text-solar-beige/60 text-sm tracking-widest uppercase mb-3">Diária Comum</h5>
+                  <div className="text-white/90 font-medium text-lg">Casal R$ 675,00</div>
+                  <div className="text-white/90 font-medium text-lg">Quádruplo R$ 862,00</div>
+                </div>
+
+                <div className="flex flex-col items-center justify-center py-2 md:py-0">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl" role="img" aria-label="Carnaval">🎭</span>
+                    <div className="text-solar-gold font-serif text-2xl">Carnaval 2026</div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col justify-center text-center md:text-left md:border-l border-solar-gold/20 md:pl-8">
+                  <h5 className="text-solar-beige/60 text-sm tracking-widest uppercase mb-1">Solar Sem Limites</h5>
+                  <div className="text-solar-gold font-bold text-3xl mb-1">R$ 467,00</div>
+                  <div className="text-[#4ade80] font-bold text-lg">
+                    31% a 46% ECONOMIA
+                  </div>
+                </div>
+              </div>
+
+              {/* Julho */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 p-6 md:p-8 hover:bg-white/5 transition-colors items-center">
+                <div className="flex flex-col justify-center text-center md:text-right md:border-r border-solar-gold/20 md:pr-8">
+                  <h5 className="text-solar-beige/60 text-sm tracking-widest uppercase mb-3">Diária Comum</h5>
+                  <div className="text-white/90 font-medium text-lg">Casal R$ 1.357,00</div>
+                  <div className="text-white/90 font-medium text-lg">Quádruplo R$ 1.833,00</div>
+                </div>
+
+                <div className="flex flex-col items-center justify-center py-2 md:py-0">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl" role="img" aria-label="Sol">☀️</span>
+                    <div className="text-solar-gold font-serif text-2xl">Julho 2026</div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col justify-center text-center md:text-left md:border-l border-solar-gold/20 md:pl-8">
+                  <h5 className="text-solar-beige/60 text-sm tracking-widest uppercase mb-1">Solar Sem Limites</h5>
+                  <div className="text-solar-gold font-bold text-3xl mb-1">R$ 467,00</div>
+                  <div className="text-[#4ade80] font-bold text-lg">
+                    65% a 75% ECONOMIA
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center py-4 bg-[#061810] text-solar-beige/50 text-xs tracking-wider italic">
+              Economia de até 75% (Julho - Quádruplo). Valores de diária e pacote comuns vs. Solar Sem Limites.
+            </div>
+          </div>
 
           <div className="text-center mt-12 animate-float">
             <p className="font-serif text-xl md:text-2xl text-solar-amazon italic">
@@ -465,9 +616,9 @@ const App: React.FC = () => {
 
           {/* Conteúdo de Preço */}
           <div className="text-center border border-solar-gold/30 bg-solar-deep/40 backdrop-blur-sm p-8 md:p-12 rounded-sm">
-            <h3 className="font-serif text-3xl md:text-4xl text-white mb-4">
-              PREÇO ESPECIAL DE LANÇAMENTO <br />
-              <span className="text-solar-gold text-xl tracking-widest uppercase block mt-2 border-b border-solar-gold/50 inline-block pb-2">Por Tempo Limitado</span>
+            <h3 className="font-serif text-2xl md:text-3xl text-white mb-4">
+              TAXA ÚNICA DE ADESÃO AO PROGRAMA <br />
+              <span className="text-solar-gold text-lg tracking-widest uppercase block mt-2 border-b border-solar-gold/50 inline-block pb-2">Seu Passe Livre para 6 Diárias</span>
             </h3>
 
             {/* Contador Regressivo */}
@@ -501,9 +652,9 @@ const App: React.FC = () => {
 
             <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-8">
               <div className="text-center">
-                <span className="block text-sm text-white/50 line-through mb-1">De R$ 6.000,00</span>
+                <span className="block text-xs uppercase tracking-widest text-white/50 mb-1">Valor de Balcão (6 diárias): R$ 6.000,00</span>
                 <div className="text-5xl md:text-7xl font-serif text-solar-gold leading-none">R$ 2.800</div>
-                <span className="text-white font-sans text-sm tracking-wide bg-solar-gold/20 px-3 py-1 rounded-full mt-2 inline-block">NO PIX À VISTA</span>
+                <span className="text-white font-sans text-sm tracking-wide bg-solar-gold/20 px-3 py-1 rounded-full mt-2 inline-block">Nesta Reabertura (PIX)</span>
               </div>
               <div className="hidden md:block w-px h-24 bg-solar-gold/30"></div>
               <div className="text-center">
@@ -536,7 +687,7 @@ const App: React.FC = () => {
               step: "1",
               icon: "M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z",
               title: "Garanta seu acesso",
-              desc: "Receba o status de Membro Solar Sem Limites"
+              desc: "Solicite e ative o seu status de Membro VIP Solar"
             },
             {
               step: "2",
@@ -553,8 +704,8 @@ const App: React.FC = () => {
             {
               step: "4",
               icon: "M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z",
-              title: "Confirme sua reserva",
-              desc: "Fale com nosso time de atendimento"
+              title: "Agende sua estadia",
+              desc: "Fale com nosso concierge de reservas"
             },
             {
               step: "5",
@@ -565,8 +716,8 @@ const App: React.FC = () => {
             {
               step: "6",
               icon: "M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99",
-              title: "Repita quando quiser",
-              desc: "Use todas as diárias do seu pacote"
+              title: "Planeje novas viagens",
+              desc: "Use todas as diárias do seu pacote com inteligência"
             }
           ].map((item, idx) => (
             <div key={idx} className="relative">
@@ -777,7 +928,7 @@ const App: React.FC = () => {
           <h3 className="font-serif text-4xl md:text-5xl text-solar-deep">Tripla Garantia de Risco Zero</h3>
           <div className="w-24 h-1 bg-solar-gold mx-auto mt-4"></div>
           <p className="text-solar-deep/70 mt-6 max-w-2xl mx-auto font-sans text-lg">
-            Sua compra está 100% protegida. Você não corre nenhum risco.
+            A sua adesão está 100% protegida. Você não corre nenhum risco.
           </p>
         </div>
 
@@ -801,7 +952,7 @@ const App: React.FC = () => {
             {
               title: "Garantia Incondicional",
               days: "30 Dias",
-              desc: "Cancelou dentro de 30 dias após a compra? Devolvemos 100% do seu valor sem perguntas e sem burocracia.",
+              desc: "Cancelou dentro de 30 dias após a adesão? Devolvemos 100% do seu valor sem perguntas e sem burocracia.",
               icon: "shield"
             },
             {
@@ -861,7 +1012,7 @@ const App: React.FC = () => {
               { quote: "Economizei mais de R$ 1.200 na alta temporada. O atendimento foi impecável do check-in ao check-out.", author: "Ana Paula", location: "Belém, PA" },
               { quote: "Usei no feriado de julho sem pagar nada a mais. Foi a melhor decisão para nossas férias em família.", author: "Lucas & Camila", location: "Castanhal, PA" },
               { quote: "Ainda ganhamos o passeio de barco. Valeu demais! A estrutura do hotel é fantástica.", author: "Família Souza", location: "Macapá, AP" },
-              { quote: "Sempre que o Solar lança esse pacote de diárias antecipadas eu compro. O melhor investimento que fiz para lazer da família!", author: "Roberto Silva", location: "Santarém, PA" },
+              { quote: "Sempre que o Solar abre as vagas desse programa de planejamento antecipado eu garanto o meu acesso. O melhor investimento que fiz para lazer da família!", author: "Roberto Silva", location: "Santarém, PA" },
             ].map((testi, idx) => (
               <div key={idx} className="bg-white/5 p-6 md:p-8 rounded border border-solar-gold/20 relative hover:bg-white/10 transition-colors duration-300">
                 <span className="absolute top-4 left-6 text-6xl font-serif text-solar-gold/20">"</span>
