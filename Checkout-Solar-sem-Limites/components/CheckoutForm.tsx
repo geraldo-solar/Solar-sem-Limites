@@ -418,6 +418,20 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
             )}
           </div>
 
+          <div>
+            <label className={labelClass}>CPF *</label>
+            <input
+              type="text"
+              className={inputClass(errors.cpf)}
+              value={formData.cpf}
+              onChange={handleCpfChange}
+              onBlur={() => handleBlur('cpf')}
+              placeholder="000.000.000-00"
+              maxLength={14}
+            />
+            {errors.cpf && <p className="text-red-500 text-xs mt-1">{errors.cpf}</p>}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="md:col-span-1">
               <label className={labelClass}>
@@ -535,20 +549,6 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
             />
             {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
             <p className="text-xs text-gray-500 mt-1">Necessário para contato sobre assuntos relativos à reserva. Informe também o DDD</p>
-          </div>
-
-          <div>
-            <label className={labelClass}>CPF *</label>
-            <input
-              type="text"
-              className={inputClass(errors.cpf)}
-              value={formData.cpf}
-              onChange={handleCpfChange}
-              onBlur={() => handleBlur('cpf')}
-              placeholder="000.000.000-00"
-              maxLength={14}
-            />
-            {errors.cpf && <p className="text-red-500 text-xs mt-1">{errors.cpf}</p>}
           </div>
 
           <div>
