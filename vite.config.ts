@@ -5,10 +5,18 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
+      base: '/solarsemlimites2026/',
       server: {
         port: 3000,
         host: '0.0.0.0',
         allowedHosts: ['all'],
+        proxy: {
+          '/api': {
+            target: 'https://www.hotelsolar.tur.br',
+            changeOrigin: true,
+            secure: true,
+          }
+        }
       },
       plugins: [react()],
       define: {
