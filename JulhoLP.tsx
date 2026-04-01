@@ -78,6 +78,13 @@ export default function JulhoLP() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
         
         <div className="max-w-4xl mx-auto relative z-10 text-center">
+          {/* Logo do Hotel Solar */}
+          <img 
+            src={`${base}logoSOLAR2.png`} 
+            alt="Hotel Solar Logo" 
+            className="w-36 md:w-44 mx-auto opacity-90 mb-10 drop-shadow-lg" 
+          />
+          
           <span className="inline-flex items-center gap-2 px-4 py-2 border border-[#D4AF37]/30 rounded-full text-[#D4AF37] text-sm tracking-widest uppercase mb-8">
             <Star className="w-4 h-4 fill-current" />
             Benefício Confidencial
