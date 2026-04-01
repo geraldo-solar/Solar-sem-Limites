@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solar sem Limites | Finalizar Compra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                dark: '#081c15', // Deep dark green from image
+                green: '#1b4332',
+              },
+              moss: {
+                50: '#F4F7F3',
+                100: '#E3EBE1',
+                200: '#C5D6C0',
+                800: '#2A3C24', 
+                900: '#1A2815',
+              },
+              gold: {
+                300: '#F5E07E',
+                400: '#E6C200',
+                500: '#D4AF37', // Classic Gold
+                600: '#B5952F',
+                gradient: '#F9E493', // Lighter gold for gradient effect
+              },
+              sand: {
+                50: '#FFFEFC',
+                100: '#FDFBF7',
+                200: '#F3EFE0', 
+                300: '#E8E2CD',
+              },
+              success: {
+                100: '#F0FDF4',
+                500: '#8DC63F', 
+                600: '#65A30D'
+              }
+            },
+            fontFamily: {
+              serif: ['"Playfair Display"', 'serif'],
+              sans: ['"Lato"', 'sans-serif'],
+              script: ['"Great Vibes"', 'cursive'],
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-gray-50 text-gray-800 font-sans antialiased">
+    <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
+  </body>
+</html>
