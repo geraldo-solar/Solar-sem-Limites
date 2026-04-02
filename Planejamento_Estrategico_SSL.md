@@ -109,12 +109,17 @@ Saber que o time aguenta o tranco mantendo a alta conversão nos garante seguran
 Para a operação fechada de Julho, adotaremos uma estratégia de "Cerco de Experiência" físico, mirando não apenas os hóspedes, mas também o ouro que é o *cliente passante* que consome no restaurante, garantindo que ele não saia do Hotel Solar sem desejar o pacote.
 **1. A Esteira de Pontos de Contato:**
 - A presença da oferta será agressiva e ubíqua: *Banners em áreas comuns estratégicas*, *Displays imponentes nas mesas do restaurante*, destaque direto no *Cardápio Digital*, e sinalética no *Balcão da Recepção*.
-**2. A Dupla Garra de Fechamento:**
-- **Silenciosa (QR Code):** Todo material físico terá o link para a nova Landing Page super-otimizada. O cliente se auto-convence durante um drink e já sai bloqueando a fatura do cartão ali mesmo.
-- **High-Touch (Check-out):** A recepção adota um "Script de Upsell" protocolar. Ao fechar a conta das férias incríveis, o agente tem o convite formalizado em mãos e tenta a venda do passaporte ali, no auge do êxtase do hóspede.
+**2. O Funil Híbrido In-House (A Tripla Garra de Fechamento):**
+O fluxo do material físico (via QR Code) não vai direto para o site. Ele passará pela nossa máquina de retenção do ManyChat para garantirmos a captura do contato. Essa abordagem estratégica possui três pontas de lance complementares:
+- **Silenciosa/Imediata:** O cliente escaneia o QR Code nas mesas e cai no WhatsApp (Captura do Lead assegurada). O robô imediatamente passa a oferta básica e envia o link da **Landing Page**. O hóspede pode comprar ali mesmo, num ambiente 100% self-service imersivo.
+- **Nutrição de Hospedagem (Gotejamento Diário no WhatsApp):** Se o cliente não comprar na hora H, o ManyChat engatilha o funil: dispara *uma mensagem diária* durante o restante de sua estadia. Cada pílula resolve uma dor e quebra objeções (Garantia risco zero, depoimentos provando a economia, matemática invertida clara), aquecendo-o aos poucos sem incomodar.
+- **High-Touch (Check-out):** A recepção amarra as pontas finais com um "Script de Upsell" protocolar. Se o hóspede leu as vantagens via WhatsApp a estadia toda e foi reaquecido, o agente da recepção possui um cenário de conversão absurdamente mais fácil durante o check-out.
 
 ---
 
 > [!TIP]
 > **O Plano de Negócios está Solidificado!**
-> A estratégia agora é um produto contínuo mapeado ano a ano. O próximo passo de execução prática, Geraldo, é tirarmos isso do papel para o design e para a tecnologia. Podemos começar escolhendo: **(A)** Revisar os textos persuasivos (copywriting) e a Landing Page de *Julho*, ou **(B)** Planejar a criação gráfica (briefing dos displays, banners) e estruturação de como a recepção vai checar quem passou o cartão. O que prefere atacar primeiro?
+> A estratégia híbrida agora torna o projeto uma tática contínua e madura. Com o código da Landing Page In-House e do Checkout Pix+Cartão finalizados no projeto, os nossos mais certeiros próximos passos práticos de execução (100% fáceis e diretos agora) são:
+>
+> 1. Desenhar a **Régua Prática do Funil ManyChat** (Rascunhar as 3-4 mensagens exatas da nutrição diária durante a hospedagem).
+> 2. Planejar as **peças de Design Offline** para impressão do QR Code que vai disparar as mesas e áreas de lazer do Hotel.

@@ -35,7 +35,7 @@ export default function JulhoLP() {
 
 
   return (
-    <div className="min-h-screen bg-[#0E1111] text-white font-sans selection:bg-yellow-600/30">
+    <div className="min-h-screen bg-[#06140b] text-white font-sans selection:bg-yellow-600/30">
       
       {/* V.I.P. ETIQUETA E ESCASSEZ DINÂMICA */}
       <div className="bg-[#D4AF37] text-black text-center py-2 px-4 shadow-md relative overflow-hidden flex flex-col items-center justify-center">
@@ -72,7 +72,7 @@ export default function JulhoLP() {
         {/* Cinematic Background */}
         <div className="absolute inset-0 z-0">
           <img src={`${base}hero_hotel_real.jpg`} alt="Hotel Solar Panorâmica" className="w-full h-full object-cover opacity-30 mix-blend-screen" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0E1111]/60 via-[#0E1111]/80 to-[#0E1111]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#06140b]/60 via-[#06140b]/80 to-[#06140b]"></div>
         </div>
         {/* Decorative background glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
@@ -113,7 +113,7 @@ export default function JulhoLP() {
       </section>
 
       {/* SESSÃO 2: A MATEMÁTICA INVERTIDA */}
-      <section className="py-24 px-6 bg-[#161A1A] border-y border-[#D4AF37]/10">
+      <section className="py-24 px-6 bg-[#112d1b] border-y border-[#D4AF37]/10">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-serif mb-4">A Matemática Invertida</h2>
           <p className="text-neutral-400 mb-16 font-light">
@@ -124,14 +124,14 @@ export default function JulhoLP() {
           <div className="grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
             
             {/* Box Comum */}
-            <div className="bg-[#0E1111] border border-neutral-800 rounded-2xl p-8 opacity-70">
+            <div className="bg-[#06140b] border border-neutral-800 rounded-2xl p-8 opacity-70">
               <div className="text-neutral-500 uppercase tracking-widest text-sm mb-4">Mundo Real (Próximo Ano)</div>
               <div className="text-3xl font-serif text-neutral-400 mb-2 line-through decoration-red-900/50">R$ 1.833,00</div>
               <p className="text-neutral-600 text-sm">Valor de balcão previsto para diária de um quarto quádruplo em Julho.</p>
             </div>
 
             {/* Box Solar Sem Limites */}
-            <div className="bg-gradient-to-b from-[#1C201A] to-[#0E1111] border border-[#D4AF37]/30 rounded-2xl p-10 transform md:scale-110 shadow-[0_0_50px_rgba(212,175,55,0.05)] relative">
+            <div className="bg-gradient-to-b from-[#1a3d24] to-[#06140b] border border-[#D4AF37]/30 rounded-2xl p-10 transform md:scale-110 shadow-[0_0_50px_rgba(212,175,55,0.05)] relative">
               <div className="absolute top-0 right-0 bg-[#D4AF37] text-black font-bold text-xs uppercase px-3 py-1 rounded-bl-lg rounded-tr-xl">
                 SUA OFERTA HOJE
               </div>
@@ -152,7 +152,7 @@ export default function JulhoLP() {
               <h3 className="text-2xl font-serif mb-6 text-[#D4AF37]">O que está garantido no seu passaporte?</h3>
               <div className="w-full h-56 md:h-64 rounded-xl overflow-hidden mb-8 border border-neutral-800 shadow-2xl relative">
                 <img src={`${base}lux_boat_real.jpg`} alt="Passeio Exclusivo Lifestyle" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0E1111] via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#06140b] via-transparent to-transparent"></div>
               </div>
               <ul className="space-y-6">
                 <li className="flex items-start gap-4">
@@ -185,7 +185,7 @@ export default function JulhoLP() {
               </ul>
             </div>
             
-            <div className="bg-[#161A1A] p-8 rounded-2xl border border-neutral-800 flex flex-col justify-center text-center">
+            <div className="bg-[#112d1b] p-8 rounded-2xl border border-neutral-800 flex flex-col justify-center text-center">
               <ShieldCheck className="w-12 h-12 text-[#D4AF37] mx-auto mb-6" />
               <h4 className="text-xl mb-4 text-white">Segurança Flexível</h4>
               <p className="text-neutral-400 text-sm leading-relaxed mb-8">
@@ -210,7 +210,7 @@ export default function JulhoLP() {
       </section>
 
       {/* SESSÃO 2.5: PROVA SOCIAL */}
-      <section className="py-24 px-6 bg-[#0E1111] border-t border-[#D4AF37]/10">
+      <section className="py-24 px-6 bg-[#06140b] border-t border-[#D4AF37]/10">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif text-[#D4AF37] mb-4">Quem já viveu a experiência</h2>
@@ -224,7 +224,7 @@ export default function JulhoLP() {
               { quote: "Ainda ganhamos o passeio de barco. Valeu demais! A estrutura do hotel é fantástica.", author: "Família Souza", location: "Macapá, AP" },
               { quote: "Sempre que o Solar abre as vagas desse programa eu garanto o meu. O melhor investimento que fiz para lazer!", author: "Roberto Silva", location: "Santarém, PA" },
             ].map((testi, idx) => (
-              <div key={idx} className="bg-[#161A1A] p-8 rounded-xl border border-neutral-800 relative hover:border-[#D4AF37]/50 transition-colors duration-300">
+              <div key={idx} className="bg-[#112d1b] p-8 rounded-xl border border-neutral-800 relative hover:border-[#D4AF37]/50 transition-colors duration-300">
                 <span className="absolute top-4 left-6 text-5xl font-serif text-[#D4AF37]/20">"</span>
                 <p className="font-light text-neutral-300 text-lg italic mb-6 relative z-10 leading-relaxed">{testi.quote}</p>
                 <div className="flex items-center gap-4">
@@ -243,7 +243,7 @@ export default function JulhoLP() {
       </section>
 
       {/* SESSÃO 2.6: TRIPLA GARANTIA */}
-      <section className="py-24 px-6 bg-[#161A1A] border-t border-[#D4AF37]/10 relative overflow-hidden">
+      <section className="py-24 px-6 bg-[#112d1b] border-t border-[#D4AF37]/10 relative overflow-hidden">
         {/* Glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-[#D4AF37]/5 rounded-[100%] blur-[120px] pointer-events-none"></div>
         
@@ -272,8 +272,8 @@ export default function JulhoLP() {
                 desc: "Não conseguiu usar tudo no prazo de validade? O valor pago vira crédito integral para abater em viagens futuras.",
               }
             ].map((card, idx) => (
-              <div key={idx} className="bg-[#0E1111] p-8 border border-neutral-800 rounded-xl hover:border-[#D4AF37]/60 transition-colors duration-500 flex flex-col items-center text-center group">
-                <div className="w-20 h-20 bg-gradient-to-br from-[#1A1F1A] to-[#0E1111] rounded-full flex items-center justify-center mb-6 border border-[#D4AF37]/20 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+              <div key={idx} className="bg-[#06140b] p-8 border border-neutral-800 rounded-xl hover:border-[#D4AF37]/60 transition-colors duration-500 flex flex-col items-center text-center group">
+                <div className="w-20 h-20 bg-gradient-to-br from-[#142e1b] to-[#06140b] rounded-full flex items-center justify-center mb-6 border border-[#D4AF37]/20 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                   <ShieldCheck className="w-8 h-8 text-[#D4AF37]" />
                 </div>
                 <span className="text-xs font-bold tracking-widest text-black uppercase mb-4 bg-[#D4AF37] px-4 py-1.5 rounded-full">{card.days}</span>
@@ -295,12 +295,12 @@ export default function JulhoLP() {
       </section>
 
       {/* SESSÃO 3: FAQ / PAGAMENTO (MULTIMAL/PIX+CARTÃO) */}
-      <section className="py-24 px-6 bg-[#0A0D0D]">
+      <section className="py-24 px-6 bg-[#040e08]">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-serif text-center mb-16"><span className="text-[#D4AF37]">Dúvidas Rápidas</span> de quem está aqui.</h2>
           
           <div className="space-y-4">
-            <div className="bg-[#161A1A] p-6 rounded-lg border border-neutral-800">
+            <div className="bg-[#112d1b] p-6 rounded-lg border border-neutral-800">
               <h4 className="flex items-center gap-3 text-lg font-medium mb-3">
                 <Clock className="text-[#D4AF37] w-5 h-5 shrink-0" />
                 Mas e se eu quiser voltar no Círio? Ou em outro feriado?
@@ -310,7 +310,7 @@ export default function JulhoLP() {
               </p>
             </div>
             
-            <div className="bg-[#161A1A] p-6 rounded-lg border border-neutral-800">
+            <div className="bg-[#112d1b] p-6 rounded-lg border border-neutral-800">
               <h4 className="flex items-center gap-3 text-lg font-medium mb-3">
                 <CreditCard className="text-[#D4AF37] w-5 h-5 shrink-0" />
                 Como o pagamento é feito? Meu limite estourou nesta viagem!

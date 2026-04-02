@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design - Display Círculo Solar</title>
+    <!-- Importando fontes para dar estilo "Quiet Luxury" -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Metropolis:wght@300;400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'luxury-dark': '#0f1311',
+                        'luxury-gold': '#d4af37',
+                        'luxury-gold-light': '#f4df8d',
+                        'luxury-green': '#1a2421',
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { padding: 40px; background-color: #f0f0f0; }
+        
+        /* Simula a folha para recorte/dobradura (A4 dividido em 2 frentes de display A6/A5) */
+        .print-canvas {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        .display-face {
+            width: 148mm;
+            height: 210mm; 
+            /* Formato A5 vertical aproximado para display de mesa */
+            background: linear-gradient(145deg, #112d1b 0%, #06140b 100%);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Detalhe ouro elegante nos cantos superiores */
+        .corner-ornament::before, .corner-ornament::after {
+            content: '';
+            position: absolute;
+            width: 50px; height: 50px;
+            border: 1px solid #d4af37;
+            opacity: 0.4;
+        }
+        .corner-ornament::before { top: 15px; left: 15px; border-right: none; border-bottom: none; }
+        .corner-ornament::after { top: 15px; right: 15px; border-left: none; border-bottom: none; }
+        
+        .corner-ornament-bottom::before, .corner-ornament-bottom::after {
+            content: '';
+            position: absolute;
+            width: 50px; height: 50px;
+            border: 1px solid #d4af37;
+            opacity: 0.4;
+        }
+        .corner-ornament-bottom::before { bottom: 15px; left: 15px; border-right: none; border-top: none; }
+        .corner-ornament-bottom::after { bottom: 15px; right: 15px; border-left: none; border-top: none; }
+
+        /* Brilho radial simulando o foco de luz no centro */
+        .light-beam {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, rgba(212,175,55,0) 70%);
+            pointer-events: none;
+        }
+
+        /* O Placeholer do QR Code */
+        .qr-placeholder {
+            width: 140px;
+            height: 140px;
+            background: white;
+            padding: 5px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+        }
+
+        .qr-placeholder img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Linhas separadoras sutis */
+        .divider {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(212,175,55,0), rgba(212,175,55,0.5), rgba(212,175,55,0));
+            margin: 20px auto;
+        }
+
+        /* Para não quebrar ao imprimir PDF */
+        @media print {
+            body { background: white; padding: 0; margin: 0; }
+            .print-canvas { gap: 10px; flex-wrap: wrap; }
+            .display-face { box-shadow: none; border: 1px solid #444; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<div class="text-center mb-8 no-print">
+    <h1 class="text-2xl font-bold font-sans">Design Pronto do Material Físico</h1>
+    <p class="text-gray-600 mb-4">Você pode gerar um PDF perfeito para impressão apertando Ctrl+P/Cmd+P.</p>
+</div>
+
+<div class="print-canvas">
+
+    <!-- LADO A -->
+    <div class="display-face">
+        <div class="corner-ornament"></div>
+        <div class="corner-ornament-bottom"></div>
+        <div class="light-beam"></div>
+
+        <div class="z-10 w-full mt-4">
+            <img src="./public/logoSOLAR2.png" alt="Hotel Solar" class="w-28 mx-auto mb-6 opacity-90 drop-shadow-md pb-[-10px]" style="filter: drop-shadow(0 0 10px rgba(212,175,55,0.2));" />
+            <h2 class="font-serif text-4xl text-white leading-tight mt-6">O Lado Mais<br><span class="text-luxury-gold italic">Exclusivo</span></h2>
+            
+            <div class="divider"></div>
+
+            <p class="font-sans font-light text-gray-300 text-sm leading-relaxed px-6 mt-4">
+                Uma oportunidade reservada exclusivamente para os hóspedes que já estão conosco nesta semana.
+            </p>
+        </div>
+
+        <div class="z-10 mt-8 mb-8">
+            <!-- QR CODE FAKE PARA SIMULAR ARTE. O CLIENTE PRECISA GERAR O QR CODE DO MANYCHAT AQUI -->
+            <div class="qr-placeholder rounded-md overflow-hidden ring-4 ring-luxury-gold/30 ring-offset-4 ring-offset-transparent">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://wa.me/seu-numero-aqui&bgcolor=FFFFFF&color=000000" alt="QR Code">
+            </div>
+            <div class="mt-6 flex flex-col items-center gap-1">
+                <p class="uppercase font-sans text-[10px] tracking-widest text-luxury-gold font-bold">Aponte a Câmera</p>
+                <p class="uppercase font-sans text-[9px] tracking-wider text-gray-500">Para consolidar a sua presença</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- LADO B -->
+    <div class="display-face">
+        <div class="corner-ornament"></div>
+        <div class="corner-ornament-bottom"></div>
+        <div class="light-beam"></div>
+
+        <div class="z-10 w-full mt-4">
+            <img src="./public/logoSOLAR2.png" alt="Círculo Solar" class="w-24 mx-auto mb-6 opacity-80 drop-shadow-md pb-[-5px]" style="filter: drop-shadow(0 0 10px rgba(212,175,55,0.1));" />
+            <h2 class="font-serif text-[28px] text-luxury-gold leading-tight mt-6 uppercase">Aprofunde Sua Experiência</h2>
+            
+            <div class="divider" style="height: 20px; margin-top: 15px; margin-bottom: 25px;"></div>
+        </div>
+
+        <div class="z-10 flex-grow flex flex-col justify-center mb-6">
+            <p class="font-sans font-light text-gray-300 text-[13px] leading-relaxed px-4 text-justify">
+                Se você ama os dias no Hotel Solar e já vive o nosso estilo de vida, o <strong>Passaporte Solar Sem Limites</strong> foi feito para você. 
+                <br><br>
+                Escaneie o código do verso, conheça a nossa <strong>Concierge Digital</strong> em menos de 1 minuto, e descubra a oportunidade de vivenciar o nível mais elevado do nosso clube, tornando os seus retornos não só garantidos, mas ainda mais prazerosos.
+            </p>
+        </div>
+
+        <div class="z-10 w-full border-t border-luxury-gold/20 pt-6">
+           <img src="https://cdn-icons-png.flaticon.com/512/3592/3592882.png" alt="Star" class="w-6 h-6 mx-auto opacity-40 mb-2" style="filter: invert(70%) sepia(40%) saturate(800%) hue-rotate(5deg) drop-shadow(0 0 5px rgba(212,175,55,0.5));">
+           <p class="font-serif italic text-luxury-gold/50 text-[11px]">Uma vida inteira de boas memórias.</p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
