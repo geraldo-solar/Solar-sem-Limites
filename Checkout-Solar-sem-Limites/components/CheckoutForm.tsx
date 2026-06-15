@@ -29,7 +29,7 @@ Permitida hospedagem de até 4 pessoas em apartamento tipo Quádruplo.
 As diárias bônus são cortesia, válidas exclusivamente para períodos de baixa temporada (fora de férias e feriados).
 
 3. VALOR E PAGAMENTO
-O pacote custa R$ 2.800,00, podendo ser parcelado em até 6x no cartão de crédito, acrescido das taxas da operadora.
+O pacote custa R$ 3.100,00, podendo ser parcelado em até 6x no cartão de crédito, acrescido das taxas da operadora.
 
 4. CANCELAMENTO DE RESERVA
 • Cancelamentos podem ser feitos até 7 dias antes do check-in.

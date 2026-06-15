@@ -97,7 +97,7 @@ export const Icons = {
 };
 
 export const PRODUCT_NAME = "Solar sem Limites";
-export const UNIT_PRICE = 2800; // Numeric value for calculations
+export const UNIT_PRICE = 3100; // Numeric value for calculations
 export const CREDIT_CARD_SURCHARGE = 0.10; // 10% increase
 
 export const formatCurrency = (value: number) => {

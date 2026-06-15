@@ -11,7 +11,7 @@
 *A transição da mentalidade de "Campanha" para "Produto"*
 
 - **O que é:** Programa exclusivo de diárias antecipadas do Hotel Solar. Embalado como o pacote supremo de flexibilidade e economia.
-- **Estruturação:** 6 diárias por R$ 2.800 (R$ 467/diária) com 12 meses de validade.
+- **Estruturação:** 6 diárias por R$ 3.100 (R$ 517/diária) com 12 meses de validade.
 - **Objetivos Centrais (Por que o produto existe):**
   1. Gerar fluxo de caixa maciço e antecipado em momentos estratégicos.
   2. Aumentar a taxa de retorno (fidelização) de hóspedes valiosos.

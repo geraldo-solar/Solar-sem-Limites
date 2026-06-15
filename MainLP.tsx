@@ -357,7 +357,7 @@ const App: React.FC = () => {
 
                 <div className="flex flex-col justify-center text-center md:text-left md:border-l border-solar-gold/20 md:pl-8">
                   <h5 className="text-solar-beige/60 text-sm tracking-widest uppercase mb-1">Solar Sem Limites</h5>
-                  <div className="text-solar-gold font-bold text-3xl mb-1">R$ 467,00</div>
+                  <div className="text-solar-gold font-bold text-3xl mb-1">R$ 517,00</div>
                   <div className="text-[#4ade80] font-bold text-lg">
                     15% a 36% ECONOMIA
                   </div>
@@ -381,7 +381,7 @@ const App: React.FC = () => {
 
                 <div className="flex flex-col justify-center text-center md:text-left md:border-l border-solar-gold/20 md:pl-8">
                   <h5 className="text-solar-beige/60 text-sm tracking-widest uppercase mb-1">Solar Sem Limites</h5>
-                  <div className="text-solar-gold font-bold text-3xl mb-1">R$ 467,00</div>
+                  <div className="text-solar-gold font-bold text-3xl mb-1">R$ 517,00</div>
                   <div className="text-[#4ade80] font-bold text-lg">
                     31% a 46% ECONOMIA
                   </div>
@@ -405,7 +405,7 @@ const App: React.FC = () => {
 
                 <div className="flex flex-col justify-center text-center md:text-left md:border-l border-solar-gold/20 md:pl-8">
                   <h5 className="text-solar-beige/60 text-sm tracking-widest uppercase mb-1">Solar Sem Limites</h5>
-                  <div className="text-solar-gold font-bold text-3xl mb-1">R$ 467,00</div>
+                  <div className="text-solar-gold font-bold text-3xl mb-1">R$ 517,00</div>
                   <div className="text-[#4ade80] font-bold text-lg">
                     65% a 75% ECONOMIA
                   </div>
@@ -475,15 +475,15 @@ const App: React.FC = () => {
                       Preço de Balcão: R$ 6.000,00
                     </p>
                     <div className="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                      Você economiza R$ 3.200,00 reais agora
+                      Você economiza R$ 2.900,00 reais agora
                     </div>
                   </div>
 
                   <p className="text-solar-gold font-bold text-4xl md:text-5xl font-serif">
-                    R$ 2.800,00
+                    R$ 3.100,00
                   </p>
                   <p className="text-solar-deep/70 text-lg font-sans">
-                    ou <span className="font-bold text-solar-deep">6x de R$ 513,33</span>
+                    ou <span className="font-bold text-solar-deep">6x de R$ 568,33</span>
                   </p>
                 </div>
               </div>
@@ -653,13 +653,13 @@ const App: React.FC = () => {
             <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-8">
               <div className="text-center">
                 <span className="block text-xs uppercase tracking-widest text-white/50 mb-1">Valor de Balcão (6 diárias): R$ 6.000,00</span>
-                <div className="text-5xl md:text-7xl font-serif text-solar-gold leading-none">R$ 2.800</div>
+                <div className="text-5xl md:text-7xl font-serif text-solar-gold leading-none">R$ 3.100</div>
                 <span className="text-white font-sans text-sm tracking-wide bg-solar-gold/20 px-3 py-1 rounded-full mt-2 inline-block">Nesta Reabertura (PIX)</span>
               </div>
               <div className="hidden md:block w-px h-24 bg-solar-gold/30"></div>
               <div className="text-center">
                 <span className="block text-xl text-white font-light">ou</span>
-                <span className="block text-3xl font-serif text-white">6x de R$ 513,33</span>
+                <span className="block text-3xl font-serif text-white">6x de R$ 568,33</span>
                 <span className="block text-solar-beige/80 text-sm">no cartão de crédito</span>
               </div>
             </div>

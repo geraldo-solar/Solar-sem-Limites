@@ -136,7 +136,7 @@ export default function JulhoLP() {
                 CONDIÇÃO IN-HOUSE
               </div>
               <div className="text-[#D4AF37] uppercase tracking-widest text-sm mb-4">Seu Acesso Institucional</div>
-              <div className="text-5xl font-serif text-white mb-2">R$ 467<span className="text-2xl text-neutral-500">,00</span></div>
+              <div className="text-5xl font-serif text-white mb-2">R$ 517<span className="text-2xl text-neutral-500">,00</span></div>
               <p className="text-neutral-400 text-sm">Valor congelado e cravado por diária, pra você usar pelos próximos 12 meses (ou mais).</p>
             </div>
 
@@ -194,7 +194,7 @@ export default function JulhoLP() {
               
               <div className="text-center pt-6 border-t border-neutral-800">
                 <div className="text-neutral-500 mb-2">Preço Final do Lote (6 noites)</div>
-                <div className="text-3xl text-white font-serif mb-6">6x de R$ 513,33</div>
+                <div className="text-3xl text-white font-serif mb-6">6x de R$ 568,33</div>
                 
                 <button 
                   onClick={handleCheckoutClick}
