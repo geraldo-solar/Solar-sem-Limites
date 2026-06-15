@@ -35,6 +35,6 @@ Aponte a câmera para consolidar a sua presença.
 APROFUNDE A SUA EXPERIÊNCIA
 
 **[TEXTO]**
-Se você ama os dias no Hotel Solar e já vive o nosso estilo de vida, o Passaporte Solar Sem Limites foi feito para você. 
+Se você ama os dias no Hotel Solar e já vive o nosso estilo de vida, o programa Solar Sem Limites foi feito para você. 
 
 Escaneie o código, conheça a nossa Concierge Digital, e descubra a oportunidade de vivenciar o nível mais elevado do nosso Círculo Solar, tornando os seus retornos frequentes não só garantidos, mas ainda mais prazerosos.

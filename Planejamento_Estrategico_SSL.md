@@ -90,14 +90,18 @@ Com base em nossa análise situacional conjunta, estabelecemos três novos pilar
 
 ### Eixo 1: O Cronograma Oficial de Ciclos
 O ano foi mapeado estrategicamente para preencher os *vales de fluxo de caixa* com duas frentes dinâmicas e independentes:
-- **Ciclo Master (Novembro + Março):** Focado no Lançamento Oficial em Novembro para o público geral/internet e sua Reabertura Oficial em Março (Modelo atual vitorioso validado).
+- **Ciclo Master (Novembro + Março - Lançamento Aberto):** Focado no Lançamento Massivo para o público geral/internet (Visando os +10.000 Leads). *Atenção ao Setup Tecnológico Exclusivo:* Diferente do In-House restrito (onde as pessoas já estão hospedadas e o tom é concierge), a campanha de Novembro exigirá uma etapa de desenvolvimento completamente nova: criação de uma **Nova Landing Page (MainLP)** com gatilhos intensos e sem contato com recepção, novas **Páginas de Captura VIP** para o cadastro dos 10K leads, e a produção de um **Novo Roteiro ManyChat de Lançamento de Massa** para reaquecer os leads frios da Meta Ads. Este é um esforço de desenvolvimento do "zero" e compõe grande parte da rodada final do ano.
 - **Ciclo In-House (Julho):** Estratégia tática offline. Não mexemos no tarifário público agressivo de Julho. A campanha será exclusiva de *Up-sell interno*, oferecendo o pacote "Solar Sem Limites" (nas mesmas condições campeãs de Novembro) somente para quem **já está hospedado vivenciando o hotel**. O argumento é imbatível: "Garanta a sua volta para o lado de cá pagando preço de custo".
 
 ### Eixo 2: Aquecimento e Quebra de Objeções (A Nova Pré-Campanha)
 O maior limitador das vendas mapeado no diagnóstico foram as fricções de *forma de pagamento* e a *falta de aquecimento de conteúdo nativo do hotel*.
-**Ação prática para os próximos ciclos:**
-- **Conteúdo de Antecipação:** 14 a 21 dias antes da abertura de carrinho, estruturaremos uma vitrine mostrando a vivência no Hotel Solar: *tours guiados pela equipe*, *detalhes do café da manhã* e *experiências de quem já usou o SSL* para maximizar o apelo emocional. O pacote precisa ser vendido pela *experiência do destino*, não apenas pelo gatilho financeiro.
-- **Engenharia de Check-out:** Integrarmos melhores condições de pagamento. Exemplos: testar múltiplas formas de pagamento (Multibanco/Pix+Cartão) ou expandir as ofertas de parcelamento para driblar clientes que desejam os 6 dias mas estão com o limite do cartão faturado.
+**Ações práticas para os próximos ciclos:**
+- **Captação Perpétua (Oceano Azul de Leads e Automação):** Implementar geração ativa de cadastros na Lista VIP do Solar de forma contínua e antecipada puxando tráfego do Meta Ads com custo reduzido. A meta é escalar para **10.000 Leads** capturados antes de Novembro/2026. O motor mecânico será regido por três passos táticos fundamentais criados na infraestrutura:
+  1. **A Isca Meta Ads (O Gatilho Oculto):** Tráfego contínuo focado não em venda, mas em benefício estético (Conteúdos da Lancha, Café colonial, Destinos inexplorados da Orla) contendo apenas o convite para entrar na Lista de Convidados e ganhar o Voucher Cortesia de 10%.
+  2. **A Fechadura (Landing Page Limpa):** Uma página de captura independente exigindo preenchimento restrito de Nome, E-mail e WhatsApp para liberação.
+  3. **A Tríplice Aliança Tecnológica:** A submissão injeta em 1 segundo: O cliente entra na Automação Mensal Oficial Hoteleira da **Brevo**; O cliente é empurrado simultaneamente ao WhatsApp do hotel com o Bot **ManyChat** entregando a cortesia prometida; Um Ping algorítmico do Pixel ensina imediatamente a **Meta Ads** a capturar "clones" demográficos perfeitos com esse último ticket.
+- **Conteúdo de Antecipação (Aqueceimento Base Meta):** 14 a 21 dias antes da abertura de carrinho do Solar Sem Limites de Novembro/26, engatilhar disparos de novidades por e-mail e Zap na "Lista Perpétua" (gerada na ação acima) contendo as vitrines imersivas: *tours guiados do hotel*, *café da manhã impecável*, elevando a consciência para fecharem o Funil de Vendas Quente na abertura.
+- **Engenharia de Check-out (✅ Status Pronto):** O funil de fricção financeira já foi driblado com a integração do Checkout Multibanco Híbrido (Pix + Cartão).
 
 ### Eixo 3: Modelo de Vendas Híbrido e Testes
 Saber que o time aguenta o tranco mantendo a alta conversão nos garante segurança. Hoje, dividimos a carga magistralmente: 50% *self-service* (compra sozinho pelo link) / 50% *high-touch* (WhatsApp via recepção e ligações).

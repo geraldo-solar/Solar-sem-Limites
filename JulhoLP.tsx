@@ -42,8 +42,8 @@ export default function JulhoLP() {
         <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-3 text-xs md:text-sm font-bold tracking-widest uppercase z-10 w-full mb-1">
           <span>CONVITE EXCLUSIVO PARA HÓSPEDES ATUAIS</span>
           <span className="hidden md:inline font-black text-black/50">•</span>
-          <span className="text-red-900 bg-white/30 px-2 py-0.5 rounded shadow-sm border border-red-900/10">
-            PACOTES DO MÊS DE JULHO
+          <span className="text-[#8B7322] bg-[#f4df8d]/30 px-2 py-0.5 rounded shadow-sm border border-[#D4AF37]/20">
+            ACESSO AO CÍRCULO SOLAR
           </span>
         </div>
         
@@ -51,15 +51,15 @@ export default function JulhoLP() {
         <div className="w-full max-w-sm z-10 flex flex-col items-center mt-1">
             <div className="w-full bg-black/20 h-2.5 rounded-full overflow-hidden border border-black/10 relative">
               <div 
-                className="bg-red-700 h-full transition-all duration-1000 ease-out relative"
+                className="bg-[#D4AF37] h-full transition-all duration-1000 ease-out relative"
                 style={{ width: `${percentageSold}%` }}
               >
                 <div className="absolute top-0 right-0 w-4 h-full bg-white/30 animate-pulse"></div>
               </div>
             </div>
             <div className="text-[10px] md:text-xs font-bold text-black/80 w-full flex justify-between mt-1 tracking-wider uppercase">
-              <span>{50 - remainingPackages} Reservados</span>
-              <span className="text-red-900 drop-shadow-sm font-black flex items-center gap-1">
+              <span>{50 - remainingPackages} Concedidos</span>
+              <span className="text-[#645012] drop-shadow-sm font-black flex items-center gap-1">
                 <Clock className="w-3 h-3 md:w-4 md:h-4" />
                 {remainingPackages} Restantes
               </span>
@@ -96,19 +96,19 @@ export default function JulhoLP() {
           </h1>
           
           <p className="text-lg md:text-xl text-neutral-400 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-            As melhores memórias da sua vida não deveriam ser as que esvaziam seu bolso. 
-            E se você pudesse congelar essa magia e garantir sua volta para cá pagando ainda menos do que você pagou para estar aqui agora?
+            Pessoas inteligentes não vivem reféns das oscilações astronômicas da alta temporada para vivenciar o que amam. 
+            E se você pudesse cristalizar essa magia e garantir seus próximos retornos com a prioridade e as condições de quem já é de casa?
           </p>
           
           <button 
             onClick={handleCheckoutClick}
             className="group relative inline-flex items-center justify-center gap-3 px-8 py-5 bg-gradient-to-r from-[#D4AF37] to-[#AA8B24] text-black font-bold uppercase tracking-wider rounded-lg overflow-hidden transition-transform hover:scale-105"
           >
-            <span className="relative z-10">Sim, Quero Congelar Meu Preço</span>
+            <span className="relative z-10">Desbloquear Meu Convite Exclusivo</span>
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform"></div>
           </button>
-          <p className="mt-6 text-sm text-neutral-500">*Acesso restrito: liberação apenas durante o seu período atual no hotel.</p>
-          <p className="mt-2 text-xs text-[#D4AF37] font-bold uppercase tracking-widest bg-[#D4AF37]/10 inline-block px-3 py-1 rounded-full border border-[#D4AF37]/20">⚠️ Limite estrito de 2 passaportes por CPF</p>
+          <p className="mt-6 text-sm text-neutral-500">*Acesso restrito: liberação apenas enquanto você for nosso hóspede local.</p>
+          <p className="mt-2 text-[10px] text-[#bda036] font-normal tracking-widest uppercase inline-block">* Convites abertos restritos a 2 acessos semestrais por família física.</p>
         </div>
       </section>
 
@@ -118,7 +118,7 @@ export default function JulhoLP() {
           <h2 className="text-3xl md:text-4xl font-serif mb-4">A Matemática Invertida</h2>
           <p className="text-neutral-400 mb-16 font-light">
             O tarifário de alta temporada sobe todos os anos. 
-            Ao assinar o passaporte <span className="text-[#D4AF37] font-semibold">Solar Sem Limites</span>, você blinda a sua família da inflação.
+            Ao ingressar no programa <span className="text-[#D4AF37] font-semibold">Solar Sem Limites</span>, você blinda a sua família da inflação.
           </p>
 
           <div className="grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
@@ -132,10 +132,10 @@ export default function JulhoLP() {
 
             {/* Box Solar Sem Limites */}
             <div className="bg-gradient-to-b from-[#1a3d24] to-[#06140b] border border-[#D4AF37]/30 rounded-2xl p-10 transform md:scale-110 shadow-[0_0_50px_rgba(212,175,55,0.05)] relative">
-              <div className="absolute top-0 right-0 bg-[#D4AF37] text-black font-bold text-xs uppercase px-3 py-1 rounded-bl-lg rounded-tr-xl">
-                SUA OFERTA HOJE
+              <div className="absolute top-0 right-0 bg-[#D4AF37] text-black font-light tracking-widest text-[9px] uppercase px-3 py-1 rounded-bl-lg rounded-tr-xl">
+                CONDIÇÃO IN-HOUSE
               </div>
-              <div className="text-[#D4AF37] uppercase tracking-widest text-sm mb-4">O Passaporte In-House</div>
+              <div className="text-[#D4AF37] uppercase tracking-widest text-sm mb-4">Seu Acesso Institucional</div>
               <div className="text-5xl font-serif text-white mb-2">R$ 467<span className="text-2xl text-neutral-500">,00</span></div>
               <p className="text-neutral-400 text-sm">Valor congelado e cravado por diária, pra você usar pelos próximos 12 meses (ou mais).</p>
             </div>
@@ -149,7 +149,7 @@ export default function JulhoLP() {
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12">
             <div className="flex flex-col">
-              <h3 className="text-2xl font-serif mb-6 text-[#D4AF37]">O que está garantido no seu passaporte?</h3>
+              <h3 className="text-2xl font-serif mb-6 text-[#D4AF37]">O que está garantido em seu acesso?</h3>
               <div className="w-full h-56 md:h-64 rounded-xl overflow-hidden mb-8 border border-neutral-800 shadow-2xl relative">
                 <img src={`${base}lux_boat_real.jpg`} alt="Passeio Exclusivo Lifestyle" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#06140b] via-transparent to-transparent"></div>
@@ -160,7 +160,7 @@ export default function JulhoLP() {
                     <CheckCircle className="w-5 h-5 text-[#D4AF37]" />
                   </div>
                   <div>
-                    <strong className="block text-lg mb-1">Passaporte de 6 Diárias Totais</strong>
+                    <strong className="block text-lg mb-1">Passe Privilégio de 6 Diárias Totais</strong>
                     <span className="text-neutral-400 text-sm leading-relaxed">Você compra 5 diárias luxuosas e nós te damos 1 noite adicional de presente (bônus).</span>
                   </div>
                 </li>
@@ -200,9 +200,9 @@ export default function JulhoLP() {
                   onClick={handleCheckoutClick}
                   className="w-full inline-flex items-center justify-center py-4 bg-[#D4AF37] text-black font-bold uppercase tracking-wider rounded transition-transform hover:-translate-y-1"
                 >
-                  Garantir Agora
+                  Acessar o Benefício
                 </button>
-                <div className="mt-4 text-xs text-[#D4AF37]/80 uppercase tracking-widest font-bold">⚠️ Restrito a 2 pacotes por família</div>
+                <div className="mt-4 text-[10px] text-neutral-500 font-light tracking-widest uppercase inline-block">* Sujeito à verificação para o máximo de 2 adesões por família</div>
               </div>
             </div>
           </div>
@@ -288,7 +288,7 @@ export default function JulhoLP() {
               onClick={handleCheckoutClick}
               className="px-12 py-5 border-2 border-[#D4AF37] text-[#D4AF37] font-bold uppercase tracking-widest rounded-lg hover:bg-[#D4AF37] hover:text-black transition-colors shadow-[0_0_20px_rgba(212,175,55,0.1)]"
             >
-              Aderir Com Risco Zero
+              Consolidar Acesso Seguro
             </button>
           </div>
         </div>
@@ -326,7 +326,7 @@ export default function JulhoLP() {
               onClick={handleCheckoutClick}
               className="px-10 py-5 border border-[#D4AF37] text-[#D4AF37] font-bold uppercase tracking-widest rounded-lg hover:bg-[#D4AF37] hover:text-black transition-colors"
             >
-              Levar as Férias Para Casa
+              Assegurar Minha Condição Exclusiva
             </button>
           </div>
         </div>
