@@ -136,8 +136,8 @@ export default function JulhoLP() {
                 CONDIÇÃO IN-HOUSE
               </div>
               <div className="text-[#D4AF37] uppercase tracking-widest text-sm mb-4">Seu Acesso Institucional</div>
-              <div className="text-5xl font-serif text-white mb-2">R$ 517<span className="text-2xl text-neutral-500">,00</span></div>
-              <p className="text-neutral-400 text-sm">Valor congelado e cravado por diária, pra você usar pelos próximos 12 meses (ou mais).</p>
+              <div className="text-5xl font-serif text-white mb-2">R$ 516<span className="text-2xl text-neutral-500">,66</span></div>
+              <p className="text-neutral-400 text-sm">Valor congelado e cravado por diária (total R$ 3.100,00), pra você usar pelos próximos 12 meses (ou mais).</p>
             </div>
 
           </div>

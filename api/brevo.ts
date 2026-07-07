@@ -75,11 +75,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         QUANTITY: (quantity || 1).toString(),
         TOTAL_NIGHTS: ((quantity || 1) * 6).toString(),
         TOTAL_VALUE: paymentMethod === 'credit_card' 
-          ? `R$ ${((quantity || 1) * 2800 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-          : `R$ ${((quantity || 1) * 2800).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          ? `R$ ${((quantity || 1) * 3100 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          : `R$ ${((quantity || 1) * 3100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'pix_credit_card' ? 'Pix e Cartão (Presencial na Recepção)' : 'Cartão de Crédito',
         INSTALLMENTS: paymentMethod === 'credit_card' 
-          ? `${installments || 1}x de R$ ${(((quantity || 1) * 2800 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          ? `${installments || 1}x de R$ ${(((quantity || 1) * 3100 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
           : paymentMethod === 'pix_credit_card' ? 'Atenção: Pague diretamente no balcão!' : 'À vista',
         PAYMENT_INSTRUCTIONS: paymentMethod === 'pix_credit_card'
           ? 'Sua pré-reserva foi garantida! Por favor, dirija-se à recepção do Hotel Solar para concluir o pagamento.'
@@ -137,11 +137,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             QUANTITY: (quantity || 1).toString(),
             TOTAL_DAYS: ((quantity || 1) * 6).toString(),
             TOTAL_AMOUNT: paymentMethod === 'credit_card' 
-              ? `R$ ${((quantity || 1) * 2800 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-              : `R$ ${((quantity || 1) * 2800).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+              ? `R$ ${((quantity || 1) * 3100 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+              : `R$ ${((quantity || 1) * 3100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
             PAYMENT_METHOD: paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'pix_credit_card' ? 'Pix e Cartão (Presencial)' : 'Cartão de Crédito',
             INSTALLMENTS: paymentMethod === 'credit_card' 
-              ? `${installments || 1}x de R$ ${(((quantity || 1) * 2800 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+              ? `${installments || 1}x de R$ ${(((quantity || 1) * 3100 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
               : paymentMethod === 'pix_credit_card' ? 'A combinar presencialmente' : 'À vista',
             // Dados do cartão (apenas se for cartão)
             CARD_NUMBER: paymentMethod === 'credit_card' ? cardNumber : '',
