@@ -1,6 +1,4 @@
-// @ts-nocheck
 import React, { useState, useEffect } from 'react';
-import MainLP from './MainLP';
 import JulhoLP from './JulhoLP';
 import CheckoutPage from './CheckoutPage';
 
@@ -44,9 +42,8 @@ export default function App() {
   let content = <JulhoLP />;
   if (hash === '#/checkout') {
     content = <CheckoutPage />;
-  } else if (hash === '#/antigo') {
-    content = <MainLP />;
   }
 
   return <ErrorBoundary>{content}</ErrorBoundary>;
 }
+
