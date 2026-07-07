@@ -211,15 +211,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
     if (!formData.state.trim()) return false;
     if (formData.quantity < 1) return false;
 
-    // Check payment data
-    if (formData.paymentMethod === 'credit_card') {
-      if (!formData.cardNumber) return false;
-      if (!isValidCreditCard(formData.cardNumber)) return false;
-      if (!formData.cardHolder) return false;
-      if (!formData.cardCvv) return false;
-      if (!formData.cardExpiryMonth || formData.cardExpiryMonth === 'mês') return false;
-      if (!formData.cardExpiryYear || formData.cardExpiryYear === 'ano') return false;
-    }
+    // Check payment data (credit_card now requires no card fields — payment is done in person)
 
     // Check terms
     if (!acceptedTerms) return false;
@@ -683,134 +675,9 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
 
           {formData.paymentMethod === 'credit_card' && (
             <div className="p-6 md:p-8 space-y-6 animate-in slide-in-from-top-2">
-              <div className="bg-success-100 border border-success-500/20 p-4 rounded text-moss-900 text-sm font-medium flex items-start gap-3">
-                <Icons.CheckCircle />
-                <span>É previsto o pagamento do valor total de <strong>{formatCurrency(creditCardTotal)}</strong> (incluindo taxas administrativas).</span>
-              </div>
-
-              <div>
-                <label className={labelClass}>Parcelamento (até 6 vezes)</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
-                  {[1, 2, 3, 4, 5, 6].map((installNum) => {
-                    const val = creditCardTotal / installNum;
-                    const isSelected = formData.installments === String(installNum);
-                    return (
-                      <button
-                        key={installNum}
-                        type="button"
-                        onClick={() => setFormData(prev => ({ ...prev, installments: String(installNum) }))}
-                        className={`
-                                            p-3 rounded border text-sm flex flex-col items-center justify-center transition-all duration-200
-                                            ${isSelected
-                            ? 'bg-moss-800 border-moss-800 text-white shadow-md'
-                            : 'bg-white border-gray-200 text-gray-600 hover:border-gold-500 hover:text-gold-600'
-                          }
-                                        `}
-                      >
-                        <span className="font-bold text-lg">{installNum}x</span>
-                        <span className="text-xs opacity-90">de {formatCurrency(val)}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-                <p className="text-xs text-gray-500 mt-2">Parcelamento possível somente com cartões emitidos no Brasil</p>
-              </div>
-
-              <div className="flex gap-2 transition-opacity duration-300">
-                {/* Dynamic Card Logos */}
-                <div className={`${cardBrand === 'visa' || cardBrand === 'unknown' ? 'opacity-100' : 'opacity-20 grayscale'}`}>
-                  <Icons.Visa />
-                </div>
-                <div className={`${cardBrand === 'mastercard' || cardBrand === 'unknown' ? 'opacity-100' : 'opacity-20 grayscale'}`}>
-                  <Icons.Mastercard />
-                </div>
-                <div className={`${cardBrand === 'amex' || cardBrand === 'unknown' ? 'opacity-100' : 'opacity-20 grayscale'}`}>
-                  <Icons.Amex />
-                </div>
-                <div className={`${cardBrand === 'elo' || cardBrand === 'unknown' ? 'opacity-100' : 'opacity-20 grayscale'}`}>
-                  <Icons.Elo />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className={labelClass}>Número do cartão</label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      className={`${inputClass(errors.cardNumber)} pl-10`}
-                      value={formData.cardNumber}
-                      onChange={handleCardNumberChange}
-                      onBlur={() => handleBlur('cardNumber')}
-                      placeholder="0000 0000 0000 0000"
-                      maxLength={23}
-                    />
-                    <div className="absolute left-3 top-3 text-gray-400">
-                      <Icons.CreditCard />
-                    </div>
-                  </div>
-                  {errors.cardNumber && <p className="text-red-500 text-xs mt-1">{errors.cardNumber}</p>}
-                </div>
-                <div>
-                  <label className={labelClass}>Titular do cartão</label>
-                  <input
-                    type="text"
-                    className={inputClass(errors.cardHolder)}
-                    value={formData.cardHolder}
-                    onChange={e => setFormData({ ...formData, cardHolder: e.target.value })}
-                    onBlur={() => handleBlur('cardHolder')}
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Como figura no cartão</p>
-                  {errors.cardHolder && <p className="text-red-500 text-xs mt-1">{errors.cardHolder}</p>}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className={labelClass}>Validade</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder="MM"
-                      maxLength={2}
-                      className={inputClass(errors.cardExpiryMonth)}
-                      value={formData.cardExpiryMonth}
-                      onChange={e => setFormData({ ...formData, cardExpiryMonth: e.target.value.replace(/\D/g, '') })}
-                      onBlur={() => handleBlur('cardExpiryMonth')}
-                    />
-                    <input
-                      type="text"
-                      placeholder="AAAA"
-                      maxLength={4}
-                      className={inputClass(errors.cardExpiryYear)}
-                      value={formData.cardExpiryYear}
-                      onChange={e => setFormData({ ...formData, cardExpiryYear: e.target.value.replace(/\D/g, '') })}
-                      onBlur={() => handleBlur('cardExpiryYear')}
-                    />
-                  </div>
-                  {(errors.cardExpiryMonth || errors.cardExpiryYear) && <p className="text-red-500 text-xs mt-1">Data inválida</p>}
-                </div>
-                <div>
-                  <label className={labelClass}>Cvv (Código de segurança)</label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      className={`w-24 ${inputClass(errors.cardCvv)}`}
-                      value={formData.cardCvv}
-                      onChange={e => setFormData({ ...formData, cardCvv: e.target.value })}
-                      onBlur={() => handleBlur('cardCvv')}
-                      placeholder="123"
-                    />
-                    <Icons.Lock />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">Obrigatório para Visa, Mastercard, Discover e Amex</p>
-                  {errors.cardCvv && <p className="text-red-500 text-xs mt-1">{errors.cardCvv}</p>}
-                </div>
-              </div>
-
-              <div className="bg-success-100 border border-success-500/20 p-4 rounded text-moss-900 text-sm flex items-center gap-2">
-                <Icons.Lock />
-                <span>Todos os dados serão codificados e transmitidos através de uma conexão segura</span>
+              <div className="bg-sand-100 border border-gold-500/30 p-4 rounded text-moss-900 text-sm font-medium flex items-start gap-3">
+                <Icons.CheckCircle className="text-gold-600 w-5 h-5 flex-shrink-0" />
+                <span><strong>Pagamento Presencial na Recepção:</strong> O pagamento no cartão de crédito é realizado diretamente na nossa recepção no momento do seu check-in. Você apenas garante a sua vaga agora preenchendo os dados pessoais acima, e efetua o pagamento presencialmente na chegada.</span>
               </div>
             </div>
           )}
