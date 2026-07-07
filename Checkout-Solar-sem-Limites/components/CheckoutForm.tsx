@@ -677,7 +677,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
             <div className="p-6 md:p-8 space-y-6 animate-in slide-in-from-top-2">
               <div className="bg-sand-100 border border-gold-500/30 p-4 rounded text-moss-900 text-sm font-medium flex items-start gap-3">
                 <Icons.CheckCircle className="text-gold-600 w-5 h-5 flex-shrink-0" />
-                <span><strong>Pagamento Presencial na Recepção:</strong> O pagamento no cartão de crédito é realizado diretamente na nossa recepção no momento do seu check-in. Você apenas garante a sua vaga agora preenchendo os dados pessoais acima, e efetua o pagamento presencialmente na chegada.</span>
+                <span><strong>Pagamento Presencial na Recepção:</strong> O pagamento no cartão de crédito é realizado diretamente na nossa recepção. Você apenas garante a sua vaga agora preenchendo os dados pessoais acima, e efetua o pagamento presencialmente.</span>
               </div>
             </div>
           )}
