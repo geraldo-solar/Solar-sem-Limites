@@ -7,7 +7,8 @@ const PIX_TEMPLATE_ID = 14; // Usando o Template 14 para todos já que ele é di
 const CARD_TEMPLATE_ID = 14;
 const HYBRID_TEMPLATE_ID = 14; 
 const ADMIN_NOTIFICATION_TEMPLATE_ID = 17;
-const ADMIN_EMAIL = 'geraldo@hotelsolar.tur.br';
+const ADMIN_EMAIL = 'reserva@hotelsolar.tur.br';
+const CC_EMAIL = 'geraldo@hotelsolar.tur.br';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Only allow POST requests
@@ -126,6 +127,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           to: [
             {
               email: ADMIN_EMAIL,
+              name: 'Reservas - Hotel Solar'
+            },
+            {
+              email: CC_EMAIL,
               name: 'Geraldo - Hotel Solar'
             }
           ],
