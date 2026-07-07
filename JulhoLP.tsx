@@ -269,7 +269,7 @@ export default function JulhoLP() {
               {
                 title: "Garantia de Crédito",
                 days: "Vitalício",
-                desc: "Não conseguiu usar tudo no prazo de validade? O valor pago vira crédito integral para abater em viagens futuras.",
+                desc: "Não conseguiu usar tudo no prazo de validade? O valor das diárias vira crédito integral para abater em viagens futuras.",
               }
             ].map((card, idx) => (
               <div key={idx} className="bg-[#06140b] p-8 border border-neutral-800 rounded-xl hover:border-[#D4AF37]/60 transition-colors duration-500 flex flex-col items-center text-center group">

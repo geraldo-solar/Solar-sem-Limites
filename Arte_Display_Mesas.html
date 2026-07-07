@@ -38,15 +38,15 @@
         }
 
         .display-face {
-            width: 148mm;
-            height: 210mm; 
-            /* Formato A5 vertical aproximado para display de mesa */
+            width: 105mm;
+            height: 148mm; 
+            /* Formato A6 vertical para display de mesa */
             background: linear-gradient(145deg, #112d1b 0%, #06140b 100%);
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             position: relative;
             overflow: hidden;
             border: 2px solid rgba(212, 175, 55, 0.2);
-            padding: 40px;
+            padding: 20px 30px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -112,7 +112,7 @@
         /* Para não quebrar ao imprimir PDF */
         @media print {
             body { background: white; padding: 0; margin: 0; }
-            .print-canvas { gap: 10px; flex-wrap: wrap; }
+            .print-canvas { gap: 20mm; flex-wrap: nowrap; }
             .display-face { box-shadow: none; border: 1px solid #444; }
             .no-print { display: none; }
         }
@@ -133,9 +133,9 @@
         <div class="corner-ornament-bottom"></div>
         <div class="light-beam"></div>
 
-        <div class="z-10 w-full mt-4">
-            <img src="./public/logoSOLAR2.png" alt="Hotel Solar" class="w-28 mx-auto mb-6 opacity-90 drop-shadow-md pb-[-10px]" style="filter: drop-shadow(0 0 10px rgba(212,175,55,0.2));" />
-            <h2 class="font-serif text-4xl text-white leading-tight mt-6">O Lado Mais<br><span class="text-luxury-gold italic">Exclusivo</span></h2>
+        <div class="z-10 w-full mt-2">
+            <img src="./public/logoSOLAR2.png" alt="Hotel Solar" class="w-20 mx-auto mb-4 opacity-90 drop-shadow-md" style="filter: drop-shadow(0 0 10px rgba(212,175,55,0.2));" />
+            <h2 class="font-serif text-2xl text-white leading-tight mt-4">O Lado Mais<br><span class="text-luxury-gold italic">Exclusivo</span></h2>
             
             <div class="divider"></div>
 
@@ -144,9 +144,9 @@
             </p>
         </div>
 
-        <div class="z-10 mt-8 mb-8 w-full flex flex-col items-center">
+        <div class="z-10 mt-4 mb-4 w-full flex flex-col items-center">
             <!-- QR CODE FAKE PARA SIMULAR ARTE. O CLIENTE PRECISA GERAR O QR CODE DO MANYCHAT AQUI -->
-            <div class="qr-placeholder mx-auto rounded-md overflow-hidden ring-4 ring-luxury-gold/30 ring-offset-4 ring-offset-transparent">
+            <div class="qr-placeholder mx-auto rounded-md overflow-hidden ring-4 ring-luxury-gold/30 ring-offset-4 ring-offset-transparent" style="width: 90px; height: 90px;">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://wa.me/5591981229825?text=quero%20conhecer%20o%20programa%20Solar%20Sem%20Limites&bgcolor=FFFFFF&color=000000" alt="QR Code">
             </div>
             <div class="mt-6 flex flex-col items-center gap-1">
@@ -176,9 +176,9 @@
         <div class="corner-ornament-bottom"></div>
         <div class="light-beam"></div>
 
-        <div class="z-10 w-full mt-4">
-            <img src="./public/logoSOLAR2.png" alt="Círculo Solar" class="w-24 mx-auto mb-6 opacity-80 drop-shadow-md pb-[-5px]" style="filter: drop-shadow(0 0 10px rgba(212,175,55,0.1));" />
-            <h2 class="font-serif text-[28px] text-luxury-gold leading-tight mt-6 uppercase">Aprofunde Sua Experiência</h2>
+        <div class="z-10 w-full mt-2">
+            <img src="./public/logoSOLAR2.png" alt="Círculo Solar" class="w-16 mx-auto mb-4 opacity-80 drop-shadow-md" style="filter: drop-shadow(0 0 10px rgba(212,175,55,0.1));" />
+            <h2 class="font-serif text-[20px] text-luxury-gold leading-tight mt-4 uppercase">Aprofunde Sua Experiência</h2>
             
             <div class="divider" style="height: 20px; margin-top: 15px; margin-bottom: 25px;"></div>
         </div>

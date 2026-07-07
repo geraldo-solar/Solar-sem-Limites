@@ -40,7 +40,7 @@ O titular pode transferir o pacote para terceiros mediante aviso prévio no ato 
 
 6. GARANTIAS E CRÉDITOS
 
-6.1. Após o término da vigência do pacote, diárias não utilizadas ficam como crédito por mais 360 dias para futuras reservas.
+6.1. Após o término da vigência do pacote, o valor das diárias não utilizadas ficam como crédito por mais 360 dias para futuras reservas.
 6.2. Em caso de arrependimento imediatamente após o primeiro check-in, o Hotel Solar efetuará o cancelamento da compra e fará o reembolso do valor restante proporcionalmente.
 6.3. Se cancelar dentro de 30 dias após a compra, devolvemos 100% do seu valor sem perguntas e sem burocracia.
 
@@ -653,7 +653,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
                 <span>É previsto o pagamento do valor total de <strong>{formatCurrency(baseTotal)}</strong> no ato da confirmação da reserva.</span>
               </div>
               <p className="text-sm text-gray-600">
-                No momento da confirmação de recebimento do pagamento confirmaremos a sua reserva.
+                Não conseguiu usar tudo no prazo de validade? O valor das diárias vira crédito integral para abater em viagens futuras.
               </p>
               <div className="bg-gray-50 p-4 rounded border border-gray-200 text-sm text-gray-700 space-y-1 font-mono">
                 <p className="font-bold mb-2 text-moss-800">Coordenadas bancárias:</p>
