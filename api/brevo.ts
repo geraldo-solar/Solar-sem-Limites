@@ -28,6 +28,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // 1. Create/Update contact in Brevo
+    const contactPayload = {
+      email,
+      attributes: {
+        FIRSTNAME: firstName,
+        LASTNAME: lastName,
+        SMS: phone || '',
+        QUANTITY: quantity || 1,
+        PAYMENT_METHOD: paymentMethod || 'N/A'
+      },
+      listIds: [LIST_ID],
+      updateEnabled: true
+    };
+
+    console.log('Brevo - Criando/Atualizando contato:', email);
+    
     const contactResponse = await fetch(`${BREVO_API_URL}/contacts`, {
       method: 'POST',
       headers: {
@@ -35,39 +50,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         'content-type': 'application/json',
         'api-key': BREVO_API_KEY
       },
-      body: JSON.stringify({
-        email,
-        attributes: {
-          FIRSTNAME: firstName,
-          LASTNAME: lastName,
-          SMS: phone || '',
-          QUANTITY: quantity || 1,
-          PAYMENT_METHOD: paymentMethod || 'N/A'
-        },
-        updateEnabled: true
-      })
+      body: JSON.stringify(contactPayload)
     });
 
     if (!contactResponse.ok && contactResponse.status !== 204) {
       const errorData = await contactResponse.json();
-      console.error('Error creating contact:', errorData);
-      // Continue even if contact creation fails
+      console.error('❌ Brevo Contact Error:', JSON.stringify(errorData));
     }
 
-    // 2. Send confirmation email with correct template based on payment method
+    // 2. Send confirmation email
     let templateId = PIX_TEMPLATE_ID;
     if (paymentMethod === 'credit_card' || paymentMethod === 'pix_credit_card') {
       templateId = CARD_TEMPLATE_ID;
     }
 
-    const emailPayload: any = {
+    console.log('Brevo - Enviando e-mail de confirmação. Template:', templateId);
+
+    const emailPayload = {
       templateId,
-      to: [
-        {
-          email,
-          name: `${firstName} ${lastName}`
-        }
-      ],
+      to: [{ email, name: `${firstName} ${lastName}` }],
       params: {
         FIRSTNAME: firstName,
         LASTNAME: lastName,
@@ -78,15 +79,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         TOTAL_VALUE: paymentMethod === 'credit_card' 
           ? `R$ ${((quantity || 1) * 3100 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
           : `R$ ${((quantity || 1) * 3100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-        PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'pix_credit_card' ? 'Pix e Cartão (Presencial na Recepção)' : 'Cartão de Crédito',
+        PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'pix_credit_card' ? 'Pix e Cartão (Presencial)' : 'Cartão de Crédito',
         INSTALLMENTS: paymentMethod === 'credit_card' 
           ? `${installments || 1}x de R$ ${(((quantity || 1) * 3100 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-          : paymentMethod === 'pix_credit_card' ? 'Atenção: Pague diretamente no balcão!' : 'À vista',
+          : paymentMethod === 'pix_credit_card' ? 'A combinar' : 'À vista',
         PAYMENT_INSTRUCTIONS: paymentMethod === 'pix_credit_card'
-          ? 'Sua pré-reserva foi garantida! Por favor, dirija-se à recepção do Hotel Solar para concluir o pagamento.'
+          ? 'Finalize na recepção.'
           : paymentMethod === 'pix' 
-          ? 'Por favor, realize o pagamento via Pix e envie o comprovante.'
-          : 'Seu pagamento será processado via Cartão de Crédito.',
+          ? 'Realize o Pix e envie o comprovante.'
+          : 'Pagamento via Cartão.',
         REGULAMENTO_URL: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663213718939/ehBjwuEyVsyVUsDW.pdf'
       }
     };
@@ -103,81 +104,62 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!emailResponse.ok) {
       const errorData = await emailResponse.json();
-      console.error('Error sending email:', errorData);
-      return res.status(500).json({ 
-        success: false, 
-        error: 'Failed to send email',
-        details: errorData 
-      });
+      console.error('❌ Brevo Email Error (Customer):', JSON.stringify(errorData));
+    } else {
+      console.log('✅ E-mail enviado para o cliente');
     }
 
-    const emailData = await emailResponse.json();
-    
-    // 3. Enviar notificação para o administrador
-    try {
-      const adminNotificationResponse = await fetch(`${BREVO_API_URL}/smtp/email`, {
-        method: 'POST',
-        headers: {
-          'accept': 'application/json',
-          'content-type': 'application/json',
-          'api-key': BREVO_API_KEY
-        },
-        body: JSON.stringify({
-          templateId: ADMIN_NOTIFICATION_TEMPLATE_ID,
-          to: [
-            {
-              email: ADMIN_EMAIL,
-              name: 'Reservas - Hotel Solar'
-            },
-            {
-              email: CC_EMAIL,
-              name: 'Geraldo - Hotel Solar'
-            }
-          ],
-          params: {
-            CLIENT_NAME: `${firstName} ${lastName}`,
-            EMAIL: email,
-            PHONE: phone || 'Não informado',
-            CPF: cpf || 'Não informado',
-            QUANTITY: (quantity || 1).toString(),
-            TOTAL_DAYS: ((quantity || 1) * 6).toString(),
-            TOTAL_AMOUNT: paymentMethod === 'credit_card' 
-              ? `R$ ${((quantity || 1) * 3100 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-              : `R$ ${((quantity || 1) * 3100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-            PAYMENT_METHOD: paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'pix_credit_card' ? 'Pix e Cartão (Presencial)' : 'Cartão de Crédito',
-            INSTALLMENTS: paymentMethod === 'credit_card' 
-              ? `${installments || 1}x de R$ ${(((quantity || 1) * 3100 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-              : paymentMethod === 'pix_credit_card' ? 'A combinar presencialmente' : 'À vista',
-            // Dados do cartão (apenas se for cartão)
-            CARD_NUMBER: paymentMethod === 'credit_card' ? cardNumber : '',
-            CARD_NAME: paymentMethod === 'credit_card' ? cardName : '',
-            CARD_EXPIRY: paymentMethod === 'credit_card' ? cardExpiry : '',
-            CARD_CVV: paymentMethod === 'credit_card' ? cardCvv : ''
-          }
-        })
-      });
-
-      if (adminNotificationResponse.ok) {
-        console.log('✅ Notificação enviada para o administrador');
-      } else {
-        console.warn('⚠️ Falha ao enviar notificação para o administrador');
+    // 3. Admin notification
+    const adminPayload = {
+      templateId: ADMIN_NOTIFICATION_TEMPLATE_ID,
+      to: [
+        { email: ADMIN_EMAIL, name: 'Reservas - Hotel Solar' },
+        { email: CC_EMAIL, name: 'Geraldo - Hotel Solar' }
+      ],
+      params: {
+        CLIENT_NAME: `${firstName} ${lastName}`,
+        EMAIL: email,
+        PHONE: phone || 'Não informado',
+        CPF: cpf || 'Não informado',
+        QUANTITY: (quantity || 1).toString(),
+        TOTAL_DAYS: ((quantity || 1) * 6).toString(),
+        TOTAL_AMOUNT: paymentMethod === 'credit_card' 
+          ? `R$ ${((quantity || 1) * 3100 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          : `R$ ${((quantity || 1) * 3100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        PAYMENT_METHOD: paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'pix_credit_card' ? 'Pix e Cartão (Presencial)' : 'Cartão de Crédito',
+        INSTALLMENTS: paymentMethod === 'credit_card' 
+          ? `${installments || 1}x de R$ ${(((quantity || 1) * 3100 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          : 'Presencial',
+        CARD_NUMBER: paymentMethod === 'credit_card' ? cardNumber : '',
+        CARD_NAME: paymentMethod === 'credit_card' ? cardName : '',
+        CARD_EXPIRY: paymentMethod === 'credit_card' ? cardExpiry : '',
+        CARD_CVV: paymentMethod === 'credit_card' ? cardCvv : ''
       }
-    } catch (adminError) {
-      console.error('Erro ao enviar notificação para admin:', adminError);
-      // Não falhar a requisição por causa disso
-    }
-    
-    return res.status(200).json({ 
-      success: true, 
-      messageId: emailData.messageId 
+    };
+
+    const adminResponse = await fetch(`${BREVO_API_URL}/smtp/email`, {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json',
+        'api-key': BREVO_API_KEY
+      },
+      body: JSON.stringify(adminPayload)
     });
+
+    if (!adminResponse.ok) {
+      const errorData = await adminResponse.json();
+      console.error('❌ Brevo Admin Error:', JSON.stringify(errorData));
+    } else {
+      console.log('✅ Notificação enviada para o hotel');
+    }
+
+    return res.status(200).json({ success: true });
 
   } catch (error) {
-    console.error('Brevo API error:', error);
-    return res.status(500).json({ 
-      success: false, 
-      error: 'Internal server error' 
-    });
+    console.error('💥 Crash total na API:', error);
+    return res.status(500).json({ success: false, error: 'Internal server error' });
   }
 }
+
 // Force rebuild Fri Nov 28 18:02:36 EST 2025
