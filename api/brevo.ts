@@ -81,16 +81,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         TOTAL_VALUE: paymentMethod === 'credit_card' 
           ? `R$ ${((quantity || 1) * 3100 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
           : `R$ ${((quantity || 1) * 3100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-        PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'pix_credit_card' ? 'Pix e Cartão (Presencial)' : 'Cartão de Crédito',
+        PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'Pix' : 'Cartão de Crédito',
         INSTALLMENTS: paymentMethod === 'credit_card' 
           ? `${installments || 1}x de R$ ${(((quantity || 1) * 3100 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
           : paymentMethod === 'pix_credit_card' ? 'A combinar' : 'À vista',
-        PAYMENT_INSTRUCTIONS: paymentMethod === 'pix_credit_card'
-          ? 'Finalize na recepção.'
-          : paymentMethod === 'pix' 
-          ? 'Realize o Pix e envie o comprovante.'
-          : 'Pagamento via Cartão.',
-        REGULAMENTO_URL: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663213718939/ehBjwuEyVsyVUsDW.pdf'
+        PAYMENT_INSTRUCTIONS: paymentMethod === 'pix' 
+          ? 'Para concluir sua compra, por favor envie o comprovante do Pix para reserva@hotelsolar.tur.br.' 
+          : 'Sua transação via cartão foi processada com sucesso.',
+        REGULAMENTO_URL: 'https://solar-sem-limites.vercel.app/Regulamento_SSL.pdf',
+        RECIBO_URL: 'https://solar-sem-limites.vercel.app/#/checkout'
       }
     };
 
