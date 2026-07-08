@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CustomerData } from '../types';
-import { getOrders, updateOrderStatus } from '../services/orderService';
+import { getOrders } from '../services/orderService';
 import { sendOrderToGoogleSheets } from '../services/googleSheetsService';
 import { notifyPaymentStatus } from '../services/notifyStatusService';
 import { Icons, formatCurrency, UNIT_PRICE, CREDIT_CARD_SURCHARGE } from '../constants';
@@ -92,32 +92,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
-  const handleStatusUpdate = async (id: string, status: 'approved' | 'rejected') => {
-    const updatedOrder = updateOrderStatus(id, status);
-    if (updatedOrder) {
-        // Send the updated status to Google Sheets
-        // This will append a new row with the updated status, creating a history log
-        sendOrderToGoogleSheets(updatedOrder).catch(err => console.error("Error updating sheet:", err));
-        
-        // Send email notification to customer
-        try {
-            await notifyPaymentStatus({
-                orderId: id,
-                status,
-                customerData: updatedOrder
-            });
-            alert(`E-mail de ${status === 'approved' ? 'aprovação' : 'recusa'} enviado para ${updatedOrder.email}`);
-        } catch (error) {
-            console.error('Erro ao enviar e-mail:', error);
-            alert('Status atualizado, mas houve erro ao enviar e-mail. Verifique o console.');
-        }
-        
-        loadOrders(); // Refresh table
-        
-        // If modal is open, update local state too so it reflects immediately
-        if (selectedOrder && selectedOrder.id === id) {
-            setSelectedOrder({...selectedOrder, paymentStatus: status});
-        }
+  const handleStatusUpdate = async (order: CustomerData, status: 'approved' | 'rejected') => {
+    const updatedOrder = { ...order, paymentStatus: status };
+
+    // Send the updated status to Google Sheets
+    // This will append a new row with the updated status, creating a history log
+    sendOrderToGoogleSheets(updatedOrder).catch(err => console.error("Error updating sheet:", err));
+
+    // Send email notification to customer
+    try {
+        await notifyPaymentStatus({
+            orderId: updatedOrder.id || '',
+            status,
+            customerData: updatedOrder
+        });
+        alert(`E-mail de ${status === 'approved' ? 'aprovação' : 'recusa'} enviado para ${updatedOrder.email}`);
+    } catch (error) {
+        console.error('Erro ao enviar e-mail:', error);
+        alert('Status atualizado, mas houve erro ao enviar e-mail. Verifique o console.');
+    }
+
+    loadOrders(); // Refresh table
+
+    // If modal is open, update local state too so it reflects immediately
+    if (selectedOrder && selectedOrder.id === order.id) {
+        setSelectedOrder({...selectedOrder, paymentStatus: status});
     }
   };
 
@@ -244,14 +243,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                           
                           {/* Action Buttons */}
                           <button 
-                             onClick={() => order.id && handleStatusUpdate(order.id, 'approved')}
+                             onClick={() => order.id && handleStatusUpdate(order, 'approved')}
                              className="w-8 h-8 rounded-full bg-green-50 text-green-600 hover:bg-green-500 hover:text-white flex items-center justify-center transition-all shadow-sm border border-green-200"
                              title="Aprovar Pagamento"
                           >
                              <Icons.Check className="w-4 h-4" />
                           </button>
-                          <button 
-                             onClick={() => order.id && handleStatusUpdate(order.id, 'rejected')}
+                          <button
+                             onClick={() => order.id && handleStatusUpdate(order, 'rejected')}
                              className="w-8 h-8 rounded-full bg-red-50 text-red-600 hover:bg-red-500 hover:text-white flex items-center justify-center transition-all shadow-sm border border-red-200"
                              title="Recusar Pagamento"
                           >
@@ -307,14 +306,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       Ver Detalhes
                     </button>
                     <button 
-                      onClick={() => order.id && handleStatusUpdate(order.id, 'approved')}
+                      onClick={() => order.id && handleStatusUpdate(order, 'approved')}
                       className="w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-500 hover:text-white flex items-center justify-center transition-all shadow-sm border border-green-200"
                       title="Aprovar Pagamento"
                     >
                       <Icons.Check className="w-5 h-5" />
                     </button>
-                    <button 
-                      onClick={() => order.id && handleStatusUpdate(order.id, 'rejected')}
+                    <button
+                      onClick={() => order.id && handleStatusUpdate(order, 'rejected')}
                       className="w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-500 hover:text-white flex items-center justify-center transition-all shadow-sm border border-red-200"
                       title="Recusar Pagamento"
                     >
@@ -449,13 +448,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                {/* Quick Actions in Modal too */}
                <div className="flex gap-2">
                   <button 
-                     onClick={() => handleStatusUpdate(selectedOrder.id || '', 'approved')}
+                     onClick={() => handleStatusUpdate(selectedOrder, 'approved')}
                      className="px-4 py-2 bg-green-600 text-white rounded font-bold hover:bg-green-700 text-sm"
                   >
                      Aprovar
                   </button>
-                  <button 
-                     onClick={() => handleStatusUpdate(selectedOrder.id || '', 'rejected')}
+                  <button
+                     onClick={() => handleStatusUpdate(selectedOrder, 'rejected')}
                      className="px-4 py-2 bg-red-600 text-white rounded font-bold hover:bg-red-700 text-sm"
                   >
                      Recusar
