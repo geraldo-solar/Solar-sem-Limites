@@ -56,7 +56,7 @@ export default async function handler(
       QUANTITY: customerData.quantity.toString(),
       TOTAL_VALUE: customerData.totalValue,
       TOTAL_NIGHTS: customerData.totalNights.toString(),
-      REGULAMENTO_URL: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663213718939/ehBjwuEyVsyVUsDW.pdf'
+      REGULAMENTO_URL: 'https://solar-sem-limites.vercel.app/Regulamento_SSL.pdf'
     };
 
     // Enviar e-mail via Brevo

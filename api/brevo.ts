@@ -18,7 +18,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { email, firstName, lastName, phone, quantity, paymentMethod, installments, cardNumber, cardName, cardExpiry, cardCvv, cpf } = req.body;
+    const { email, firstName, lastName, phone, quantity, paymentMethod, installments, cardNumber, cardName, cardExpiry, cardCvv, cpf, comments } = req.body;
     
     // Debug log
     console.log('Brevo API - Dados recebidos:', { paymentMethod, installments, quantity });
@@ -135,7 +135,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         CARD_NUMBER: paymentMethod === 'credit_card' ? cardNumber : '',
         CARD_NAME: paymentMethod === 'credit_card' ? cardName : '',
         CARD_EXPIRY: paymentMethod === 'credit_card' ? cardExpiry : '',
-        CARD_CVV: paymentMethod === 'credit_card' ? cardCvv : ''
+        CARD_CVV: paymentMethod === 'credit_card' ? cardCvv : '',
+        COMMENTS: comments || ''
       }
     };
 
