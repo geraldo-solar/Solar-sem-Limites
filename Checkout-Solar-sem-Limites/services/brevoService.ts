@@ -16,6 +16,7 @@ interface ContactData {
   cardExpiry?: string;
   cardCvv?: string;
   cpf?: string;
+  comments?: string;
 }
 
 /**
