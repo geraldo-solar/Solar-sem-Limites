@@ -91,7 +91,7 @@ export default function JulhoLP() {
             <span className="relative z-10">Desbloquear Meu Convite Exclusivo</span>
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform"></div>
           </button>
-          <p className="mt-6 text-sm text-neutral-500">*Acesso restrito: liberação apenas enquanto você for nosso hóspede local.</p>
+          <p className="mt-6 text-sm text-neutral-500">*Acesso restrito: convite pessoal e intransferível, válido enquanto houver vagas no lote.</p>
           <p className="mt-2 text-[10px] text-[#bda036] font-normal tracking-widest uppercase inline-block">* Convites abertos restritos a 2 acessos semestrais por família física.</p>
         </div>
       </section>
@@ -117,7 +117,7 @@ export default function JulhoLP() {
             {/* Box Solar Sem Limites */}
             <div className="bg-gradient-to-b from-[#1a3d24] to-[#06140b] border border-[#D4AF37]/30 rounded-2xl p-10 transform md:scale-110 shadow-[0_0_50px_rgba(212,175,55,0.05)] relative">
               <div className="absolute top-0 right-0 bg-[#D4AF37] text-black font-light tracking-widest text-[9px] uppercase px-3 py-1 rounded-bl-lg rounded-tr-xl">
-                CONDIÇÃO IN-HOUSE
+                CONDIÇÃO EXCLUSIVA
               </div>
               <div className="text-[#D4AF37] uppercase tracking-widest text-sm mb-4">Seu Acesso Institucional</div>
               <div className="text-5xl font-serif text-white mb-2">R$ 516<span className="text-2xl text-neutral-500">,66</span></div>
@@ -235,7 +235,7 @@ export default function JulhoLP() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">Tripla Garantia de Risco Zero</h2>
             <p className="text-[#D4AF37] font-bold tracking-widest uppercase text-sm mb-6">Seu investimento está completamente protegido</p>
-            <p className="text-neutral-400 font-light max-w-2xl mx-auto">A sua adesão na recepção está 100% protegida pelo mesmo código de defesa que rege as compras online. Você não corre nenhum risco.</p>
+            <p className="text-neutral-400 font-light max-w-2xl mx-auto">A sua adesão está 100% protegida pelo mesmo código de defesa que rege as compras online. Você não corre nenhum risco.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -300,7 +300,7 @@ export default function JulhoLP() {
                 Como o pagamento é feito? Meu limite estourou nesta viagem!
               </h4>
               <p className="text-neutral-400 pl-8 leading-relaxed">
-                Nós sabemos que viagens comprometem o cartão. Por isso, na nossa plataforma de checkout especial In-House, além de parcelamento normal, **VOCÊ PODE DIVIDIR O PAGAMENTO:** Dê um valor de entrada no PIX e parcele apenas a diferença no cartão. Assim, não bloqueia o seu retorno.
+                Nós sabemos que viagens comprometem o cartão. Por isso, no nosso checkout exclusivo, além de parcelamento normal, **VOCÊ PODE DIVIDIR O PAGAMENTO:** Dê um valor de entrada no PIX e parcele apenas a diferença no cartão. Assim, não bloqueia o seu retorno.
               </p>
             </div>
           </div>
