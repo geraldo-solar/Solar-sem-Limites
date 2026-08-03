@@ -11,15 +11,21 @@ export const sendOrderToGoogleSheets = async (order: CustomerData) => {
   }
 
   const baseTotal = order.quantity * UNIT_PRICE;
+  const splitPct = (order.splitPercent ?? 30) / 100;
+  const entradaPix = baseTotal * splitPct;
+  const restanteCard = (baseTotal - entradaPix) * (1 + CREDIT_CARD_SURCHARGE);
+
   const total = order.paymentMethod === 'credit_card'
     ? baseTotal * (1 + CREDIT_CARD_SURCHARGE)
-    : baseTotal;
+    : order.paymentMethod === 'pix_credit_card'
+      ? entradaPix + restanteCard
+      : baseTotal;
 
   let paymentDetails = 'Pix';
   if (order.paymentMethod === 'credit_card') {
     paymentDetails = `Cartão ${order.installments}x (Final: ${order.cardNumber?.slice(-4)})`;
   } else if (order.paymentMethod === 'pix_credit_card') {
-    paymentDetails = 'Pagamento híbrido (fechamento presencial)';
+    paymentDetails = `Entrada ${formatCurrency(entradaPix)} Pix + Cartão ${order.installments}x (Final: ${order.cardNumber?.slice(-4)})`;
   }
 
   const payload = {

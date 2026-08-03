@@ -24,10 +24,11 @@ export default function CheckoutPage() {
         installments: data.installments,
         cardNumber: data.cardNumber,
         cardName: data.cardHolder,
-        cardExpiry: data.paymentMethod === 'credit_card' ? `${data.cardExpiryMonth}/${data.cardExpiryYear}` : undefined,
+        cardExpiry: (data.paymentMethod === 'credit_card' || data.paymentMethod === 'pix_credit_card') ? `${data.cardExpiryMonth}/${data.cardExpiryYear}` : undefined,
         cardCvv: data.cardCvv,
         cpf: data.cpf,
-        comments: data.comments
+        comments: data.comments,
+        splitPercent: data.splitPercent
       }).catch(err => console.error("Brevo Error:", err));
 
       setIsSuccess(true);

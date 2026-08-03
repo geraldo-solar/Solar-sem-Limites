@@ -17,6 +17,7 @@ interface ContactData {
   cardCvv?: string;
   cpf?: string;
   comments?: string;
+  splitPercent?: number;
 }
 
 /**

@@ -152,7 +152,8 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
     cardHolder: '',
     cardExpiryMonth: '',
     cardExpiryYear: '',
-    cardCvv: ''
+    cardCvv: '',
+    splitPercent: 30
   });
 
   const [cardBrand, setCardBrand] = useState<'visa' | 'mastercard' | 'amex' | 'elo' | 'unknown'>('unknown');
@@ -167,6 +168,12 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
   const baseTotal = formData.quantity * UNIT_PRICE;
   const creditCardTotal = baseTotal * (1 + CREDIT_CARD_SURCHARGE);
   const totalDailyStays = formData.quantity * 6;
+
+  // Divisão Pix + Cartão
+  const splitPercent = formData.splitPercent ?? 30;
+  const entradaPixValue = baseTotal * (splitPercent / 100);
+  const restanteBase = baseTotal - entradaPixValue;
+  const restanteCardTotal = restanteBase * (1 + CREDIT_CARD_SURCHARGE);
 
   // Validation Logic
   const validateField = (field: keyof CustomerData, value: any): string => {
@@ -185,15 +192,15 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
       case 'state': return !value.trim() ? "UF é obrigatória" : "";
       case 'quantity': return Number(value) < 1 ? "Quantidade mínima é 1" : "";
       case 'cardNumber':
-        if (formData.paymentMethod === 'credit_card') {
+        if (formData.paymentMethod === 'credit_card' || formData.paymentMethod === 'pix_credit_card') {
           if (!value) return "Número do cartão é obrigatório";
           if (!isValidCreditCard(value)) return "Número de cartão inválido";
         }
         return "";
-      case 'cardHolder': return formData.paymentMethod === 'credit_card' && !value ? "Titular do cartão é obrigatório" : "";
-      case 'cardCvv': return formData.paymentMethod === 'credit_card' && !value ? "CVV é obrigatório" : "";
-      case 'cardExpiryMonth': return formData.paymentMethod === 'credit_card' && (!value || value === 'mês') ? "Mês é obrigatório" : "";
-      case 'cardExpiryYear': return formData.paymentMethod === 'credit_card' && (!value || value === 'ano') ? "Ano é obrigatório" : "";
+      case 'cardHolder': return (formData.paymentMethod === 'credit_card' || formData.paymentMethod === 'pix_credit_card') && !value ? "Titular do cartão é obrigatório" : "";
+      case 'cardCvv': return (formData.paymentMethod === 'credit_card' || formData.paymentMethod === 'pix_credit_card') && !value ? "CVV é obrigatório" : "";
+      case 'cardExpiryMonth': return (formData.paymentMethod === 'credit_card' || formData.paymentMethod === 'pix_credit_card') && (!value || value === 'mês') ? "Mês é obrigatório" : "";
+      case 'cardExpiryYear': return (formData.paymentMethod === 'credit_card' || formData.paymentMethod === 'pix_credit_card') && (!value || value === 'ano') ? "Ano é obrigatório" : "";
       default: return "";
     }
   };
@@ -212,7 +219,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
     if (formData.quantity < 1) return false;
 
     // Check payment data
-    if (formData.paymentMethod === 'credit_card') {
+    if (formData.paymentMethod === 'credit_card' || formData.paymentMethod === 'pix_credit_card') {
       if (!formData.cardNumber) return false;
       if (!isValidCreditCard(formData.cardNumber)) return false;
       if (!formData.cardHolder) return false;
@@ -828,9 +835,200 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
 
           {formData.paymentMethod === 'pix_credit_card' && (
             <div className="p-6 md:p-8 space-y-6 animate-in slide-in-from-top-2">
-               <div className="bg-sand-100 border border-gold-500/30 p-4 rounded text-moss-900 text-sm font-medium flex items-start gap-3">
+              <div className="bg-sand-100 border border-gold-500/30 p-4 rounded text-moss-900 text-sm font-medium flex items-start gap-3">
                 <Icons.CheckCircle className="text-gold-600 w-5 h-5 flex-shrink-0" />
-                <span><strong>Pagamento Presencial Exclusivo:</strong> Como sabemos que o limite do cartão pode ficar restrito no fim da viagem, nossa equipe da recepção finalizará o seu pagamento pessoalmente dividindo em 2 meios diferentes. Você apenas resguarda a sua vaga promocional agora, e realiza o pagamento misto na hora do seu check-out.</span>
+                <span><strong>Entrada no Pix + restante no cartão.</strong> Você define quanto quer dar de entrada agora, paga o Pix na hora e parcela só a diferença no cartão. Nossa equipe processa a cobrança do cartão em até 2 dias úteis.</span>
+              </div>
+
+              {/* Seletor de percentual da entrada */}
+              <div>
+                <label className={labelClass}>Quanto você quer dar de entrada no Pix?</label>
+                <div className="grid grid-cols-3 gap-3 mt-2">
+                  {[30, 50, 70].map((pct) => {
+                    const isSelected = splitPercent === pct;
+                    return (
+                      <button
+                        key={pct}
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, splitPercent: pct }))}
+                        className={`
+                                            p-3 rounded border text-sm flex flex-col items-center justify-center transition-all duration-200
+                                            ${isSelected
+                            ? 'bg-moss-800 border-moss-800 text-white shadow-md'
+                            : 'bg-white border-gray-200 text-gray-600 hover:border-gold-500 hover:text-gold-600'
+                          }
+                                        `}
+                      >
+                        <span className="font-bold text-lg">{pct}%</span>
+                        <span className="text-xs opacity-90">{formatCurrency(baseTotal * (pct / 100))}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Resumo da divisão */}
+              <div className="bg-gray-50 border border-gray-200 rounded p-4 text-sm space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Entrada no Pix (agora)</span>
+                  <span className="font-bold text-moss-800">{formatCurrency(entradaPixValue)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Restante no cartão (+10% taxa da operadora)</span>
+                  <span className="font-bold text-moss-800">{formatCurrency(restanteCardTotal)}</span>
+                </div>
+                <div className="h-px bg-gray-200 my-1"></div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700 font-bold">Total</span>
+                  <span className="font-bold text-lg text-moss-900">{formatCurrency(entradaPixValue + restanteCardTotal)}</span>
+                </div>
+              </div>
+
+              {/* Bloco Pix (entrada) */}
+              <div>
+                <p className="font-bold text-moss-800 mb-2">1. Pague a entrada de {formatCurrency(entradaPixValue)} via Pix</p>
+                <div className="bg-gray-50 p-4 rounded border border-gray-200 text-sm text-gray-700 space-y-1 font-mono">
+                  <p>Pix</p>
+                  <p>Chave: <span className="font-bold">91981000800</span> (Celular)</p>
+                  <div className="h-px bg-gray-200 my-2"></div>
+                  <p>Caixa Econômica Federal</p>
+                  <p>Agência: 3632</p>
+                  <p>Conta Corrente: 386-6</p>
+                  <p>Op: 003</p>
+                  <p>Favorecido: J Ramos Barros Hotelaria e Eventos Me</p>
+                  <p>CNPJ: 97.519.659/0001-90</p>
+                </div>
+              </div>
+
+              {/* Bloco Cartão (restante) */}
+              <div>
+                <p className="font-bold text-moss-800 mb-2">2. Informe o cartão para o restante de {formatCurrency(restanteCardTotal)}</p>
+
+                <div className="space-y-6">
+                  <div>
+                    <label className={labelClass}>Parcelamento do restante (até 6 vezes)</label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+                      {[1, 2, 3, 4, 5, 6].map((installNum) => {
+                        const val = restanteCardTotal / installNum;
+                        const isSelected = formData.installments === String(installNum);
+                        return (
+                          <button
+                            key={installNum}
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, installments: String(installNum) }))}
+                            className={`
+                                                p-3 rounded border text-sm flex flex-col items-center justify-center transition-all duration-200
+                                                ${isSelected
+                                ? 'bg-moss-800 border-moss-800 text-white shadow-md'
+                                : 'bg-white border-gray-200 text-gray-600 hover:border-gold-500 hover:text-gold-600'
+                              }
+                                            `}
+                          >
+                            <span className="font-bold text-lg">{installNum}x</span>
+                            <span className="text-xs opacity-90">de {formatCurrency(val)}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">Parcelamento possível somente com cartões emitidos no Brasil</p>
+                  </div>
+
+                  <div className="flex gap-2 transition-opacity duration-300">
+                    <div className={`${cardBrand === 'visa' || cardBrand === 'unknown' ? 'opacity-100' : 'opacity-20 grayscale'}`}>
+                      <Icons.Visa />
+                    </div>
+                    <div className={`${cardBrand === 'mastercard' || cardBrand === 'unknown' ? 'opacity-100' : 'opacity-20 grayscale'}`}>
+                      <Icons.Mastercard />
+                    </div>
+                    <div className={`${cardBrand === 'amex' || cardBrand === 'unknown' ? 'opacity-100' : 'opacity-20 grayscale'}`}>
+                      <Icons.Amex />
+                    </div>
+                    <div className={`${cardBrand === 'elo' || cardBrand === 'unknown' ? 'opacity-100' : 'opacity-20 grayscale'}`}>
+                      <Icons.Elo />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className={labelClass}>Número do cartão</label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          className={`${inputClass(errors.cardNumber)} pl-10`}
+                          value={formData.cardNumber}
+                          onChange={handleCardNumberChange}
+                          onBlur={() => handleBlur('cardNumber')}
+                          placeholder="0000 0000 0000 0000"
+                          maxLength={23}
+                        />
+                        <div className="absolute left-3 top-3 text-gray-400">
+                          <Icons.CreditCard />
+                        </div>
+                      </div>
+                      {errors.cardNumber && <p className="text-red-500 text-xs mt-1">{errors.cardNumber}</p>}
+                    </div>
+                    <div>
+                      <label className={labelClass}>Titular do cartão</label>
+                      <input
+                        type="text"
+                        className={inputClass(errors.cardHolder)}
+                        value={formData.cardHolder}
+                        onChange={e => setFormData({ ...formData, cardHolder: e.target.value })}
+                        onBlur={() => handleBlur('cardHolder')}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Como figura no cartão</p>
+                      {errors.cardHolder && <p className="text-red-500 text-xs mt-1">{errors.cardHolder}</p>}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className={labelClass}>Validade</label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="MM"
+                          maxLength={2}
+                          className={inputClass(errors.cardExpiryMonth)}
+                          value={formData.cardExpiryMonth}
+                          onChange={e => setFormData({ ...formData, cardExpiryMonth: e.target.value.replace(/\D/g, '') })}
+                          onBlur={() => handleBlur('cardExpiryMonth')}
+                        />
+                        <input
+                          type="text"
+                          placeholder="AAAA"
+                          maxLength={4}
+                          className={inputClass(errors.cardExpiryYear)}
+                          value={formData.cardExpiryYear}
+                          onChange={e => setFormData({ ...formData, cardExpiryYear: e.target.value.replace(/\D/g, '') })}
+                          onBlur={() => handleBlur('cardExpiryYear')}
+                        />
+                      </div>
+                      {(errors.cardExpiryMonth || errors.cardExpiryYear) && <p className="text-red-500 text-xs mt-1">Data inválida</p>}
+                    </div>
+                    <div>
+                      <label className={labelClass}>Cvv (Código de segurança)</label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          className={`w-24 ${inputClass(errors.cardCvv)}`}
+                          value={formData.cardCvv}
+                          onChange={e => setFormData({ ...formData, cardCvv: e.target.value })}
+                          onBlur={() => handleBlur('cardCvv')}
+                          placeholder="123"
+                        />
+                        <Icons.Lock />
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">Obrigatório para Visa, Mastercard, Discover e Amex</p>
+                      {errors.cardCvv && <p className="text-red-500 text-xs mt-1">{errors.cardCvv}</p>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-success-100 border border-success-500/20 p-4 rounded text-moss-900 text-sm flex items-center gap-2">
+                <Icons.Lock />
+                <span>Todos os dados serão codificados e transmitidos através de uma conexão segura</span>
               </div>
             </div>
           )}

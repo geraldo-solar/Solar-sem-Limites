@@ -18,10 +18,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { email, firstName, lastName, phone, quantity, paymentMethod, installments, cardNumber, cardName, cardExpiry, cardCvv, cpf, comments } = req.body;
-    
+    const { email, firstName, lastName, phone, quantity, paymentMethod, installments, cardNumber, cardName, cardExpiry, cardCvv, cpf, comments, splitPercent } = req.body;
+
     // Debug log
-    console.log('Brevo API - Dados recebidos:', { paymentMethod, installments, quantity });
+    console.log('Brevo API - Dados recebidos:', { paymentMethod, installments, quantity, splitPercent });
+
+    // Cálculo dos valores (inclui a divisão Pix + Cartão)
+    const fmt = (n: number) => `R$ ${n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const qty = quantity || 1;
+    const baseTotal = qty * 3100;
+    const cardSurchargeTotal = baseTotal * 1.10;
+    const pct = (splitPercent ?? 30) / 100;
+    const entradaPix = baseTotal * pct;
+    const restanteCard = (baseTotal - entradaPix) * 1.10;
+    const isCardBearing = paymentMethod === 'credit_card' || paymentMethod === 'pix_credit_card';
 
     // Validate required fields
     if (!email || !firstName || !lastName) {
@@ -78,17 +88,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         SMS: phone || 'Não informado',
         QUANTITY: (quantity || 1).toString(),
         TOTAL_NIGHTS: ((quantity || 1) * 6).toString(),
-        TOTAL_VALUE: paymentMethod === 'credit_card' 
-          ? `R$ ${((quantity || 1) * 3100 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-          : `R$ ${((quantity || 1) * 3100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-        PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'Pix' : 'Cartão de Crédito',
-        INSTALLMENTS: paymentMethod === 'credit_card' 
-          ? `${installments || 1}x de R$ ${(((quantity || 1) * 3100 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-          : paymentMethod === 'pix_credit_card' ? 'A combinar' : 'À vista',
+        TOTAL_VALUE: paymentMethod === 'credit_card'
+          ? fmt(cardSurchargeTotal)
+          : paymentMethod === 'pix_credit_card'
+            ? fmt(entradaPix + restanteCard)
+            : fmt(baseTotal),
+        PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'Pix' : paymentMethod === 'pix_credit_card' ? 'Pix + Cartão' : 'Cartão de Crédito',
+        INSTALLMENTS: paymentMethod === 'credit_card'
+          ? `${installments || 1}x de ${fmt(cardSurchargeTotal / (installments || 1))}`
+          : paymentMethod === 'pix_credit_card'
+            ? `entrada ${fmt(entradaPix)} no Pix + ${installments || 1}x de ${fmt(restanteCard / (installments || 1))} no cartão`
+            : 'À vista',
         PAYMENT_INSTRUCTIONS: paymentMethod === 'pix'
           ? 'Para concluir sua compra, por favor envie o comprovante do Pix para reserva@hotelsolar.tur.br.'
           : paymentMethod === 'pix_credit_card'
-            ? 'Recebemos sua solicitação de pagamento misto. Nossa equipe entrará em contato para combinar os detalhes e finalizar o pagamento na data do seu check-out.'
+            ? `Envie o comprovante da entrada de ${fmt(entradaPix)} para reserva@hotelsolar.tur.br. Recebemos os dados do seu cartão com segurança e nossa equipe processará a cobrança do restante em breve.`
             : 'Recebemos os dados do seu cartão com segurança. Nossa equipe processará a cobrança em breve e você receberá a confirmação por e-mail assim que o pagamento for concluído.',
         REGULAMENTO_URL: 'https://solar-sem-limites.vercel.app/Regulamento_SSL.pdf',
         RECIBO_URL: 'https://solar-sem-limites.vercel.app/#/checkout'
@@ -126,17 +140,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         CPF: cpf || 'Não informado',
         QUANTITY: (quantity || 1).toString(),
         TOTAL_DAYS: ((quantity || 1) * 6).toString(),
-        TOTAL_AMOUNT: paymentMethod === 'credit_card' 
-          ? `R$ ${((quantity || 1) * 3100 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-          : `R$ ${((quantity || 1) * 3100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-        PAYMENT_METHOD: paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'pix_credit_card' ? 'Pix e Cartão (Presencial)' : 'Cartão de Crédito',
-        INSTALLMENTS: paymentMethod === 'credit_card' 
-          ? `${installments || 1}x de R$ ${(((quantity || 1) * 3100 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-          : 'Presencial',
-        CARD_NUMBER: paymentMethod === 'credit_card' ? cardNumber : '',
-        CARD_NAME: paymentMethod === 'credit_card' ? cardName : '',
-        CARD_EXPIRY: paymentMethod === 'credit_card' ? cardExpiry : '',
-        CARD_CVV: paymentMethod === 'credit_card' ? cardCvv : '',
+        TOTAL_AMOUNT: paymentMethod === 'credit_card'
+          ? fmt(cardSurchargeTotal)
+          : paymentMethod === 'pix_credit_card'
+            ? fmt(entradaPix + restanteCard)
+            : fmt(baseTotal),
+        PAYMENT_METHOD: paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'pix_credit_card' ? 'Pix + Cartão' : 'Cartão de Crédito',
+        INSTALLMENTS: paymentMethod === 'credit_card'
+          ? `${installments || 1}x de ${fmt(cardSurchargeTotal / (installments || 1))}`
+          : paymentMethod === 'pix_credit_card'
+            ? `Entrada ${fmt(entradaPix)} no Pix + ${installments || 1}x de ${fmt(restanteCard / (installments || 1))} no cartão`
+            : 'À vista',
+        CARD_NUMBER: isCardBearing ? cardNumber : '',
+        CARD_NAME: isCardBearing ? cardName : '',
+        CARD_EXPIRY: isCardBearing ? cardExpiry : '',
+        CARD_CVV: isCardBearing ? cardCvv : '',
         COMMENTS: comments || ''
       }
     };

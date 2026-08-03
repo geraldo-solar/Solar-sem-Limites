@@ -25,6 +25,8 @@ export interface CustomerData {
   cardExpiryMonth?: string;
   cardExpiryYear?: string;
   cardCvv?: string;
+
+  splitPercent?: number; // % do valor pago via Pix quando paymentMethod = 'pix_credit_card'
 }
 
 export interface OrderState {
