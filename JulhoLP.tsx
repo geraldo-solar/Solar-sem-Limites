@@ -10,27 +10,11 @@ export default function JulhoLP() {
     window.scrollTo(0, 0);
   };
 
-  // Lógica Oculta: Decrescimento de Vagas até o Final de Julho
-  const calculateRemainingPackages = () => {
-    const total = 50;
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const endDate = new Date(currentYear, 6, 31, 23, 59, 59); // 31 de Julho (Mês 6)
-    const startDate = new Date(currentYear, 2, 1); // 1 de Março (Início da Campanha)
-    
-    if (now.getTime() > endDate.getTime()) return 0;
-    if (now.getTime() < startDate.getTime()) return total;
-    
-    const totalDuration = endDate.getTime() - startDate.getTime();
-    const elapsed = now.getTime() - startDate.getTime();
-    const progress = Math.min(1, Math.max(0, elapsed / totalDuration));
-    
-    // Curva de consumo: reduz linearmente. Subtrai e arredonda.
-    const remaining = Math.max(1, Math.ceil(total * (1 - progress)));
-    return remaining;
-  };
+  // Vagas restantes do lote atual.
+  // Altere apenas este número para ajustar o contador do topo da página.
+  const VAGAS_RESTANTES = 5;
 
-  const remainingPackages = calculateRemainingPackages();
+  const remainingPackages = VAGAS_RESTANTES;
   const percentageSold = ((50 - remainingPackages) / 50) * 100;
 
 
