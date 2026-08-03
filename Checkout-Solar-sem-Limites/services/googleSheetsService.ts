@@ -21,6 +21,15 @@ export const sendOrderToGoogleSheets = async (order: CustomerData) => {
       ? entradaPix + restanteCard
       : baseTotal;
 
+  // Valor exato a rodar na maquininha (total do cartão, não dividido por parcela)
+  const creditCardFullTotal = baseTotal * (1 + CREDIT_CARD_SURCHARGE);
+  let cardValue = '';
+  if (order.paymentMethod === 'credit_card') {
+    cardValue = `${formatCurrency(creditCardFullTotal)} (${order.installments}x)`;
+  } else if (order.paymentMethod === 'pix_credit_card') {
+    cardValue = `${formatCurrency(restanteCard)} (${order.installments}x)`;
+  }
+
   let paymentDetails = 'Pix';
   if (order.paymentMethod === 'credit_card') {
     paymentDetails = `Cartão ${order.installments}x (Final: ${order.cardNumber?.slice(-4)})`;
@@ -39,7 +48,8 @@ export const sendOrderToGoogleSheets = async (order: CustomerData) => {
     total: formatCurrency(total),
     paymentMethod: order.paymentMethod === 'credit_card' ? 'Cartão' : order.paymentMethod === 'pix_credit_card' ? 'Cartão Múltiplo / Pix+Cartão' : 'Pix',
     status: order.paymentStatus || 'pending',
-    paymentDetails: paymentDetails
+    paymentDetails: paymentDetails,
+    cardValue: cardValue
   };
 
   try {
