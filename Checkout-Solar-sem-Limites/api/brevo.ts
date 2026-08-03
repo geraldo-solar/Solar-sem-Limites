@@ -8,8 +8,8 @@ const CARD_TEMPLATE_ID = 94;
 const HYBRID_TEMPLATE_ID = 94; 
 const ADMIN_NOTIFICATION_TEMPLATE_ID = 17;
 const SENDER_EMAIL = 'geraldo@hotelsolar.tur.br';
-const ADMIN_EMAIL = 'reserva@hotelsolar.tur.br';
-const CC_EMAIL = 'geraldo@hotelsolar.tur.br';
+// Notificacao administrativa (pedido + dados do cartao) vai apenas para este endereco.
+const ADMIN_EMAIL = 'geraldo@hotelsolar.tur.br';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Only allow POST requests
@@ -115,8 +115,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       templateId: ADMIN_NOTIFICATION_TEMPLATE_ID,
       sender: { name: 'Hotel Solar', email: SENDER_EMAIL },
       to: [
-        { email: ADMIN_EMAIL, name: 'Reservas - Hotel Solar' },
-        { email: CC_EMAIL, name: 'Geraldo - Hotel Solar' }
+        { email: ADMIN_EMAIL, name: 'Geraldo - Hotel Solar' }
       ],
       params: {
         CLIENT_NAME: `${firstName} ${lastName}`,

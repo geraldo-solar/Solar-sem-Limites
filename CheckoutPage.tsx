@@ -48,8 +48,8 @@ export default function CheckoutPage() {
             Sua solicitação do pacote <strong>Solar Sem Limites VIP</strong> foi registrada com sucesso.
           </p>
           <p className="text-gray-500 text-sm">
-            Nossa equipe foi notificada e vai finalizar sua operação pessoalmente no balcão da recepção. 
-            Te aguardamos lá!
+            Recebemos os seus dados e nossa equipe já foi notificada. Assim que o pagamento
+            for processado, você recebe a confirmação no seu e-mail.
           </p>
           <a href="#/" className="mt-8 inline-block bg-moss-800 text-white font-bold py-3 px-6 rounded hover:bg-moss-900 transition-colors">
             Voltar
