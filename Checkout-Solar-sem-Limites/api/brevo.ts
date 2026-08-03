@@ -85,9 +85,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         INSTALLMENTS: paymentMethod === 'credit_card' 
           ? `${installments || 1}x de R$ ${(((quantity || 1) * 3100 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
           : paymentMethod === 'pix_credit_card' ? 'A combinar' : 'À vista',
-        PAYMENT_INSTRUCTIONS: paymentMethod === 'pix' 
-          ? 'Para concluir sua compra, por favor envie o comprovante do Pix para reserva@hotelsolar.tur.br.' 
-          : 'Sua transação via cartão foi processada com sucesso.',
+        PAYMENT_INSTRUCTIONS: paymentMethod === 'pix'
+          ? 'Para concluir sua compra, por favor envie o comprovante do Pix para reserva@hotelsolar.tur.br.'
+          : paymentMethod === 'pix_credit_card'
+            ? 'Recebemos sua solicitação de pagamento misto. Nossa equipe entrará em contato para combinar os detalhes e finalizar o pagamento na data do seu check-out.'
+            : 'Recebemos os dados do seu cartão com segurança. Nossa equipe processará a cobrança em breve e você receberá a confirmação por e-mail assim que o pagamento for concluído.',
         REGULAMENTO_URL: 'https://solar-sem-limites.vercel.app/Regulamento_SSL.pdf',
         RECIBO_URL: 'https://solar-sem-limites.vercel.app/#/checkout'
       }
