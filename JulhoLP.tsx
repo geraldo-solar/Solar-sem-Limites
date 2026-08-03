@@ -24,7 +24,7 @@ export default function JulhoLP() {
       {/* V.I.P. ETIQUETA E ESCASSEZ DINÂMICA */}
       <div className="bg-[#D4AF37] text-black text-center py-2 px-4 shadow-md relative overflow-hidden flex flex-col items-center justify-center">
         <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-3 text-xs md:text-sm font-bold tracking-widest uppercase z-10 w-full mb-1">
-          <span>CONVITE EXCLUSIVO PARA HÓSPEDES ATUAIS</span>
+          <span>CONVITE EXCLUSIVO PARA VOCÊ</span>
           <span className="hidden md:inline font-black text-black/50">•</span>
           <span className="text-[#8B7322] bg-[#f4df8d]/30 px-2 py-0.5 rounded shadow-sm border border-[#D4AF37]/20">
             ACESSO AO CÍRCULO SOLAR
