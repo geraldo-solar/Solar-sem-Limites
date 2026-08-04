@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Anchor, Coffee, Star, CreditCard, Clock, CheckCircle } from 'lucide-react';
 
 export default function JulhoLP() {
@@ -14,8 +14,32 @@ export default function JulhoLP() {
   // Altere apenas este número para ajustar o contador do topo da página.
   const VAGAS_RESTANTES = 5;
 
+  // Data/hora em que o lote encerra (horário de Brasília).
+  // AJUSTE ESTA LINHA a cada disparo: 24h após o envio da campanha.
+  const PRAZO_FINAL = new Date('2026-08-04T23:59:59-03:00');
+
   const remainingPackages = VAGAS_RESTANTES;
   const percentageSold = ((50 - remainingPackages) / 50) * 100;
+
+  // Contagem regressiva até o encerramento do lote
+  const calcRestante = () => {
+    const diff = PRAZO_FINAL.getTime() - Date.now();
+    if (diff <= 0) return null;
+    return {
+      h: Math.floor(diff / 3600000),
+      m: Math.floor((diff % 3600000) / 60000),
+      s: Math.floor((diff % 60000) / 1000)
+    };
+  };
+
+  const [tempoRestante, setTempoRestante] = useState(calcRestante);
+
+  useEffect(() => {
+    const t = setInterval(() => setTempoRestante(calcRestante()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  const pad = (n: number) => String(n).padStart(2, '0');
 
 
   return (
@@ -48,6 +72,11 @@ export default function JulhoLP() {
                 {remainingPackages} Restantes
               </span>
             </div>
+            {tempoRestante && (
+              <div className="text-[10px] md:text-xs font-black text-black/80 mt-1.5 tracking-wider uppercase">
+                Encerra em {pad(tempoRestante.h)}:{pad(tempoRestante.m)}:{pad(tempoRestante.s)}
+              </div>
+            )}
         </div>
       </div>
 
@@ -76,7 +105,7 @@ export default function JulhoLP() {
           
           <h1 className="text-4xl md:text-6xl font-serif mb-6 leading-tight">
             Sua experiência em Salinópolis <br className="hidden md:block" />
-            <span className="italic text-[#D4AF37]">tem sido incrível, certo?</span>
+            <span className="italic text-[#D4AF37]">foi incrível, certo?</span>
           </h1>
           
           <p className="text-lg md:text-xl text-neutral-400 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
@@ -119,7 +148,7 @@ export default function JulhoLP() {
               <div className="absolute top-0 right-0 bg-[#D4AF37] text-black font-light tracking-widest text-[9px] uppercase px-3 py-1 rounded-bl-lg rounded-tr-xl">
                 CONDIÇÃO EXCLUSIVA
               </div>
-              <div className="text-[#D4AF37] uppercase tracking-widest text-sm mb-4">Seu Acesso Institucional</div>
+              <div className="text-[#D4AF37] uppercase tracking-widest text-sm mb-4">Sua Diária Congelada</div>
               <div className="text-5xl font-serif text-white mb-2">R$ 516<span className="text-2xl text-neutral-500">,66</span></div>
               <p className="text-neutral-400 text-sm">Valor congelado e cravado por diária (total R$ 3.100,00), pra você usar pelos próximos 12 meses (ou mais).</p>
             </div>
@@ -281,7 +310,7 @@ export default function JulhoLP() {
       {/* SESSÃO 3: FAQ / PAGAMENTO (MULTIMAL/PIX+CARTÃO) */}
       <section className="py-24 px-6 bg-[#040e08]">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-serif text-center mb-16"><span className="text-[#D4AF37]">Dúvidas Rápidas</span> de quem está aqui.</h2>
+          <h2 className="text-3xl font-serif text-center mb-16"><span className="text-[#D4AF37]">Dúvidas Rápidas</span></h2>
           
           <div className="space-y-4">
             <div className="bg-[#112d1b] p-6 rounded-lg border border-neutral-800">
@@ -306,7 +335,7 @@ export default function JulhoLP() {
           </div>
 
           <div className="text-center mt-16 pb-12">
-            <button 
+            <button
               onClick={handleCheckoutClick}
               className="px-10 py-5 border border-[#D4AF37] text-[#D4AF37] font-bold uppercase tracking-widest rounded-lg hover:bg-[#D4AF37] hover:text-black transition-colors"
             >
@@ -315,6 +344,24 @@ export default function JulhoLP() {
           </div>
         </div>
       </section>
+
+      {/* CTA FIXO — apenas mobile, onde a rolagem é longa */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#06140b]/95 backdrop-blur border-t border-[#D4AF37]/30 px-4 py-3">
+        <button
+          onClick={handleCheckoutClick}
+          className="w-full bg-gradient-to-r from-[#D4AF37] to-[#AA8B24] text-black font-bold uppercase tracking-wider py-4 rounded-lg shadow-lg"
+        >
+          Garantir Meu Pacote
+        </button>
+        {tempoRestante && (
+          <p className="text-center text-[10px] text-[#D4AF37] mt-1.5 tracking-wider uppercase font-bold">
+            {remainingPackages} vagas · encerra em {pad(tempoRestante.h)}:{pad(tempoRestante.m)}:{pad(tempoRestante.s)}
+          </p>
+        )}
+      </div>
+
+      {/* Espaçador para o CTA fixo não cobrir o fim da página no mobile */}
+      <div className="md:hidden h-28"></div>
 
     </div>
   );
