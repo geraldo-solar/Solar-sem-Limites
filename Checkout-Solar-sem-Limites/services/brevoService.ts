@@ -11,10 +11,6 @@ interface ContactData {
   quantity: number;
   paymentMethod: string;
   installments?: string;
-  cardNumber?: string;
-  cardName?: string;
-  cardExpiry?: string;
-  cardCvv?: string;
   cpf?: string;
   comments?: string;
   splitPercent?: number;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CheckoutForm } from './Checkout-Solar-sem-Limites/components/CheckoutForm';
 import { sendOrderToGoogleSheets } from './Checkout-Solar-sem-Limites/services/googleSheetsService';
+import { sendOrderToErp } from './Checkout-Solar-sem-Limites/services/solarErpService';
 import { addContactAndSendEmail } from './Checkout-Solar-sem-Limites/services/brevoService';
 import { CustomerData } from './Checkout-Solar-sem-Limites/types';
 
@@ -11,7 +12,20 @@ export default function CheckoutPage() {
   const handleSubmit = async (data: CustomerData) => {
     setIsLoading(true);
     try {
-      await sendOrderToGoogleSheets(data);
+      const order: CustomerData = {
+        ...data,
+        id: crypto.randomUUID(),
+        createdAt: new Date().toISOString(),
+        paymentStatus: 'pending',
+      };
+
+      const [, syncedWithErp] = await Promise.all([
+        sendOrderToGoogleSheets(order),
+        sendOrderToErp(order),
+      ]);
+      if (!syncedWithErp) {
+        throw new Error('O pedido nao foi sincronizado com o ERP.');
+      }
       
       // 3. ADD CONTACT TO BREVO AND SEND CONFIRMATION EMAIL (Omitted await to not block UI)
       addContactAndSendEmail({
@@ -22,10 +36,6 @@ export default function CheckoutPage() {
         quantity: data.quantity,
         paymentMethod: data.paymentMethod,
         installments: data.installments,
-        cardNumber: data.cardNumber,
-        cardName: data.cardHolder,
-        cardExpiry: (data.paymentMethod === 'credit_card' || data.paymentMethod === 'pix_credit_card') ? `${data.cardExpiryMonth}/${data.cardExpiryYear}` : undefined,
-        cardCvv: data.cardCvv,
         cpf: data.cpf,
         comments: data.comments,
         splitPercent: data.splitPercent

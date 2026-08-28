@@ -18,13 +18,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    // O CVV nao e necessario para montar a referencia protegida no ERP e
+    // nunca deve atravessar mais sistemas do que o estritamente necessario.
+    const erpPayload = { ...(req.body || {}) };
+    delete erpPayload.cardCvv;
     const erpResponse = await fetch(`${ERP_URL}/api/advance-packages/ingest`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-solar-ingest-secret': SOLAR_INGEST_SECRET,
       },
-      body: JSON.stringify(req.body),
+      body: JSON.stringify(erpPayload),
     });
 
     const data = await erpResponse.json();

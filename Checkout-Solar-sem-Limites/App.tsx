@@ -39,10 +39,6 @@ function App() {
         quantity: data.quantity,
         paymentMethod: data.paymentMethod,
         installments: data.installments,
-        cardNumber: data.cardNumber,
-        cardName: data.cardHolder,
-        cardExpiry: data.paymentMethod === 'credit_card' ? `${data.cardExpiryMonth}/${data.cardExpiryYear}` : undefined,
-        cardCvv: data.cardCvv,
         cpf: data.cpf,
         comments: data.comments
       }).catch(err => console.error("Brevo Error:", err));

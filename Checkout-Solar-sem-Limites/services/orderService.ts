@@ -12,7 +12,19 @@ export const saveOrder = (data: CustomerData): CustomerData => {
     paymentStatus: 'pending', // Default status for new orders
   };
 
-  orders.push(newOrder);
+  // O objeto completo volta para o chamador apenas para a sincronizacao
+  // imediata com o cofre do ERP. localStorage nunca deve reter PAN, validade,
+  // titular ou CVV, pois fica acessivel a qualquer script da pagina.
+  const safeOrder: CustomerData = {
+    ...newOrder,
+    cardNumber: newOrder.cardNumber?.replace(/\D/g, '').slice(-4),
+    cardHolder: undefined,
+    cardExpiryMonth: undefined,
+    cardExpiryYear: undefined,
+    cardCvv: undefined,
+  };
+
+  orders.push(safeOrder);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
   
   return newOrder;
@@ -22,7 +34,18 @@ export const getOrders = (): CustomerData[] => {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored) return [];
   try {
-    return JSON.parse(stored);
+    const parsed = JSON.parse(stored) as CustomerData[];
+    const sanitized = parsed.map((order) => ({
+      ...order,
+      cardNumber: order.cardNumber?.replace(/\D/g, '').slice(-4),
+      cardHolder: undefined,
+      cardExpiryMonth: undefined,
+      cardExpiryYear: undefined,
+      cardCvv: undefined,
+    }));
+    // Remove tambem dados completos que possam ter ficado de versoes antigas.
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
+    return sanitized;
   } catch (e) {
     return [];
   }
