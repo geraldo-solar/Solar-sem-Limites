@@ -166,6 +166,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        <div className="mb-6 bg-amber-50 border border-amber-300 text-amber-900 rounded-lg px-4 py-3 text-sm">
+          <strong>Descontinuado:</strong> pedidos novos não passam mais por aqui — use a seção{' '}
+          <strong>Solar Sem Limites</strong> no ERP para aprovar pagamentos. Esta tela só lê o que já
+          está na planilha antiga do Google Sheets.
+        </div>
         <div className="mb-6 flex justify-between items-end">
            <h2 className="text-2xl font-bold text-gray-800">
              Pedidos Realizados ({orders.length})

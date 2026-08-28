@@ -5,7 +5,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 // Admin components removed - using Google Sheets for management
 import { generateConfirmationMessage } from './services/geminiService';
 import { saveOrder } from './services/orderService';
-import { sendOrderToGoogleSheets } from './services/googleSheetsService';
+import { sendOrderToErp } from './services/solarErpService';
 import { addContactAndSendEmail } from './services/brevoService';
 import { CustomerData, Step, View } from './types';
 import { Icons } from './constants';
@@ -24,9 +24,11 @@ function App() {
       // 1. SAVE ORDER LOCALLY (Mock Database for Admin Dashboard)
       const savedOrder = saveOrder(data);
 
-      // 2. SEND TO GOOGLE SHEETS (Background Process)
-      // We don't await this so it doesn't slow down the UI
-      sendOrderToGoogleSheets(savedOrder).catch(err => console.error("Sheets Error:", err));
+      // 2. SYNC WITH ERP (Background Process)
+      // Não aguardamos para não travar a UI — se falhar, o e-mail de
+      // notificação para o hotel (passo 3, abaixo) ainda sai, então o pedido
+      // não fica invisível como ficava com o link antigo do Google Sheets.
+      sendOrderToErp(savedOrder).catch(err => console.error("ERP Sync Error:", err));
 
       // 3. ADD CONTACT TO BREVO AND SEND CONFIRMATION EMAIL
       addContactAndSendEmail({
