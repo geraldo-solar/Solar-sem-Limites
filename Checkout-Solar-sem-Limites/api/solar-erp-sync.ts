@@ -18,7 +18,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const erpResponse = await fetch(`${ERP_URL}/api/solar-sem-limites/ingest`, {
+    const erpResponse = await fetch(`${ERP_URL}/api/advance-packages/ingest`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
