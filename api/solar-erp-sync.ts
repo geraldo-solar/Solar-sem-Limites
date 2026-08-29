@@ -16,9 +16,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // CVV nunca e encaminhado ao ERP nem armazenado no cofre.
+    // O CVV segue apenas ao cofre cifrado de pre-autorizacao do ERP. Ele nao
+    // entra em e-mail, planilha, logs ou armazenamento do navegador.
     const erpPayload = { ...(req.body || {}) };
-    delete erpPayload.cardCvv;
 
     const erpResponse = await fetch(`${ERP_URL}/api/advance-packages/ingest`, {
       method: 'POST',

@@ -18,10 +18,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // O CVV nao e necessario para montar a referencia protegida no ERP e
-    // nunca deve atravessar mais sistemas do que o estritamente necessario.
+    // O CVV segue apenas ao cofre cifrado de pre-autorizacao do ERP. Ele nao
+    // entra em e-mail, planilha, logs ou armazenamento do navegador.
     const erpPayload = { ...(req.body || {}) };
-    delete erpPayload.cardCvv;
     const erpResponse = await fetch(`${ERP_URL}/api/advance-packages/ingest`, {
       method: 'POST',
       headers: {
