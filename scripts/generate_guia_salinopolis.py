@@ -201,8 +201,8 @@ def itinerary_block(c, y, time_label, title, body, accent=TEAL):
 
 
 def draw_cover(c):
-    draw_cover_image(c, PUBLIC / "hotel-panoramica-rio.jpg", 0, 0, W, H, 0.48)
-    c.setFillColor(Color(0.02, 0.12, 0.10, 0.50))
+    draw_cover_image(c, PUBLIC / "blog-atalaia.webp", 0, 0, W, H, 0.50)
+    c.setFillColor(Color(0.02, 0.12, 0.10, 0.38))
     c.rect(0, 0, W, H, stroke=0, fill=1)
     c.setFillColor(Color(0.02, 0.12, 0.10, 0.92))
     c.roundRect(18 * mm, 24 * mm, W - 36 * mm, 112 * mm, 18, stroke=0, fill=1)

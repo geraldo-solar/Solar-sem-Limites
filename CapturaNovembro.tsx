@@ -244,11 +244,11 @@ export default function CapturaNovembro() {
       <main id="topo">
         <section className="relative isolate min-h-[880px] overflow-hidden bg-[#0d4037] lg:min-h-[760px]">
           <img
-            src={assetUrl('blog-atalaia.webp')}
-            alt="Vista aérea das praias de Salinópolis"
+            src={assetUrl('hotel-panoramica-rio.jpg')}
+            alt="Vista aérea do Hotel Solar às margens do rio em Salinópolis"
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,37,32,.74)_0%,rgba(8,48,40,.62)_42%,rgba(6,37,32,.92)_100%)] sm:bg-[linear-gradient(90deg,rgba(6,37,32,.96)_0%,rgba(8,48,40,.86)_43%,rgba(8,38,34,.38)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,37,32,.96)_0%,rgba(8,48,40,.87)_43%,rgba(8,38,34,.48)_100%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_18%,rgba(225,192,132,.22),transparent_34%)]" />
 
           <div className="relative mx-auto grid max-w-7xl gap-8 px-4 pb-12 pt-28 sm:gap-10 sm:px-8 sm:pb-16 sm:pt-32 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-16 lg:px-12 lg:pb-20">
