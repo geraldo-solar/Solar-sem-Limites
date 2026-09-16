@@ -188,16 +188,31 @@ def proximity_card(c, x, y, width, height, distance, title, body, accent=TEAL):
     para(c, body, CARD_BODY, x + 14, y + height - 60, width - 28, height - 68)
 
 
-def itinerary_block(c, y, time_label, title, body, accent=TEAL):
+def itinerary_block(c, top, time_label, title, body, accent=TEAL):
     x = 22 * mm
+    width = W - 44 * mm
+    height = 18 * mm
+    y = top - height
+
+    c.setFillColor(white)
+    c.setStrokeColor(LINE)
+    c.roundRect(x, y, width, height, 10, stroke=1, fill=1)
+
+    pill_width = 28 * mm
+    pill_height = 20
+    pill_x = x + 5 * mm
+    pill_y = y + (height - pill_height) / 2
     c.setFillColor(accent)
-    c.roundRect(x, y - 4, 28 * mm, 20, 10, stroke=0, fill=1)
+    c.roundRect(pill_x, pill_y, pill_width, pill_height, 10, stroke=0, fill=1)
     c.setFillColor(white)
     c.setFont("Helvetica-Bold", 8)
-    c.drawCentredString(x + 14 * mm, y + 3, time_label.upper())
-    para(c, title, CARD_TITLE, x + 34 * mm, y + 13, W - x - 56 * mm, 28)
-    body_h = para(c, body, CARD_BODY, x + 34 * mm, y - 6, W - x - 56 * mm, 55)
-    return y - max(51, body_h + 27)
+    c.drawCentredString(pill_x + pill_width / 2, pill_y + 6, time_label.upper())
+
+    text_x = x + 39 * mm
+    text_width = width - 44 * mm
+    para(c, title, CARD_TITLE, text_x, top - 6, text_width, 22)
+    para(c, body, CARD_BODY, text_x, top - 25, text_width, 32)
+    return y - 2 * mm
 
 
 def draw_cover(c):
@@ -281,18 +296,27 @@ def draw_day_page(c, number, day, title, subtitle, proximity, image_name, image_
     label(c, proximity, 22 * mm, top_y - 20, fill=GOLD, color=DEEP)
     image_y = top_y - 61 * mm
     draw_rounded_image(c, PUBLIC / image_name, 22 * mm, image_y, W - 44 * mm, 47 * mm, 13, image_focal)
-    y = image_y - 12
+    y = image_y - 3 * mm
     for index, (time_label, block_title, body) in enumerate(blocks):
         y = itinerary_block(c, y, time_label, block_title, body, [TEAL, GOLD, GREEN][index % 3])
+
+    callout_gap = 4 * mm
+    callout_h = 28 * mm
+    callout_top = y - 3 * mm
+    why_y = callout_top - callout_h
+    tip_y = why_y - callout_gap - callout_h
+    callout_w = W - 44 * mm
+
     c.setFillColor(white)
     c.setStrokeColor(LINE)
-    c.roundRect(22 * mm, 58 * mm, W - 44 * mm, 27 * mm, 12, stroke=1, fill=1)
-    label(c, "Por que funciona", 29 * mm, 76 * mm, 35 * mm, DEEP, white)
-    para(c, why, SMALL, 29 * mm, 72 * mm, W - 58 * mm, 38)
+    c.roundRect(22 * mm, why_y, callout_w, callout_h, 12, stroke=1, fill=1)
+    label(c, "Por que funciona", 29 * mm, why_y + callout_h - 25, 35 * mm, DEEP, white)
+    para(c, why, SMALL, 29 * mm, why_y + callout_h - 34, callout_w - 14 * mm, 45)
+
     c.setFillColor(SKY)
-    c.roundRect(22 * mm, 24 * mm, W - 44 * mm, 28 * mm, 12, stroke=0, fill=1)
-    label(c, "Antes de sair", 29 * mm, 43 * mm, 34 * mm, TEAL, white)
-    para(c, tip, SMALL, 29 * mm, 39 * mm, W - 58 * mm, 38)
+    c.roundRect(22 * mm, tip_y, callout_w, callout_h, 12, stroke=0, fill=1)
+    label(c, "Antes de sair", 29 * mm, tip_y + callout_h - 25, 34 * mm, TEAL, white)
+    para(c, tip, SMALL, 29 * mm, tip_y + callout_h - 34, callout_w - 14 * mm, 45)
     c.showPage()
 
 
