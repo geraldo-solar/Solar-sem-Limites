@@ -329,35 +329,38 @@ def draw_page_6(c):
         "Em Salinas, a maré altera praia, embarque e faixa de areia. Confirme as condições do dia e use o hotel como base para ajustar o programa sem transformar a viagem em corrida.",
     )
 
-    draw_rounded_image(c, PUBLIC / "hotel-cafe-manha.jpg", 22 * mm, y - 79 * mm, 70 * mm, 70 * mm, 13, 0.55)
-    x = 101 * mm
-    top = y - 8
+    image_y = y - 60 * mm
+    draw_rounded_image(c, PUBLIC / "hotel-cafe-manha.jpg", 22 * mm, image_y, W - 44 * mm, 52 * mm, 13, 0.55)
+
     items = [
         ("Confirme na recepção", "Cheque maré, clima e saída do barco antes de organizar o restante do dia."),
         ("Use o Solar como plano B", "Piscina, hidromassagem e uma refeição tranquila protegem o ritmo da família."),
         ("Vá ao Maçarico sem carro", "A curta distância permite caminhar ou usar as bicicletas do hotel."),
         ("Reserve energia para Atalaia", "É o trecho mais distante e movimentado; vá cedo e combine um ponto de encontro."),
     ]
+
+    gap = 5 * mm
+    card_w = (W - 44 * mm - gap) / 2
+    card_h = 36 * mm
+    grid_top = image_y - 6 * mm
+    accents = [TEAL, GOLD, GREEN, DEEP]
     for idx, (ttl, body) in enumerate(items, 1):
-        c.setFillColor([TEAL, GOLD, GREEN, DEEP][idx - 1])
-        c.circle(x + 7, top - 4, 7, stroke=0, fill=1)
-        c.setFillColor(white)
-        c.setFont("Helvetica-Bold", 7)
-        c.drawCentredString(x + 7, top - 6.5, str(idx))
-        para(c, ttl, CARD_TITLE, x + 20, top + 6, 76 * mm, 22)
-        h = para(c, body, CARD_BODY, x + 20, top - 12, 76 * mm, 42)
-        top -= max(44, h + 25)
+        row = (idx - 1) // 2
+        col = (idx - 1) % 2
+        x = 22 * mm + col * (card_w + gap)
+        card_y = grid_top - card_h - row * (card_h + gap)
+        card(c, x, card_y, card_w, card_h, ttl, body, accents[idx - 1], idx)
 
     c.setFillColor(DEEP)
-    c.roundRect(22 * mm, 30 * mm, W - 44 * mm, 43 * mm, 14, stroke=0, fill=1)
-    para(c, "Checklist rápido", style("check_title", 15, 18, GOLD, "Helvetica-Bold"), 29 * mm, 66 * mm, 45 * mm, 24)
+    c.roundRect(22 * mm, 25 * mm, W - 44 * mm, 45 * mm, 14, stroke=0, fill=1)
+    para(c, "Checklist rápido", style("check_title", 15, 18, GOLD, "Helvetica-Bold"), 29 * mm, 63 * mm, 48 * mm, 24)
     checklist = (
         "- Protetor solar, chapéu e água<br/>"
         "- Repelente e uma troca seca<br/>"
         "- Tábua de marés salva no celular<br/>"
         "- Coletes e operador confirmados antes do embarque"
     )
-    para(c, checklist, SMALL_WHITE, 78 * mm, 66 * mm, 102 * mm, 75)
+    para(c, checklist, SMALL_WHITE, 80 * mm, 63 * mm, 100 * mm, 75)
     c.showPage()
 
 
