@@ -154,6 +154,10 @@ function confirmationEmail(firstName: string) {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  const startedAt = Date.now();
+  const requestIdHeader = req.headers['x-vercel-id'];
+  const requestId = Array.isArray(requestIdHeader) ? requestIdHeader[0] : requestIdHeader;
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Método não permitido.' });
@@ -186,6 +190,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       await Promise.all(profileTasks);
+      console.log(JSON.stringify({
+        level: 'info',
+        message: 'SSL26 lead profile saved',
+        route: '/api/capture-lead',
+        action: 'profile',
+        requestId,
+        durationMs: Date.now() - startedAt,
+      }));
       return res.status(200).json({ success: true });
     }
 
@@ -224,9 +236,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       brevoRequest('/smtp/email', emailPayload),
       notifyIntegration({ ...body, action: 'capture', firstName, email, phone }),
     ]);
+    console.log(JSON.stringify({
+      level: 'info',
+      message: 'SSL26 lead captured',
+      route: '/api/capture-lead',
+      action: 'capture',
+      requestId,
+      durationMs: Date.now() - startedAt,
+    }));
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Lead capture failed', error instanceof Error ? error.message : 'unknown error');
+    console.error(JSON.stringify({
+      level: 'error',
+      message: 'SSL26 lead capture failed',
+      route: '/api/capture-lead',
+      requestId,
+      error: error instanceof Error ? error.message : 'unknown error',
+      durationMs: Date.now() - startedAt,
+    }));
     return res.status(502).json({ error: 'Não conseguimos concluir agora. Tente novamente em instantes.' });
   }
 }
