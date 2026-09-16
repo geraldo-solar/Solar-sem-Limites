@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import JulhoLP from './JulhoLP';
 import CheckoutPage from './CheckoutPage';
+import CapturaNovembro from './CapturaNovembro';
 
 interface Props { children: React.ReactNode; }
 interface State { hasError: boolean; error: Error | null; }
 
 class ErrorBoundary extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+  declare readonly props: Readonly<Props>;
+  state: State = { hasError: false, error: null };
+
   static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };
   }
@@ -40,10 +40,11 @@ export default function App() {
   }, []);
 
   let content = <JulhoLP />;
-  if (hash === '#/checkout') {
+  if (hash.startsWith('#/lista-vip')) {
+    content = <CapturaNovembro />;
+  } else if (hash === '#/checkout') {
     content = <CheckoutPage />;
   }
 
   return <ErrorBoundary>{content}</ErrorBoundary>;
 }
-

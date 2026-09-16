@@ -1,20 +1,24 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Solar Sem Limites — Hotel Solar
 
-# Run and deploy your AI Studio app
+Página de vendas, checkout e captação do lançamento Solar Sem Limites.
 
-This contains everything you need to run your app locally.
+## Rotas
 
-View your app in AI Studio: https://ai.studio/apps/drive/12CMbjXlFVZ9M8LilUjebdNaakQ_BE8iH
+- `/#/lista-vip`: landing de captação de novembro de 2026.
+- `/#/checkout`: checkout.
+- `/`: página de vendas atual.
 
-## Run Locally
+## Desenvolvimento local
 
-**Prerequisites:**  Node.js
+1. Instale as dependências com `npm install`.
+2. Copie `.env.example` para `.env.local` apenas quando precisar testar as APIs.
+3. Execute `npm run dev`.
+4. Valide a produção com `npm run build` e `npx tsc --noEmit`.
 
+Nunca coloque chaves Brevo, ManyChat ou de webhook em variáveis `VITE_*`, pois elas seriam incluídas no JavaScript público.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Ativação SSL26
+
+- Guia operacional: `docs/Ativacao_Captacao_SSL26.md`.
+- Preparar pasta, lista e campos no Brevo: `npm run setup:brevo`.
+- Variáveis necessárias: `.env.example`.
