@@ -179,6 +179,15 @@ def card(c, x, y, width, height, title, body, accent=TEAL, index=None):
     para(c, body, CARD_BODY, x + 15, y + height - 53, width - 30, height - 62)
 
 
+def proximity_card(c, x, y, width, height, distance, title, body, accent=TEAL):
+    c.setFillColor(white)
+    c.setStrokeColor(LINE)
+    c.roundRect(x, y, width, height, 12, stroke=1, fill=1)
+    label(c, distance, x + 14, y + height - 28, fill=accent, color=white)
+    para(c, title, CARD_TITLE, x + 14, y + height - 37, width - 28, 28)
+    para(c, body, CARD_BODY, x + 14, y + height - 60, width - 28, height - 68)
+
+
 def itinerary_block(c, y, time_label, title, body, accent=TEAL):
     x = 22 * mm
     c.setFillColor(accent)
@@ -188,7 +197,7 @@ def itinerary_block(c, y, time_label, title, body, accent=TEAL):
     c.drawCentredString(x + 14 * mm, y + 3, time_label.upper())
     para(c, title, CARD_TITLE, x + 34 * mm, y + 13, W - x - 56 * mm, 28)
     body_h = para(c, body, CARD_BODY, x + 34 * mm, y - 6, W - x - 56 * mm, 55)
-    return y - max(53, body_h + 28)
+    return y - max(51, body_h + 27)
 
 
 def draw_cover(c):
@@ -216,7 +225,7 @@ def draw_cover(c):
     )
     para(
         c,
-        "Três dias entre praias, manguezais, sabores paraenses e pausas bem escolhidas.",
+        "Três dias saindo do Hotel Solar: primeiro o que está ao redor, depois os clássicos de Salinas.",
         style("cover_sub", 12, 18, HexColor("#E8F1EE")),
         30 * mm,
         59 * mm,
@@ -233,44 +242,57 @@ def draw_page_2(c):
     page_base(c, 2, "Comece por aqui")
     y = heading(
         c,
-        "Amazônia Atlântica",
-        "Salinas combina mar aberto, mangue e um jeito paraense de desacelerar.",
-        "O melhor roteiro não tenta encaixar tudo. Ele alterna praia cedo, descanso no meio do dia e uma boa caminhada no fim da tarde.",
+        "Menos deslocamento, mais experiência",
+        "Três dias em círculos: comece pelo Hotel Solar.",
+        "A ordem deste guia parte do que está no hotel, avança para o entorno imediato e deixa o maior deslocamento para o último dia.",
     )
-    img_y = y - 72 * mm
-    draw_rounded_image(c, PUBLIC / "faq-salinas-colagem.jpg", 22 * mm, img_y, 72 * mm, 66 * mm, 13, 0.12)
+    img_y = y - 53 * mm
+    draw_rounded_image(c, PUBLIC / "hotel-panoramica-rio.jpg", 22 * mm, img_y, W - 44 * mm, 48 * mm, 13, 0.45)
+    para(c, "Hotel, trapiche, mangue e restaurante formam uma mesma base de viagem.", SMALL, 24 * mm, img_y - 5, W - 48 * mm, 20)
 
-    card(c, 102 * mm, img_y + 37 * mm, 86 * mm, 29 * mm, "Praia com personalidade", "Atalaia é a mais movimentada; Farol Velho e Corvina ajudam a variar o ritmo.", TEAL)
-    card(c, 102 * mm, img_y + 4 * mm, 86 * mm, 29 * mm, "Cidade para caminhar", "A Orla do Maçarico reúne passeio, restaurantes e fim de tarde.", GOLD)
-    card(c, 102 * mm, img_y - 29 * mm, 86 * mm, 29 * mm, "Natureza por perto", "Manguezais, ilhas e passeios de barco revelam outra face do litoral paraense.", GREEN)
+    gap = 5 * mm
+    card_w = (W - 44 * mm - gap) / 2
+    card_h = 35 * mm
+    row_1 = img_y - 45 * mm
+    row_2 = row_1 - card_h - 5 * mm
+    proximity_card(c, 22 * mm, row_1, card_w, card_h, "No hotel", "Praia do Solar", "Aparece conforme a maré baixa, com acesso pelo trapiche e clima de refúgio.", TEAL)
+    proximity_card(c, 22 * mm + card_w + gap, row_1, card_w, card_h, "800 m", "Orla do Maçarico", "Boa para caminhar ou pedalar, jantar e sentir a brisa no fim da tarde.", GOLD)
+    proximity_card(c, 22 * mm, row_2, card_w, card_h, "Do trapiche", "Arapepó e Espadarte", "O passeio de barco pode começar no próprio hotel, sempre conforme maré e operação.", GREEN)
+    proximity_card(c, 22 * mm + card_w + gap, row_2, card_w, card_h, "15 min", "Atalaia e Farol Velho", "Os clássicos ficam para o dia de carro, com mais atenção à maré e ao movimento.", DEEP)
 
     c.setFillColor(DEEP)
-    c.roundRect(22 * mm, 27 * mm, W - 44 * mm, 38 * mm, 14, stroke=0, fill=1)
-    label(c, "Dica Solar", 29 * mm, 51 * mm, 29 * mm, GOLD, DEEP)
+    c.roundRect(22 * mm, 25 * mm, W - 44 * mm, 34 * mm, 14, stroke=0, fill=1)
+    label(c, "Ordem inteligente", 29 * mm, 47 * mm, 38 * mm, GOLD, DEEP)
     para(
         c,
-        "Planeje a praia pela maré, não apenas pelo relógio. A variação é forte na região e pode mudar rapidamente o espaço de areia disponível. Confirme a tábua de marés e siga a orientação local antes de entrar com veículo na faixa de areia.",
+        "Use a maré como relógio do roteiro. Se a Praia do Solar surgir em outro horário, troque os blocos de lugar: o objetivo é reduzir idas e vindas sem perder as melhores condições do dia.",
         SMALL_WHITE,
         29 * mm,
-        47 * mm,
+        43 * mm,
         W - 58 * mm,
-        55,
+        45,
     )
     c.showPage()
 
 
-def draw_day_page(c, number, day, title, subtitle, image_name, image_focal, blocks, tip):
+def draw_day_page(c, number, day, title, subtitle, proximity, image_name, image_focal, blocks, why, tip):
     page_base(c, number, f"Roteiro de 3 dias - Dia {day}")
     top_y = heading(c, f"Dia {day}", title, subtitle)
-    image_y = top_y - 55 * mm
-    draw_rounded_image(c, PUBLIC / image_name, 22 * mm, image_y, W - 44 * mm, 49 * mm, 13, image_focal)
+    label(c, proximity, 22 * mm, top_y - 20, fill=GOLD, color=DEEP)
+    image_y = top_y - 61 * mm
+    draw_rounded_image(c, PUBLIC / image_name, 22 * mm, image_y, W - 44 * mm, 47 * mm, 13, image_focal)
     y = image_y - 12
     for index, (time_label, block_title, body) in enumerate(blocks):
         y = itinerary_block(c, y, time_label, block_title, body, [TEAL, GOLD, GREEN][index % 3])
+    c.setFillColor(white)
+    c.setStrokeColor(LINE)
+    c.roundRect(22 * mm, 58 * mm, W - 44 * mm, 27 * mm, 12, stroke=1, fill=1)
+    label(c, "Por que funciona", 29 * mm, 76 * mm, 35 * mm, DEEP, white)
+    para(c, why, SMALL, 29 * mm, 72 * mm, W - 58 * mm, 38)
     c.setFillColor(SKY)
-    c.roundRect(22 * mm, 25 * mm, W - 44 * mm, 27 * mm, 12, stroke=0, fill=1)
-    label(c, "Leve com você", 29 * mm, 42 * mm, 36 * mm, TEAL, white)
-    para(c, tip, SMALL, 29 * mm, 38 * mm, W - 58 * mm, 35)
+    c.roundRect(22 * mm, 24 * mm, W - 44 * mm, 28 * mm, 12, stroke=0, fill=1)
+    label(c, "Antes de sair", 29 * mm, 43 * mm, 34 * mm, TEAL, white)
+    para(c, tip, SMALL, 29 * mm, 39 * mm, W - 58 * mm, 38)
     c.showPage()
 
 
@@ -278,19 +300,19 @@ def draw_page_6(c):
     page_base(c, 6, "Viajar bem em família")
     y = heading(
         c,
-        "Menos pressa, mais viagem",
-        "O ritmo certo faz toda a diferença.",
-        "Uma programação simples costuma funcionar melhor: praia cedo, pausa nas horas mais quentes e experiências leves no fim do dia.",
+        "Maré, família e plano B",
+        "O roteiro funciona melhor quando pode mudar.",
+        "Em Salinas, a maré altera praia, embarque e faixa de areia. Confirme as condições do dia e use o hotel como base para ajustar o programa sem transformar a viagem em corrida.",
     )
 
     draw_rounded_image(c, PUBLIC / "hotel-cafe-manha.jpg", 22 * mm, y - 79 * mm, 70 * mm, 70 * mm, 13, 0.55)
     x = 101 * mm
     top = y - 8
     items = [
-        ("Comece cedo", "Mais tranquilidade, temperatura amena e tempo para observar a maré."),
-        ("Proteja a pausa", "Almoço, banho e descanso evitam que o passeio vire maratona."),
-        ("Deixe uma margem", "Clima e maré mudam; tenha sempre uma alternativa curta e próxima."),
-        ("Combine um ponto", "Em praias movimentadas, defina onde todos se reencontram."),
+        ("Confirme na recepção", "Cheque maré, clima e saída do barco antes de organizar o restante do dia."),
+        ("Use o Solar como plano B", "Piscina, hidromassagem e uma refeição tranquila protegem o ritmo da família."),
+        ("Vá ao Maçarico sem carro", "A curta distância permite caminhar ou usar as bicicletas do hotel."),
+        ("Reserve energia para Atalaia", "É o trecho mais distante e movimentado; vá cedo e combine um ponto de encontro."),
     ]
     for idx, (ttl, body) in enumerate(items, 1):
         c.setFillColor([TEAL, GOLD, GREEN, DEEP][idx - 1])
@@ -307,9 +329,9 @@ def draw_page_6(c):
     para(c, "Checklist rápido", style("check_title", 15, 18, GOLD, "Helvetica-Bold"), 29 * mm, 66 * mm, 45 * mm, 24)
     checklist = (
         "- Protetor solar, chapéu e água<br/>"
-        "- Roupa leve e uma troca seca<br/>"
+        "- Repelente e uma troca seca<br/>"
         "- Tábua de marés salva no celular<br/>"
-        "- Contato de operador autorizado para passeios"
+        "- Coletes e operador confirmados antes do embarque"
     )
     para(c, checklist, SMALL_WHITE, 78 * mm, 66 * mm, 102 * mm, 75)
     c.showPage()
@@ -320,18 +342,18 @@ def draw_page_7(c):
     top_y = heading(
         c,
         "Hotel Solar",
-        "Perto do movimento. Protegido pela tranquilidade.",
-        "Na parte alta da cidade, o Solar fica a cerca de 800 metros da Orla do Maçarico e a aproximadamente 15 minutos da Praia do Atalaia.",
+        "Mais do que hospedagem: o ponto de partida do roteiro.",
+        "A Praia do Solar aparece diante do hotel na maré baixa, o passeio de barco pode sair do trapiche, o Maçarico fica a cerca de 800 metros e o Atalaia a aproximadamente 15 minutos de carro.",
         dark=True,
     )
     draw_rounded_image(c, PUBLIC / "hotel-piscina.jpg", 22 * mm, top_y - 78 * mm, W - 44 * mm, 70 * mm, 13, 0.5)
 
     y = top_y - 91 * mm
     features = [
-        ("Café da manhã", "Buffet incluído nas diárias."),
-        ("Recepção 24h", "Apoio durante toda a estadia."),
-        ("Estacionamento", "Gratuito e rotativo para hóspedes."),
-        ("Wi-Fi", "Disponível nas áreas do hotel."),
+        ("Praia do Solar", "Acesso conforme a maré baixa."),
+        ("Trapiche", "Ponto de saída para o passeio."),
+        ("Maçarico", "Cerca de 800 m do hotel."),
+        ("Atalaia", "Aproximadamente 15 min."),
     ]
     gap = 4 * mm
     width = (W - 44 * mm - 3 * gap) / 4
@@ -368,14 +390,14 @@ def draw_page_8(c):
 
     para(c, "Fontes consultadas", style("sources_h", 12, 15, DEEP, "Helvetica-Bold"), 22 * mm, 81 * mm, W - 44 * mm, 24)
     sources = (
-        "1. Prefeitura de Salinópolis - Turismo e Lazer. salinopolis.pa.gov.br/o-municipio/turismo-e-lazer/<br/>"
-        "2. Prefeitura de Salinópolis - História e características das praias. salinopolis.pa.gov.br/o-municipio/historia/<br/>"
-        "3. Assembleia Legislativa do Pará - Salinópolis e suas belezas naturais. alepa.pa.gov.br/Comunicacao/Noticia/6521<br/>"
+        "1. Blog do Hotel Solar - O que fazer em Salinópolis em 3 dias. hotelsolar.tur.br/dicas-salinopolis.html<br/>"
+        "2. Blog do Hotel Solar - As melhores praias de Salinópolis. hotelsolar.tur.br/melhores-praias-salinopolis.html<br/>"
+        "3. Prefeitura de Salinópolis - Turismo e Lazer. salinopolis.pa.gov.br/o-municipio/turismo-e-lazer/<br/>"
         "4. Hotel Solar - estrutura, localização e serviços. hotelsolar.tur.br<br/>"
         "5. Hotel Solar Reservas - horários e comodidades. reservas.hotelsolar.tur.br/"
     )
     para(c, sources, SMALL, 22 * mm, 73 * mm, W - 44 * mm, 105)
-    para(c, "Conteúdo conferido em 16/09/2026. Fotografias: acervo do Hotel Solar.", style("note", 7.8, 10, MUTED, "Helvetica-Oblique"), 22 * mm, 25 * mm, W - 44 * mm, 20)
+    para(c, "Conteúdo conferido em 16/09/2026. Fotografias: acervo do Hotel Solar; imagem do Atalaia: Agência Pará, reproduzida no blog.", style("note", 7.8, 10, MUTED, "Helvetica-Oblique"), 22 * mm, 25 * mm, W - 44 * mm, 20)
     c.showPage()
 
 
@@ -384,7 +406,7 @@ def build():
     c = canvas.Canvas(str(OUTPUT), pagesize=A4)
     c.setTitle("Guia Salinas em Família - Hotel Solar")
     c.setAuthor("Hotel Solar")
-    c.setSubject("Roteiro de três dias para conhecer Salinópolis em família")
+    c.setSubject("Roteiro de três dias em Salinópolis com o Hotel Solar como base")
 
     draw_cover(c)
     draw_page_2(c)
@@ -392,46 +414,55 @@ def build():
         c,
         3,
         1,
-        "Chegue devagar: Orla do Maçarico e Corvina",
-        "Um primeiro dia leve ajuda a família a entrar no clima sem correr.",
-        "hotel-panoramica-rio.jpg",
-        0.48,
+        "Comece pelo entorno do Solar",
+        "Praia, descanso e noite agradável com pouco ou nenhum deslocamento.",
+        "NO HOTEL + 800 M",
+        "blog-praia-solar.png",
+        0.5,
         [
-            ("Manhã", "Chegada e reconhecimento", "Faça check-in, confirme a maré e organize apenas o essencial para o primeiro passeio."),
-            ("Tarde", "Praia da Corvina", "Uma alternativa mais tranquila, sem circulação de veículos na areia e próxima da área urbana."),
-            ("Fim de tarde", "Orla do Maçarico", "Caminhe pelo calçadão, observe a mudança de luz e escolha com calma onde jantar."),
+            ("Chegada", "Check-in e leitura da maré", "Peça na recepção o melhor horário para a Praia do Solar e organize o dia a partir dele."),
+            ("No hotel", "Praia do Solar ou piscina", "Na maré baixa, desça pelo trapiche; fora dela, aproveite a piscina e descanse da viagem."),
+            ("Fim de tarde", "Maçarico a cerca de 800 m", "Vá caminhando ou de bicicleta para sentir a brisa e conhecer a orla revitalizada."),
+            ("Noite", "Passarelas, sabores e artesanato", "Jante na orla, tome um sorvete regional e volte ao hotel sem pressa."),
         ],
-        "Chinelo firme, repelente para o fim de tarde e uma pequena bolsa impermeável deixam o passeio mais simples.",
+        "O primeiro dia cria familiaridade com o hotel e a vizinhança, sem gastar energia em grandes deslocamentos.",
+        "Confirme a maré antes de descer ao trapiche. Para caminhar ao Maçarico, leve repelente, água e calçado confortável.",
     )
     draw_day_page(
         c,
         4,
         2,
-        "O clássico de Salinas: Atalaia e Farol Velho",
-        "Reserve o dia mais aberto do roteiro para as praias mais conhecidas.",
-        "faq-salinas-colagem.jpg",
-        0.16,
+        "Saia de barco do próprio hotel",
+        "Mangue, Rio Arapepó e Ponta do Espadarte com retorno à mesma base.",
+        "EMBARQUE NO TRAPICHE",
+        "blog-espadarte.png",
+        0.46,
         [
-            ("Cedo", "Praia do Atalaia", "Chegue pela manhã, escolha um ponto seguro e acompanhe a movimentação da maré durante toda a permanência."),
-            ("Meio do dia", "Pausa protegida", "Almoce sem pressa e evite concentrar toda a programação nas horas mais quentes."),
-            ("Tarde", "Farol Velho e dunas", "Explore a paisagem vizinha conforme o acesso e as condições do dia; preserve áreas naturais e siga a sinalização."),
+            ("Antes", "Confirme maré e operador", "Horário, rota e duração dependem das condições do dia. Reserve e confirme antes de embarcar."),
+            ("Manhã", "Rio Arapepó e manguezais", "Observe a paisagem amazônica pelo caminho, com colete e orientação do operador."),
+            ("Praia", "Ponta do Espadarte", "Aproveite areia firme, banho de mar e caminhada em um trecho mais preservado."),
+            ("Retorno", "Reserva Solar e pôr do sol", "Almoce no restaurante do hotel, descanse e procure a revoada dos guarás no fim da tarde."),
         ],
-        "Na Atalaia há circulação de veículos em parte da praia. Redobre a atenção com crianças e nunca deixe o carro em área sujeita à subida da maré.",
+        "A experiência mais especial do destino começa e termina no Hotel Solar, reduzindo deslocamentos por terra.",
+        "Confirme coletes, lotação, duração e condições meteorológicas. Informe previamente a idade das crianças e necessidades de mobilidade.",
     )
     draw_day_page(
         c,
         5,
         3,
-        "Manguezais, ilhas e um último mergulho",
-        "O terceiro dia mostra a paisagem que existe além da faixa de areia.",
-        "hero_hotel_real.jpg",
-        0.52,
+        "Atalaia e Farol Velho por último",
+        "Depois de conhecer o entorno, dedique um dia aos clássicos mais distantes.",
+        "CERCA DE 15 MIN DE CARRO",
+        "blog-atalaia.webp",
+        0.5,
         [
-            ("Manhã", "Passeio de barco", "Consulte operadores locais autorizados para conhecer canais, ilhas e a paisagem de mangue com segurança."),
-            ("Tarde", "Piscina e descanso", "Depois do passeio, volte para uma pausa confortável antes de decidir a programação final."),
-            ("Fim de tarde", "Despedida sem agenda", "Repita o lugar favorito da família ou faça uma caminhada curta perto do hotel."),
+            ("Cedo", "Chegue antes do maior movimento", "Escolha um ponto seguro no Atalaia e acompanhe a subida da maré desde o início."),
+            ("Almoço", "Sabores pé na areia", "Prove peixes, caranguejo ou pratiqueira nas barracas estruturadas; se beber, não dirija."),
+            ("Tarde", "Farol Velho em ritmo de família", "Busque o trecho mais tranquilo e, na maré baixa, observe a formação de piscinas naturais."),
+            ("Volta", "Piscina e despedida no Solar", "Retorne para banho, descanso e um último momento no lugar preferido da família."),
         ],
-        "Confirme coletes, lotação, duração e condições meteorológicas antes de embarcar. Para crianças, informe idade e necessidades ao operador.",
+        "Concentrar as duas praias no mesmo dia evita cruzar a cidade várias vezes e preserva os dias iniciais para experiências próximas.",
+        "Na Atalaia circulam veículos sobre a areia. Redobre a atenção com crianças e nunca estacione em área alcançada pela maré.",
     )
     draw_page_6(c)
     draw_page_7(c)
