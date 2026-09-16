@@ -32,7 +32,7 @@ declare global {
 const analyticsCampaign = 'ssl26_novembro_2026';
 const whatsappChannelUrl =
   import.meta.env.VITE_WHATSAPP_CHANNEL_URL ||
-  'https://whatsapp.com/channel/0029VaQDL9Z5q08kV9anB80U';
+  'https://whatsapp.com/channel/0029Vb8iEz73gvWjJea5rt3k';
 
 const assetUrl = (fileName: string) => `${import.meta.env.BASE_URL}${fileName.replace(/^\/+/, '')}`;
 

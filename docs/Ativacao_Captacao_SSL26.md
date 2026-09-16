@@ -11,7 +11,7 @@ Colocar a landing `/solarsemlimitescadastro` em produção sem misturar os leads
 - Projeto-fonte da landing: `solar-sem-limites`
 - Domínio principal: `https://hotelsolar.tur.br`
 - Rota de captação: `https://hotelsolar.tur.br/solarsemlimitescadastro`
-- Canal VIP: `https://whatsapp.com/channel/0029VaQDL9Z5q08kV9anB80U`
+- Canal VIP: `https://whatsapp.com/channel/0029Vb8iEz73gvWjJea5rt3k`
 
 ## 1. Brevo
 
