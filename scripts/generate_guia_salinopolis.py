@@ -110,6 +110,16 @@ def para(c, text, pstyle, x, top, width, max_height=200):
     return height
 
 
+def fitted_para(c, text, pstyle, x, top, width, max_height):
+    """Keep the closing pages' text inside its allocated layout area."""
+    p = Paragraph(text, pstyle)
+    _, height = p.wrap(width, max_height)
+    if height > max_height:
+        raise ValueError(f"Text exceeds its layout area: {text}")
+    p.drawOn(c, x, top - height)
+    return height
+
+
 def label(c, text, x, y, width=None, fill=GOLD, color=DEEP):
     c.setFont("Helvetica-Bold", 7.4)
     text_width = stringWidth(text.upper(), "Helvetica-Bold", 7.4)
@@ -373,58 +383,122 @@ def draw_page_7(c):
         "A Praia do Solar aparece diante do hotel na maré baixa, o passeio de barco pode sair do trapiche, o Maçarico fica a cerca de 800 metros e o Atalaia a aproximadamente 15 minutos de carro.",
         dark=True,
     )
-    draw_rounded_image(c, PUBLIC / "hotel-piscina.jpg", 22 * mm, top_y - 78 * mm, W - 44 * mm, 70 * mm, 13, 0.5)
+    image_h = 76 * mm
+    image_y = top_y - 7 * mm - image_h
+    draw_rounded_image(c, PUBLIC / "hotel-piscina.jpg", 22 * mm, image_y, W - 44 * mm, image_h, 13, 0.2)
 
-    y = top_y - 91 * mm
     features = [
         ("Praia do Solar", "Acesso conforme a maré baixa."),
         ("Trapiche", "Ponto de saída para o passeio."),
         ("Maçarico", "Cerca de 800 m do hotel."),
         ("Atalaia", "Aproximadamente 15 min."),
     ]
-    gap = 4 * mm
-    width = (W - 44 * mm - 3 * gap) / 4
+    gap = 5 * mm
+    width = (W - 44 * mm - gap) / 2
+    feature_h = 25 * mm
+    grid_top = image_y - 6 * mm
     for idx, (ttl, body) in enumerate(features):
-        x = 22 * mm + idx * (width + gap)
+        row, col = divmod(idx, 2)
+        x = 22 * mm + col * (width + gap)
+        feature_top = grid_top - row * (feature_h + gap)
         c.setFillColor(HexColor("#123D35"))
         c.setStrokeColor(HexColor("#2E5C53"))
-        c.roundRect(x, y - 34 * mm, width, 32 * mm, 10, stroke=1, fill=1)
-        para(c, ttl, style(f"ft{idx}", 10, 13, GOLD, "Helvetica-Bold", TA_CENTER), x + 5, y - 7, width - 10, 28)
-        para(c, body, style(f"fb{idx}", 8.2, 11.2, HexColor("#D7E5E0"), "Helvetica", TA_CENTER), x + 5, y - 23, width - 10, 36)
+        c.roundRect(x, feature_top - feature_h, width, feature_h, 10, stroke=1, fill=1)
+        fitted_para(c, ttl, style(f"ft{idx}", 12, 15, GOLD, "Helvetica-Bold"), x + 6 * mm, feature_top - 5 * mm, width - 12 * mm, 18)
+        fitted_para(c, body, style(f"fb{idx}", 9.6, 13.2, HexColor("#D7E5E0")), x + 6 * mm, feature_top - 13 * mm, width - 12 * mm, 28)
 
+    event_top = grid_top - 2 * feature_h - gap - 7 * mm
+    event_h = 45 * mm
+    event_y = event_top - event_h
+    assert event_y >= 24 * mm, "Page 7 content overlaps its footer"
     c.setFillColor(GOLD)
-    c.roundRect(22 * mm, 27 * mm, W - 44 * mm, 35 * mm, 14, stroke=0, fill=1)
-    para(c, "Visita guiada ao vivo - 24 de novembro, às 19h", style("event", 15, 19, DEEP, "Helvetica-Bold", TA_CENTER), 30 * mm, 53 * mm, W - 60 * mm, 30)
-    para(c, "Conheça os apartamentos, as áreas do hotel e tire suas dúvidas antes da abertura do Solar Sem Limites.", style("event2", 9, 13, DEEP, "Helvetica", TA_CENTER), 30 * mm, 39 * mm, W - 60 * mm, 32)
+    c.roundRect(22 * mm, event_y, W - 44 * mm, event_h, 14, stroke=0, fill=1)
+    c.setStrokeColor(HexColor("#B69650"))
+    c.line(69 * mm, event_y + 8 * mm, 69 * mm, event_top - 8 * mm)
+    fitted_para(c, "24 NOV", style("event_date", 21, 26, DEEP, "Helvetica-Bold", TA_CENTER), 28 * mm, event_top - 11 * mm, 35 * mm, 28)
+    fitted_para(c, "2026 · às 19h", style("event_time", 9.5, 13, DEEP, "Helvetica", TA_CENTER), 28 * mm, event_top - 22 * mm, 35 * mm, 15)
+    fitted_para(c, "Visita guiada ao vivo", style("event", 15, 19, DEEP, "Helvetica-Bold"), 77 * mm, event_top - 8 * mm, W - 107 * mm, 24)
+    fitted_para(c, "Conheça os apartamentos, as áreas do hotel e tire suas dúvidas antes da abertura do Solar Sem Limites.", style("event2", 9.8, 14, DEEP), 77 * mm, event_top - 18 * mm, W - 107 * mm, 60)
     c.showPage()
 
 
 def draw_page_8(c):
     page_base(c, 8, "Planeje com confiança")
-    heading(
+    top_y = heading(
         c,
         "Antes de sair",
         "Confirme as condições do dia e preserve espaço para o inesperado.",
         "Horários, maré, acesso e disponibilidade de passeios podem mudar. Consulte fontes oficiais e operadores locais antes de cada deslocamento.",
     )
 
-    card(c, 22 * mm, 135 * mm, 79 * mm, 58 * mm, "Contatos do Hotel Solar", "WhatsApp: (91) 98100-0800<br/>E-mail: reserva@hotelsolar.tur.br<br/>Av. Atlântica, s/n - Salinópolis, PA", TEAL)
-    card(c, 109 * mm, 135 * mm, 79 * mm, 58 * mm, "Horários de referência", "Check-in: a partir das 14h<br/>Check-out: até 12h<br/>Café da manhã: confirme o horário na recepção.", GOLD)
+    gap = 5 * mm
+    card_w = (W - 44 * mm - gap) / 2
+    card_h = 64 * mm
+    cards_top = top_y - 8 * mm
+    cards_y = cards_top - card_h
+    groups = [
+        ("Contatos do Hotel Solar", TEAL, [
+            ("WhatsApp", '<link href="https://wa.me/5591981000800" color="#155B4E"><u>(91) 98100-0800</u></link>'),
+            ("E-mail", '<link href="mailto:reserva@hotelsolar.tur.br" color="#155B4E"><u>reserva@hotelsolar.tur.br</u></link>'),
+            ("Endereço", "Av. Atlântica, s/n<br/>Salinópolis, PA"),
+        ]),
+        ("Horários de referência", GOLD, [
+            ("Check-in", "A partir das 14h"),
+            ("Check-out", "Até 12h"),
+            ("Café da manhã", "Confirme o horário na recepção."),
+        ]),
+    ]
+    for idx, (title, accent, fields) in enumerate(groups):
+        x = 22 * mm + idx * (card_w + gap)
+        c.setFillColor(white)
+        c.setStrokeColor(LINE)
+        c.roundRect(x, cards_y, card_w, card_h, 12, stroke=1, fill=1)
+        c.setFillColor(accent)
+        c.roundRect(x + 6 * mm, cards_top - 6 * mm, 12 * mm, 3, 1.5, stroke=0, fill=1)
+        fitted_para(c, title, style(f"contact_title{idx}", 11.8, 15, DEEP, "Helvetica-Bold"), x + 6 * mm, cards_top - 9 * mm, card_w - 12 * mm, 18)
+        field_top = cards_top - 20 * mm
+        for field_idx, (field_label, value) in enumerate(fields):
+            field_y = field_top - field_idx * 12.5 * mm
+            fitted_para(c, field_label.upper(), style("contact_label", 7.1, 9, MUTED, "Helvetica-Bold"), x + 6 * mm, field_y, card_w - 12 * mm, 10)
+            fitted_para(c, value, style("contact_value", 9.6, 12.5, INK), x + 6 * mm, field_y - 11, card_w - 12 * mm, 26)
 
+    quote_top = cards_y - 7 * mm
+    quote_h = 28 * mm
+    quote_y = quote_top - quote_h
     c.setFillColor(DEEP)
-    c.roundRect(22 * mm, 93 * mm, W - 44 * mm, 31 * mm, 13, stroke=0, fill=1)
-    para(c, "Seu guia é o começo. O melhor de Salinas aparece quando a família encontra o próprio ritmo.", style("closing", 15, 19, white, "Times-Bold", TA_CENTER), 31 * mm, 115 * mm, W - 62 * mm, 45)
+    c.roundRect(22 * mm, quote_y, W - 44 * mm, quote_h, 13, stroke=0, fill=1)
+    fitted_para(c, "Seu guia é o começo. O melhor de Salinas aparece quando a família encontra o próprio ritmo.", style("closing", 15, 19, white, "Times-Bold", TA_CENTER), 31 * mm, quote_top - (quote_h - 38) / 2, W - 62 * mm, 40)
 
-    para(c, "Fontes consultadas", style("sources_h", 12, 15, DEEP, "Helvetica-Bold"), 22 * mm, 81 * mm, W - 44 * mm, 24)
-    sources = (
-        "1. Blog do Hotel Solar - O que fazer em Salinópolis em 3 dias. hotelsolar.tur.br/dicas-salinopolis.html<br/>"
-        "2. Blog do Hotel Solar - As melhores praias de Salinópolis. hotelsolar.tur.br/melhores-praias-salinopolis.html<br/>"
-        "3. Prefeitura de Salinópolis - Turismo e Lazer. salinopolis.pa.gov.br/o-municipio/turismo-e-lazer/<br/>"
-        "4. Hotel Solar - estrutura, localização e serviços. hotelsolar.tur.br<br/>"
-        "5. Hotel Solar Reservas - horários e comodidades. reservas.hotelsolar.tur.br/"
-    )
-    para(c, sources, SMALL, 22 * mm, 73 * mm, W - 44 * mm, 105)
-    para(c, "Conteúdo conferido em 16/09/2026. Fotografias: acervo do Hotel Solar; imagem do Atalaia: Agência Pará, reproduzida no blog.", style("note", 7.8, 10, MUTED, "Helvetica-Oblique"), 22 * mm, 25 * mm, W - 44 * mm, 20)
+    sources_top = quote_y - 7 * mm
+    sources_h = 85 * mm
+    sources_y = sources_top - sources_h
+    assert sources_y >= 24 * mm, "Page 8 content overlaps its footer"
+    c.setFillColor(white)
+    c.setStrokeColor(LINE)
+    c.roundRect(22 * mm, sources_y, W - 44 * mm, sources_h, 12, stroke=1, fill=1)
+    fitted_para(c, "Fontes consultadas", style("sources_h", 12, 15, DEEP, "Helvetica-Bold"), 28 * mm, sources_top - 6 * mm, W - 56 * mm, 18)
+    sources = [
+        ("Blog do Hotel Solar · O que fazer em Salinópolis em 3 dias", "hotelsolar.tur.br/dicas-salinopolis.html", "https://www.hotelsolar.tur.br/dicas-salinopolis.html"),
+        ("Blog do Hotel Solar · As melhores praias de Salinópolis", "hotelsolar.tur.br/melhores-praias-salinopolis.html", "https://www.hotelsolar.tur.br/melhores-praias-salinopolis.html"),
+        ("Prefeitura de Salinópolis · Turismo e lazer", "salinopolis.pa.gov.br/o-municipio/turismo-e-lazer/", "https://salinopolis.pa.gov.br/o-municipio/turismo-e-lazer/"),
+        ("Hotel Solar · Estrutura, localização e serviços", "hotelsolar.tur.br", "https://www.hotelsolar.tur.br/"),
+        ("Hotel Solar Reservas · Horários e comodidades", "reservas.hotelsolar.tur.br", "https://reservas.hotelsolar.tur.br/"),
+    ]
+    row_top = sources_top - 16 * mm
+    for idx, (title, display_url, url) in enumerate(sources):
+        y = row_top - idx * 10 * mm
+        c.setFillColor(SKY)
+        c.circle(31 * mm, y - 8, 8, stroke=0, fill=1)
+        c.setFillColor(DEEP)
+        c.setFont("Helvetica-Bold", 7)
+        c.drawCentredString(31 * mm, y - 10.4, str(idx + 1))
+        fitted_para(c, title, style("source_title", 8.8, 11.5, INK, "Helvetica-Bold"), 37 * mm, y, W - 65 * mm, 12)
+        fitted_para(c, f'<link href="{url}" color="#155B4E"><u>{display_url}</u></link>', style("source_link", 8.2, 11, GREEN), 37 * mm, y - 12, W - 65 * mm, 12)
+
+    note_top = sources_y + 14 * mm
+    c.setStrokeColor(LINE)
+    c.line(28 * mm, note_top + 3 * mm, W - 28 * mm, note_top + 3 * mm)
+    fitted_para(c, "Conteúdo conferido em 16/09/2026. Fotografias: acervo do Hotel Solar; imagem do Atalaia: Agência Pará, reproduzida no blog.", style("note", 7.8, 10, MUTED, "Helvetica-Oblique"), 28 * mm, note_top, W - 56 * mm, 22)
     c.showPage()
 
 
