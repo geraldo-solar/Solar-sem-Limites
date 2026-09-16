@@ -141,6 +141,22 @@ Use `eventId` como chave de idempotência para impedir duplicações quando houv
 - Verificar UTMs com campanhas de teste distintas.
 - Só então liberar anúncios e tráfego orgânico.
 
+## 6. Mensuração da captação
+
+O GA4 do Hotel Solar (`G-0TN73829QP`) está instalado na landing. Os eventos abaixo não enviam nome, e-mail ou telefone:
+
+| Evento | Momento |
+|---|---|
+| `ssl26_capture_view` | Abertura da landing |
+| `ssl26_form_start` | Primeira interação com o formulário |
+| `generate_lead` | Cadastro concluído com sucesso |
+| `ssl26_profile_saved` | Perfil de relacionamento salvo |
+| `ssl26_guide_download` | Clique para baixar o guia |
+
+Os eventos levam campanha e origem por UTM, quando presentes. No GA4, marcar `generate_lead` como evento principal e criar o funil `ssl26_capture_view` → `ssl26_form_start` → `generate_lead`.
+
+O código já dispara o evento padrão `Lead` quando `window.fbq` estiver disponível. A instalação do Meta Pixel e da Conversions API depende do ID do Pixel e do ativo correto no Business Manager; nenhum token deve ser colocado no repositório.
+
 ## Referências técnicas
 
 - Brevo — criação de listas: https://developers.brevo.com/reference/create-list

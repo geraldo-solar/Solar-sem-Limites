@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useMemo, useState } from 'react';
+import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
   CalendarDays,
@@ -20,6 +20,16 @@ import {
 
 type LeadProfile = 'ja_hospedou' | 'conhece' | 'nao_conhece';
 type SubmitStatus = 'idle' | 'loading' | 'success' | 'error';
+
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+    fbq?: (...args: unknown[]) => void;
+  }
+}
+
+const analyticsCampaign = 'ssl26_novembro_2026';
 
 const assetUrl = (fileName: string) => `${import.meta.env.BASE_URL}${fileName.replace(/^\/+/, '')}`;
 
@@ -82,6 +92,31 @@ function formatPhone(value: string) {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 }
 
+function analyticsParams(tracking: TrackingData) {
+  return {
+    campaign_name: tracking.utmCampaign || analyticsCampaign,
+    source: tracking.utmSource || 'direct',
+    medium: tracking.utmMedium || 'none',
+    content: tracking.utmContent || 'not_set',
+    referral_present: Boolean(tracking.referral),
+  };
+}
+
+function trackEvent(eventName: string, params: Record<string, string | boolean> = {}) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: eventName, ...params });
+  window.gtag?.('event', eventName, params);
+}
+
+function trackLead(tracking: TrackingData) {
+  const params = analyticsParams(tracking);
+  trackEvent('generate_lead', params);
+  window.fbq?.('track', 'Lead', {
+    content_name: analyticsCampaign,
+    content_category: params.source,
+  });
+}
+
 export default function CapturaNovembro() {
   const [firstName, setFirstName] = useState('');
   const [phone, setPhone] = useState('');
@@ -94,14 +129,22 @@ export default function CapturaNovembro() {
   const [profileSaved, setProfileSaved] = useState(false);
   const [submissionId] = useState(() => `ssl26-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`);
   const tracking = useMemo(getTrackingData, []);
+  const formStarted = useRef(false);
 
   useEffect(() => {
     const previousTitle = document.title;
     document.title = 'Guia Salinas em Família | Hotel Solar';
+    trackEvent('ssl26_capture_view', analyticsParams(tracking));
     return () => {
       document.title = previousTitle;
     };
-  }, []);
+  }, [tracking]);
+
+  function trackFormStart() {
+    if (formStarted.current) return;
+    formStarted.current = true;
+    trackEvent('ssl26_form_start', analyticsParams(tracking));
+  }
 
   async function submitLead(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -137,6 +180,7 @@ export default function CapturaNovembro() {
       }
 
       setStatus('success');
+      trackLead(tracking);
       window.setTimeout(() => {
         document.getElementById('cadastro-concluido')?.scrollIntoView({
           behavior: 'smooth',
@@ -154,7 +198,7 @@ export default function CapturaNovembro() {
     setProfileSaved(true);
 
     try {
-      await fetch('/api/capture-lead', {
+      const response = await fetch('/api/capture-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -167,6 +211,11 @@ export default function CapturaNovembro() {
           pageUrl: window.location.href,
           ...tracking,
         }),
+      });
+      if (!response.ok) throw new Error('Não foi possível salvar o perfil.');
+      trackEvent('ssl26_profile_saved', {
+        ...analyticsParams(tracking),
+        lead_profile: selectedProfile,
       });
     } catch {
       // O guia continua disponível mesmo se a etapa opcional de perfil falhar.
@@ -239,7 +288,7 @@ export default function CapturaNovembro() {
                       Preencha seus dados e enviaremos o acesso gratuito para você.
                     </p>
 
-                    <form className="mt-6 space-y-4" onSubmit={submitLead}>
+                    <form className="mt-6 space-y-4" onSubmit={submitLead} onFocusCapture={trackFormStart}>
                       <div>
                         <label htmlFor="firstName" className="mb-1.5 block text-sm font-bold text-[#284f48]">Primeiro nome</label>
                         <input
@@ -329,6 +378,7 @@ export default function CapturaNovembro() {
                     <a
                       href={assetUrl('guia-salinas-em-familia.pdf')}
                       download
+                      onClick={() => trackEvent('ssl26_guide_download', analyticsParams(tracking))}
                       className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0f5c45] px-5 py-4 font-bold text-white transition hover:bg-[#0b4d3a]"
                     >
                       <Download size={19} /> Baixar o guia agora
