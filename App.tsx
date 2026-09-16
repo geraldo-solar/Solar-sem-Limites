@@ -33,7 +33,7 @@ class ErrorBoundary extends React.Component<Props, State> {
 export default function App() {
   const [hash, setHash] = useState(window.location.hash);
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
-  const isMainSiteCaptureRoute = pathname === '/solarsemlimites';
+  const isMainSiteCaptureRoute = pathname === '/solarsemlimitescadastro';
 
   useEffect(() => {
     const handleHashChange = () => setHash(window.location.hash);
