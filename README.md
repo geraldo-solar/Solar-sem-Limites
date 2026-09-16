@@ -4,6 +4,7 @@ Página de vendas, checkout e captação do lançamento Solar Sem Limites.
 
 ## Rotas
 
+- `https://hotelsolar.tur.br/solarsemlimites`: endereço oficial da captação de novembro de 2026.
 - `/#/lista-vip`: landing de captação de novembro de 2026.
 - `/#/checkout`: checkout.
 - `/`: página de vendas atual.

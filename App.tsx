@@ -32,6 +32,8 @@ class ErrorBoundary extends React.Component<Props, State> {
 
 export default function App() {
   const [hash, setHash] = useState(window.location.hash);
+  const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
+  const isMainSiteCaptureRoute = pathname === '/solarsemlimites';
 
   useEffect(() => {
     const handleHashChange = () => setHash(window.location.hash);
@@ -40,7 +42,7 @@ export default function App() {
   }, []);
 
   let content = <JulhoLP />;
-  if (hash.startsWith('#/lista-vip')) {
+  if (isMainSiteCaptureRoute || hash.startsWith('#/lista-vip')) {
     content = <CapturaNovembro />;
   } else if (hash === '#/checkout') {
     content = <CheckoutPage />;

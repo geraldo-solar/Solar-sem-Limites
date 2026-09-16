@@ -2,14 +2,15 @@
 
 ## Objetivo
 
-Colocar a landing `/#/lista-vip` em produção sem misturar os leads de novembro de 2026 com compradores antigos, reservas ou atendimentos correntes do Hotel Solar.
+Colocar a landing `/solarsemlimites` em produção sem misturar os leads de novembro de 2026 com compradores antigos, reservas ou atendimentos correntes do Hotel Solar.
 
 ## Projeto de produção
 
-- Vercel: `solar-sem-limites`
-- Project ID: `prj_qasIdkmJPxWYZjaWeyx2Mz2q3yYB`
-- Domínio principal recomendado: `https://solarsemlimites.hotelsolar.tur.br`
-- Rota de captação: `https://solarsemlimites.hotelsolar.tur.br/#/lista-vip`
+- Vercel de produção: `sitehotelsolar`
+- Project ID: `prj_hJSGmnHPUolbbtyb5bU3fipjjwVH`
+- Projeto-fonte da landing: `solar-sem-limites`
+- Domínio principal: `https://hotelsolar.tur.br`
+- Rota de captação: `https://hotelsolar.tur.br/solarsemlimites`
 
 ## 1. Brevo
 
@@ -42,7 +43,7 @@ Obrigatórias:
 - `BREVO_LEADS_LIST_ID`
 - `BREVO_SSL26_ATTRIBUTES_ENABLED=true`
 - `BREVO_PROFILE_ATTRIBUTE=SSL26_PROFILE`
-- `PUBLIC_SITE_URL=https://solarsemlimites.hotelsolar.tur.br`
+- `PUBLIC_SITE_URL=https://hotelsolar.tur.br/solarsemlimites`
 
 ## 2. Ponte ManyChat–ERP
 

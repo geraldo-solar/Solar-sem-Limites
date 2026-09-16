@@ -21,6 +21,8 @@ import {
 type LeadProfile = 'ja_hospedou' | 'conhece' | 'nao_conhece';
 type SubmitStatus = 'idle' | 'loading' | 'success' | 'error';
 
+const assetUrl = (fileName: string) => `${import.meta.env.BASE_URL}${fileName.replace(/^\/+/, '')}`;
+
 interface TrackingData {
   utmSource: string;
   utmMedium: string;
@@ -176,7 +178,7 @@ export default function CapturaNovembro() {
       <header className="absolute inset-x-0 top-0 z-30">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-12">
           <a href="#topo" aria-label="Hotel Solar — início" className="flex items-center gap-3">
-            <img src="/logoSOLAR2.png" alt="Hotel Solar" className="h-11 w-auto brightness-0 invert sm:h-14" />
+            <img src={assetUrl('logoSOLAR2.png')} alt="Hotel Solar" className="h-11 w-auto brightness-0 invert sm:h-14" />
           </a>
           <a
             href="#guia"
@@ -190,7 +192,7 @@ export default function CapturaNovembro() {
       <main id="topo">
         <section className="relative isolate min-h-[880px] overflow-hidden bg-[#0d4037] lg:min-h-[760px]">
           <img
-            src="/hotel-panoramica-rio.jpg"
+            src={assetUrl('hotel-panoramica-rio.jpg')}
             alt="Vista aérea do Hotel Solar às margens do rio em Salinópolis"
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
@@ -325,7 +327,7 @@ export default function CapturaNovembro() {
                       Seu guia já está liberado. Também enviamos o acesso para o seu e-mail.
                     </p>
                     <a
-                      href="/guia-salinas-em-familia.pdf"
+                      href={assetUrl('guia-salinas-em-familia.pdf')}
                       download
                       className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0f5c45] px-5 py-4 font-bold text-white transition hover:bg-[#0b4d3a]"
                     >
@@ -373,7 +375,7 @@ export default function CapturaNovembro() {
               <div className="relative mx-auto w-full max-w-lg">
                 <div className="absolute -left-4 -top-4 h-full w-full rounded-[32px] border border-[#d7bd86]" />
                 <div className="relative overflow-hidden rounded-[32px] bg-[#0b3d2e] shadow-xl">
-                  <img src="/hotel-cafe-manha.jpg" alt="Café da manhã servido no Hotel Solar" className="h-[470px] w-full object-cover" />
+                  <img src={assetUrl('hotel-cafe-manha.jpg')} alt="Café da manhã servido no Hotel Solar" className="h-[470px] w-full object-cover" />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#072c25] via-[#072c25]/75 to-transparent p-8 pt-24 text-white">
                     <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e7c887]">Guia Salinas em Família</p>
                     <p className="mt-2 font-serif text-3xl font-semibold">Menos improviso. Mais tempo juntos.</p>
@@ -441,7 +443,7 @@ export default function CapturaNovembro() {
               <div className="relative">
                 <div className="absolute -inset-3 rotate-2 rounded-[34px] bg-[#d7bd86]/45" />
                 <img
-                  src="/hotel-piscina.jpg"
+                  src={assetUrl('hotel-piscina.jpg')}
                   alt="Área de piscina do Hotel Solar em Salinópolis"
                   className="relative h-[500px] w-full rounded-[30px] object-cover shadow-2xl"
                 />
