@@ -228,9 +228,9 @@ export default function CapturaNovembro() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f8f4ea] font-sans text-[#173a35] selection:bg-[#dfbd75] selection:text-[#173a35]">
       <header className="absolute inset-x-0 top-0 z-30">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-12">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-8 sm:py-5 lg:px-12">
           <a href="#topo" aria-label="Hotel Solar — início" className="flex items-center gap-3">
-            <img src={assetUrl('logoSOLAR2.png')} alt="Hotel Solar" className="h-11 w-auto brightness-0 invert sm:h-14" />
+            <img src={assetUrl('logoSOLAR2.png')} alt="Hotel Solar" className="h-10 w-auto brightness-0 invert sm:h-14" />
           </a>
           <a
             href="#guia"
@@ -251,19 +251,19 @@ export default function CapturaNovembro() {
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,37,32,.96)_0%,rgba(8,48,40,.87)_43%,rgba(8,38,34,.48)_100%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_18%,rgba(225,192,132,.22),transparent_34%)]" />
 
-          <div className="relative mx-auto grid max-w-7xl gap-10 px-5 pb-16 pt-32 sm:px-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-16 lg:px-12 lg:pb-20 lg:pt-32">
+          <div className="relative mx-auto grid max-w-7xl gap-8 px-4 pb-12 pt-28 sm:gap-10 sm:px-8 sm:pb-16 sm:pt-32 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-16 lg:px-12 lg:pb-20">
             <div className="max-w-2xl text-white">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#e1c084]/40 bg-[#e1c084]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#f1d9aa] backdrop-blur-sm sm:text-sm">
+              <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-[#e1c084]/40 bg-[#e1c084]/10 px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#f1d9aa] backdrop-blur-sm sm:mb-6 sm:px-4 sm:text-sm sm:tracking-[0.18em]">
                 <Sparkles size={15} /> Guia gratuito + Lista VIP
               </div>
-              <h1 className="font-serif text-5xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-6xl lg:text-7xl">
+              <h1 className="font-serif text-[2.65rem] font-semibold leading-[1.02] tracking-[-0.03em] min-[360px]:text-5xl sm:text-6xl lg:text-7xl">
                 Salinas começa antes da estrada.
               </h1>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/82 sm:text-xl">
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-white/82 sm:mt-6 sm:text-xl">
                 Planeje dias mais leves com o <strong className="text-white">Guia Salinas em Família</strong> e receba o convite para conhecer o Hotel Solar ao vivo — mesmo que você ainda nunca tenha vindo ao Pará.
               </p>
 
-              <div className="mt-8 grid max-w-xl gap-4 sm:grid-cols-3">
+              <div className="mt-7 grid max-w-xl gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-4">
                 {[
                   ['3 dias', 'de roteiro'],
                   ['Dicas', 'de maré e praias'],
@@ -277,21 +277,21 @@ export default function CapturaNovembro() {
               </div>
             </div>
 
-            <div className="lg:justify-self-end">
-              <div className="relative mx-auto max-w-md rounded-[28px] border border-white/20 bg-white p-6 shadow-2xl shadow-black/25 sm:p-8 lg:mx-0">
+            <div className="w-full lg:justify-self-end">
+              <div className="relative mx-auto w-full max-w-md rounded-3xl border border-white/20 bg-white p-5 shadow-2xl shadow-black/25 sm:rounded-[28px] sm:p-8 lg:mx-0">
                 <div className="absolute -right-5 -top-5 hidden h-20 w-20 rounded-full border border-[#e1c084]/40 bg-[#e1c084]/10 backdrop-blur-md sm:block" />
 
                 {status !== 'success' ? (
                   <>
                     <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#b18433]">Receba agora</p>
-                    <h2 className="mt-2 font-serif text-3xl font-semibold leading-tight text-[#173a35]">
+                    <h2 className="mt-2 font-serif text-[1.75rem] font-semibold leading-tight text-[#173a35] sm:text-3xl">
                       Seu guia para viver Salinas em família
                     </h2>
                     <p className="mt-3 leading-relaxed text-slate-600">
                       Preencha seus dados e enviaremos o acesso gratuito para você.
                     </p>
 
-                    <form className="mt-6 space-y-4" onSubmit={submitLead} onFocusCapture={trackFormStart}>
+                    <form className="mt-5 space-y-4 sm:mt-6" onSubmit={submitLead} onFocusCapture={trackFormStart}>
                       <div>
                         <label htmlFor="firstName" className="mb-1.5 block text-sm font-bold text-[#284f48]">Primeiro nome</label>
                         <input
@@ -395,9 +395,9 @@ export default function CapturaNovembro() {
                         ...analyticsParams(tracking),
                         placement: 'capture_success',
                       })}
-                      className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#0f5c45] bg-white px-5 py-3.5 font-bold text-[#0f5c45] transition hover:bg-[#f0f7f4]"
+                      className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#0f5c45] bg-white px-4 py-3.5 text-center text-sm font-bold leading-snug text-[#0f5c45] transition hover:bg-[#f0f7f4] sm:px-5 sm:text-base"
                     >
-                      <MessageCircle size={19} /> Entrar no Canal VIP do WhatsApp
+                      <MessageCircle className="shrink-0" size={19} /> Entrar no Canal VIP do WhatsApp
                     </a>
                     <p className="mt-2 text-center text-xs leading-relaxed text-slate-500">
                       Receba os lembretes do encontro e as novidades do lançamento sem participar de grupos.
@@ -438,39 +438,39 @@ export default function CapturaNovembro() {
           </div>
         </section>
 
-        <section id="guia" className="relative py-20 sm:py-28">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-            <div className="grid items-center gap-14 lg:grid-cols-[.92fr_1.08fr] lg:gap-20">
+        <section id="guia" className="relative py-16 sm:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
+            <div className="grid items-center gap-12 lg:grid-cols-[.92fr_1.08fr] lg:gap-20">
               <div className="relative mx-auto w-full max-w-lg">
-                <div className="absolute -left-4 -top-4 h-full w-full rounded-[32px] border border-[#d7bd86]" />
-                <div className="relative overflow-hidden rounded-[32px] bg-[#0b3d2e] shadow-xl">
-                  <img src={assetUrl('hotel-cafe-manha.jpg')} alt="Café da manhã servido no Hotel Solar" className="h-[470px] w-full object-cover" />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#072c25] via-[#072c25]/75 to-transparent p-8 pt-24 text-white">
+                <div className="absolute -inset-2 rounded-[28px] border border-[#d7bd86] sm:-inset-3 sm:rounded-[34px]" />
+                <div className="relative overflow-hidden rounded-[26px] bg-[#0b3d2e] shadow-xl sm:rounded-[32px]">
+                  <img src={assetUrl('hotel-cafe-manha.jpg')} alt="Café da manhã servido no Hotel Solar" className="h-[400px] w-full object-cover sm:h-[470px]" />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#072c25] via-[#072c25]/75 to-transparent p-6 pt-20 text-white sm:p-8 sm:pt-24">
                     <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e7c887]">Guia Salinas em Família</p>
-                    <p className="mt-2 font-serif text-3xl font-semibold">Menos improviso. Mais tempo juntos.</p>
+                    <p className="mt-2 font-serif text-[1.75rem] font-semibold leading-tight sm:text-3xl">Menos improviso. Mais tempo juntos.</p>
                   </div>
                 </div>
               </div>
 
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#a87825]">Um roteiro que cabe na vida real</p>
-                <h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold leading-tight sm:text-5xl">
+                <h2 className="mt-4 max-w-2xl font-serif text-[2.15rem] font-semibold leading-tight sm:text-5xl">
                   Tudo o que você precisa para começar a imaginar sua próxima viagem.
                 </h2>
-                <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
-                  O guia reúne uma sugestão prática de três dias, cuidados importantes com a maré e formas de equilibrar praia, descanso e experiências para diferentes idades.
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:mt-6 sm:text-lg">
+                  O guia organiza três dias por proximidade, começando pelo Hotel Solar e seu entorno, com cuidados de maré e pausas pensadas para diferentes idades.
                 </p>
 
                 <div className="mt-9 grid gap-4 sm:grid-cols-2">
                   {[
-                    [Compass, 'Roteiro de 3 dias', 'Maçarico, Corvina, Atalaia, ilhas e manguezais em um ritmo possível.'],
+                    [Compass, 'Roteiro de 3 dias', 'Praia do Solar, Maçarico, Espadarte, Atalaia e Farol Velho em uma ordem inteligente.'],
                     [ShieldCheck, 'Cuidados de viagem', 'Orientações simples para aproveitar praias e marés com mais tranquilidade.'],
                     [Users, 'Pensado para famílias', 'Sugestões que respeitam crianças, adultos e o tempo de descanso.'],
                     [Hotel, 'Uma base em Salinas', 'Conheça o Hotel Solar e entenda como ele pode fazer parte da experiência.'],
                   ].map(([Icon, title, text]) => {
                     const CardIcon = Icon as typeof Compass;
                     return (
-                      <div key={title as string} className="rounded-2xl border border-[#ded8ca] bg-white/70 p-5">
+                      <div key={title as string} className="rounded-2xl border border-[#ded8ca] bg-white/70 p-4 sm:p-5">
                         <CardIcon size={23} className="text-[#0f5c45]" />
                         <strong className="mt-3 block text-[#173a35]">{title as string}</strong>
                         <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{text as string}</p>
@@ -483,25 +483,25 @@ export default function CapturaNovembro() {
           </div>
         </section>
 
-        <section className="bg-[#e9eee8] py-20 sm:py-28">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-            <div className="grid gap-12 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:gap-20">
+        <section className="bg-[#e9eee8] py-16 sm:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
+            <div className="grid gap-10 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:gap-20">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#a87825]">Para quem ainda não conhece</p>
-                <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight sm:text-5xl">
+                <h2 className="mt-4 font-serif text-[2.15rem] font-semibold leading-tight sm:text-5xl">
                   Um hotel com história para ser a sua casa em Salinas.
                 </h2>
-                <p className="mt-6 text-lg leading-relaxed text-slate-600">
+                <p className="mt-5 text-base leading-relaxed text-slate-600 sm:mt-6 sm:text-lg">
                   O Hotel Solar recebe gerações de famílias desde 1973. Às margens do rio e perto dos principais passeios, combina a hospitalidade paraense com a liberdade de viver Salinas no seu ritmo.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   {['Café da manhã', 'Piscina', 'Recepção 24h', 'Estacionamento', 'Ambiente familiar'].map((item) => (
-                    <span key={item} className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-bold text-[#31554e] shadow-sm">
+                    <span key={item} className="flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-sm font-bold text-[#31554e] shadow-sm sm:px-4">
                       <Check size={15} className="text-[#b18433]" /> {item}
                     </span>
                   ))}
                 </div>
-                <div className="mt-9 flex items-center gap-4 rounded-2xl border-l-4 border-[#d2a958] bg-white/75 p-5">
+                <div className="mt-8 flex items-start gap-3 rounded-2xl border-l-4 border-[#d2a958] bg-white/75 p-4 text-left sm:mt-9 sm:items-center sm:gap-4 sm:p-5">
                   <Star className="shrink-0 fill-[#d2a958] text-[#d2a958]" size={24} />
                   <p className="leading-relaxed text-[#31554e]">
                     <strong>Já conhece o Solar?</strong> Então este convite também é para você: volte a olhar Salinas com novos planos e acompanhe primeiro o que estamos preparando.
@@ -509,44 +509,44 @@ export default function CapturaNovembro() {
                 </div>
               </div>
 
-              <div className="relative">
-                <div className="absolute -inset-3 rotate-2 rounded-[34px] bg-[#d7bd86]/45" />
+              <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
+                <div className="absolute -inset-2 rotate-1 rounded-[28px] bg-[#d7bd86]/45 sm:-inset-3 sm:rotate-2 sm:rounded-[34px]" />
                 <img
                   src={assetUrl('hotel-piscina.jpg')}
                   alt="Área de piscina do Hotel Solar em Salinópolis"
-                  className="relative h-[500px] w-full rounded-[30px] object-cover shadow-2xl"
+                  className="relative h-[380px] w-full rounded-[26px] object-cover shadow-2xl sm:h-[500px] sm:rounded-[30px]"
                 />
               </div>
             </div>
           </div>
         </section>
 
-        <section className="relative overflow-hidden bg-[#0b3d2e] py-20 text-white sm:py-24">
+        <section className="relative overflow-hidden bg-[#0b3d2e] py-16 text-white sm:py-24">
           <div className="absolute -right-20 -top-32 h-96 w-96 rounded-full border border-[#e1c084]/20" />
           <div className="absolute -bottom-40 -left-24 h-96 w-96 rounded-full border border-[#e1c084]/15" />
-          <div className="relative mx-auto max-w-5xl px-5 text-center sm:px-8">
+          <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-8">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e1c084] text-[#173a35]">
               <CalendarDays size={28} />
             </div>
             <p className="mt-7 text-sm font-bold uppercase tracking-[0.22em] text-[#e7c887]">Encontro online e gratuito</p>
-            <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight sm:text-6xl">
+            <h2 className="mt-4 font-serif text-[2.15rem] font-semibold leading-tight sm:text-6xl">
               Conheça o Hotel Solar ao vivo.
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/75">
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/75 sm:mt-6 sm:text-lg">
               No dia <strong className="text-white">24 de novembro, às 19h</strong>, faremos uma visita guiada online para mostrar o hotel, responder perguntas e apresentar uma novidade para quem deseja voltar mais vezes a Salinas.
             </p>
             <a
               href="#topo"
-              className="mt-9 inline-flex items-center gap-2 rounded-xl bg-[#e1c084] px-7 py-4 font-bold text-[#173a35] transition hover:-translate-y-0.5 hover:bg-[#efcf8c]"
+              className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#e1c084] px-4 py-4 text-center text-sm font-bold leading-snug text-[#173a35] transition hover:-translate-y-0.5 hover:bg-[#efcf8c] sm:mt-9 sm:w-auto sm:px-7 sm:text-base"
             >
-              Entrar na lista e receber o convite <ArrowRight size={19} />
+              Entrar na lista e receber o convite <ArrowRight className="shrink-0" size={19} />
             </a>
             <p className="mt-4 text-sm text-white/50">A participação na lista é gratuita e não obriga nenhuma compra.</p>
           </div>
         </section>
 
-        <section className="bg-white py-20">
-          <div className="mx-auto grid max-w-5xl gap-8 px-5 sm:grid-cols-3 sm:px-8">
+        <section className="bg-white py-16 sm:py-20">
+          <div className="mx-auto grid max-w-5xl gap-10 px-4 sm:grid-cols-3 sm:gap-8 sm:px-8">
             {[
               [Download, 'Guia imediato', 'Baixe assim que concluir seu cadastro.'],
               [Mail, 'Lembretes úteis', 'Receba o acesso ao encontro e conteúdos de preparação.'],
@@ -566,7 +566,7 @@ export default function CapturaNovembro() {
       </main>
 
       <footer className="border-t border-white/10 bg-[#082f28] py-9 text-white/65">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-5 text-center text-sm sm:px-8 md:flex-row md:text-left lg:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-4 text-center text-sm sm:px-8 md:flex-row md:text-left lg:px-12">
           <div>
             <strong className="block text-white">Hotel Solar</strong>
             <span>Salinópolis, Pará · Desde 1973</span>
