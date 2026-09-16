@@ -30,6 +30,9 @@ declare global {
 }
 
 const analyticsCampaign = 'ssl26_novembro_2026';
+const whatsappChannelUrl =
+  import.meta.env.VITE_WHATSAPP_CHANNEL_URL ||
+  'https://whatsapp.com/channel/0029VaQDL9Z5q08kV9anB80U';
 
 const assetUrl = (fileName: string) => `${import.meta.env.BASE_URL}${fileName.replace(/^\/+/, '')}`;
 
@@ -383,6 +386,22 @@ export default function CapturaNovembro() {
                     >
                       <Download size={19} /> Baixar o guia agora
                     </a>
+
+                    <a
+                      href={whatsappChannelUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => trackEvent('ssl26_whatsapp_channel_click', {
+                        ...analyticsParams(tracking),
+                        placement: 'capture_success',
+                      })}
+                      className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#0f5c45] bg-white px-5 py-3.5 font-bold text-[#0f5c45] transition hover:bg-[#f0f7f4]"
+                    >
+                      <MessageCircle size={19} /> Entrar no Canal VIP do WhatsApp
+                    </a>
+                    <p className="mt-2 text-center text-xs leading-relaxed text-slate-500">
+                      Receba os lembretes do encontro e as novidades do lançamento sem participar de grupos.
+                    </p>
 
                     <div className="my-6 h-px bg-slate-200" />
 

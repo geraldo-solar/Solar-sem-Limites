@@ -11,6 +11,7 @@ Colocar a landing `/solarsemlimitescadastro` em produção sem misturar os leads
 - Projeto-fonte da landing: `solar-sem-limites`
 - Domínio principal: `https://hotelsolar.tur.br`
 - Rota de captação: `https://hotelsolar.tur.br/solarsemlimitescadastro`
+- Canal VIP: `https://whatsapp.com/channel/0029VaQDL9Z5q08kV9anB80U`
 
 ## 1. Brevo
 
@@ -152,6 +153,7 @@ O GA4 do Hotel Solar (`G-0TN73829QP`) está instalado na landing. Os eventos aba
 | `generate_lead` | Cadastro concluído com sucesso |
 | `ssl26_profile_saved` | Perfil de relacionamento salvo |
 | `ssl26_guide_download` | Clique para baixar o guia |
+| `ssl26_whatsapp_channel_click` | Clique para entrar no Canal VIP |
 
 Os eventos levam campanha e origem por UTM, quando presentes. No GA4, marcar `generate_lead` como evento principal e criar o funil `ssl26_capture_view` → `ssl26_form_start` → `generate_lead`.
 
