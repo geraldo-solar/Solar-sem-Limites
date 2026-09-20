@@ -1,0 +1,185 @@
+# Solar Sem Limites 2026 — checklist mestre do lançamento
+
+**Documento central de acompanhamento · atualizado em 20/09/2026 · horários de Belém.**
+
+Da preparação ao fechamento do carrinho e à conferência do pós-venda. Este documento reúne o status atual; os relatórios vinculados guardam as evidências e o histórico.
+
+## Onde estamos e para onde vamos
+
+| Controle | Situação |
+|---|---|
+| Preparação | **77%**, pela matriz ponderada existente; reorganizar documentos não acrescenta pontos |
+| Campanha | **Não ativada**; sem liberação de anúncios, disparos ou verba nesta consolidação |
+| Meta comercial | **R$ 600.000 de faturamento bruto**; referência de 194 pacotes × R$ 3.100 = R$ 601.400 |
+| Lote | **200 unidades como referência de comunicação, não como limite** (decisão de 20/09): ultrapassar 200 é permitido e desejado, e não há trava no servidor. Uma compra de dois pacotes consome duas unidades |
+| Captação | **5.000 leads**: 3.500 pagos, 700 da base, 500 orgânicos, 300 por indicação |
+| Última entrega técnica | Fechamento do carrinho por data valendo no servidor (recusa comprovada com HTTP 409, antes de gravar) e contador real de pacotes no checkout. [Provas da revisão](SSL26_Vendas_Fechamento_e_Contador_2026-09-20.md) |
+| Próxima entrega | **AUT-05: entrada específica do pedido real e homologação de falhas/conversa fechada**, sem reinscrever contatos de teste |
+| Placar de vendas | [Modelo de acompanhamento diário preparado](SSL26_Placar_Diario.md); painel automático no ERP **ainda não implementado** |
+
+O percentual de preparação não mede vendas, lucro, tempo decorrido ou chance de sucesso. A meta financeira só será marcada como atingida com valores aprovados e conciliados; não há resultado presumido.
+
+### Como marcar nossa caminhada
+
+- **Concluído:** a entrega descrita tem evidência; não significa que toda a fase está liberada.
+- **Parcial:** existe material ou implementação, mas falta uma condição de conclusão.
+- **Pendente:** entrega ainda sem comprovação de conclusão.
+- **Planejado:** atividade futura, ainda não executada ou agendada nas plataformas.
+- Atualizar a linha pelo seu ID, a data de revisão e o diário ao final de cada avanço. Guardar link da prova; não apagar o histórico para mudar um status.
+- Responsável é o dono da entrega na equipe; não significa que uma mensagem ou tarefa já foi enviada a essa pessoa. Geraldo aprova decisões; Kaline conduz atendimento; Andrey responde pela frente técnica, com apoio do agente. No ManyChat, **Geraldo é o destino provisório autorizado em 20/09**, até disponibilizar Kaline como agente.
+- Datas comerciais permanecem aprovadas. Prazos internos de produção/aceite são propostas de trabalho, **não novos compromissos ou agendamentos automáticos**.
+
+## 1. Calendário geral
+
+| Marco | Quando em 2026 | Condição |
+|---|---|---|
+| Integrações, regulamento e guia | Antes de 09/10 | Prazo interno proposto; testes e revisão completos |
+| Mensuração e materiais reais | Antes de 12/10 | Prazo interno proposto; eventos e direitos de uso conferidos |
+| Ensaio do cadastro completo | Antes de 16/10 | Contatos novos/existentes, saída, pausa e falhas testados |
+| Captação orgânica | **19/10** | Aceite de Geraldo até 18/10; não ativar por calendário apenas |
+| Anúncios pagos | **26/10** | Aceite técnico/comercial até 23/10; orçamento e destinos revisados |
+| Aquecimento intensivo | **03/11** | Conteúdo segmentado e audiência elegível |
+| Checkout, ERP e indicação | Até 13/11 | Prazo interno proposto; pagamento, estoque e saldos homologados |
+| Ensaio geral da live | Até 20/11 | Prazo interno proposto; link, áudio, internet e plano B testados |
+| Fim da captação principal | **23/11** | Conferência da base e convites; não reenviar atrasados em lote |
+| Visita guiada online | **24/11, 19h** | Geraldo apresenta; Kaline atende; Andrey acompanha transmissão |
+| Abertura do carrinho | **25/11, 8h** | Todas as condições de venda aprovadas |
+| Fechamento do carrinho | **01/12, 23h59** | Bloqueio por data no servidor, publicado e testado em 20/09; **sem encerramento por esgotamento** |
+| Conferência final e pós-venda | A partir de 02/12 | Proposta de início; encerrar apuração após resolver as pendências |
+
+## 2. Base comercial
+
+| ID | Entrega e critério de conclusão | Status | Responsável / prazo |
+|---|---|---|---|
+| COM-01 | Preço, composição, validade, pagamento e regulamento mantidos; opções de um/dois pacotes definidas | Concluído | Geraldo · 16/09 |
+| COM-02 | Meta de R$ 600 mil, faixas de meta e meta de 5.000 leads registrados. **Revisão de 20/09: as 200 unidades passam a ser referência de comunicação, sem limite de venda** | Concluído | Geraldo · 16/09, revisto em 20/09 |
+| COM-03 | Datas comerciais, funções da equipe e orçamento-base de R$ 50 mil + reserva condicional de R$ 10 mil registrados | Concluído | Geraldo · 16/09 |
+| COM-04 | Reconferir passivo de diárias e capacidade por período antes das vendas; não prometer qualquer data | Pendente | Geraldo + Andrey · até 13/11 |
+| COM-05 | Conferir versão integral do regulamento, privacidade, aceite e política de cancelamento exibidos ao cliente, sem mudar regras aprovadas | Pendente | Geraldo + Andrey · antes de 09/10 |
+
+Fonte: [definições comerciais aprovadas](../Definicoes_Comerciais_Lancamento_Novembro_2026.md). O levantamento registrado de 16/09 é de 61 pacotes ativos e 308 diárias; **não é posição atualizada diariamente**. Reserva de mídia depende de aprovação de Geraldo conforme desempenho.
+
+## 3. Captação, automações e proteção do atendimento
+
+| ID | Entrega e critério de conclusão | Status | Responsável / prazo |
+|---|---|---|---|
+| CAP-01 | Página oficial, cadastro/perfil e entrega do guia; teste real de e-mail aceito | Concluído | Andrey · 18/09 |
+| CAP-02 | Canal VIP criado pelo usuário e novo link adotado; clique não é seguidor | Concluído | Geraldo + Andrey · já registrado |
+| AUT-01 | 13 tags e 12 campos da campanha instalados, preservando a operação anterior | Concluído | Andrey · 18/09 |
+| AUT-02 | Teste autorizado de cadastro → boa-vinda → guia/canal/saída; QA retirado da campanha, sem reenvio | Concluído | Andrey; aceite de Geraldo · 18/09 |
+| AUT-03 | Código da boa-vinda única e correção de data publicados e verificados, mantendo disparos desligados | Concluído | Andrey · 20/09 |
+| AUT-04 | Receptor de descadastro e saída do QA nos três serviços comprovados; não equivale à fila global ativa | Concluído | Andrey · 18–20/09 |
+| AUT-05 | Pausa/repetição e retorno positivo testados; destino Geraldo publicado, pendência antes do callback e limpeza após confirmação. Faltam entrada real, falha/timeout no ManyChat e conversa inicialmente fechada | Parcial | Andrey + Geraldo (destino provisório); Kaline após habilitação · antes de 09/10 |
+| AUT-06 | Audiência por canal: excluir QA, saída, atendimento e compradores de aquisição; dois segmentos Brevo salvos não bastam | Parcial | Andrey + Kaline · antes de 09/10 |
+| AUT-07 | Homologar contato novo/existente e conflitos de identidade; sem mesclar pessoas ou criar vínculos por suposição | Pendente | Andrey · antes de 16/10 |
+| AUT-08 | Concluir auditoria dos gatilhos, saída por texto, sobreposição de stories, esperas e compra durante sequência | Parcial | Andrey + Kaline · antes de 16/10 |
+| AUT-09 | Definir processamento/conciliação de falhas, alertas e responsável; testar repetição/timeout sem duplicar envios | Parcial | Andrey · antes de 16/10 |
+| AUT-10 | Aceite fim a fim da operação completa, inclusive atendimento; liberar somente o escopo aprovado por Geraldo | Pendente | Andrey + Kaline + Geraldo · antes de 19/10 |
+
+Evidências: [cadastro e saída](SSL26_Teste_Cadastro_Reservas_2026-09-18.md), [publicação original](SSL26_Publicacao_e_Pausa_2026-09-20.md), [teste de pausa e publicação atual](SSL26_Teste_Atendimento_Geraldo_2026-09-20.md), [configuração do fluxo](SSL26_Atendimento_ManyChat_2026-09-20.md), [auditoria](SSL26_Audiencia_e_Auditoria_2026-09-20.md), [operação](SSL26_Operacao_ManyChat.md). A pausa passou no teste pontual, mas ainda não está ligada ao pedido real de atendimento. Campanha desligada; teste não autoriza novos envios ou reinscrição.
+
+## 4. Conteúdo, mensuração e abertura da captação
+
+| ID | Entrega e critério de conclusão | Status | Responsável / prazo |
+|---|---|---|---|
+| CON-01 | Guia de oito páginas: terminar capa real/autorizada e revisão mobile; visual continua adiado nesta rodada | Parcial | Geraldo + Andrey · antes de 09/10 |
+| CON-02 | Régua/FAQ: revisar textos e trocar marcadores por links reais, provas autorizadas e descadastro funcional | Parcial | Geraldo + Kaline + Andrey · antes de cada publicação |
+| CON-03 | Produzir/aprovar fotos, vídeos e peças dos oito briefings, com versões mobile e direitos de uso | Parcial | Geraldo + Kaline; Andrey adapta · antes de 12/10 |
+| MET-01 | Verificar Pixel/CAPI/GA4, consentimento, UTMs e eventos sem duplicidade ou dados pessoais nas URLs | Pendente | Andrey · antes de 12/10 |
+| MET-02 | Implementar placar diário no ERP com fonte, data, conciliação e cálculo da meta; modelo documental organizado | Pendente | Andrey; Geraldo valida · captação até 16/10, vendas até 13/11 |
+| CAP-03 | Revisar página/guia/canais no celular, links e destino real dos leads antes de liberar tráfego | Parcial | Andrey + Kaline · antes de 16/10 |
+| CAP-04 | Aprovar/iniciar orgânico; usar “comente GUIA” apenas se o Direct estiver homologado | Planejado | Geraldo + Andrey · aceite até 18/10; início 19/10 |
+| CAP-05 | Revisar públicos, anúncios, UTMs, consentimento e verba; iniciar mídia somente com aceite | Planejado | Geraldo + Andrey · aceite até 23/10; início 26/10 |
+| CAP-06 | Conferir captação por origem/qualidade; revisar custo e criativos sem gastar automaticamente a reserva | Planejado | Geraldo + Andrey; Kaline informa qualidade · até 23/11 |
+
+Materiais: [produção e mensuração](SSL26_Producao_e_Lancamento.md), [régua de mensagens](SSL26_Regua_Conteudo.md), [placar diário](SSL26_Placar_Diario.md). Documento pronto não significa peça produzida, rastreamento instalado ou campanha agendada.
+
+## 5. Página de vendas, pagamentos, diárias e indicação
+
+| ID | Entrega e critério de conclusão | Status | Responsável / prazo |
+|---|---|---|---|
+| VEN-01 | Adaptar página de novembro para público novo/ex-hóspede: hotel, provas, oferta, regras e FAQ no celular | Parcial | Andrey; Geraldo aprova · até 13/11 |
+| VEN-02 | Homologar checkout de um/dois pacotes, Pix/cartão/combinado, acréscimos e aceite; sem cartão/CVV em e-mail ou chat. **Critério do cartão cumprido em 20/09**: o e-mail interno aponta para o cofre cifrado, não carrega número nem CVV. Falta a homologação registrada para novembro | Parcial | Andrey; Geraldo valida · até 13/11 |
+| VEN-03 | Aprovação confiável, conciliação, duplicidade, recusa e estorno; um pedido não vira duas vendas. **Duplicidade, recusa e aprovação com desfazimento comprovadas**; faltam conciliação contra extrato e fluxo de estorno | Parcial | Andrey + Geraldo · até 13/11 |
+| VEN-04 | Uma aprovação gera um saldo; reserva/consumo/cancelamento descontam ou devolvem corretamente, sem saldo negativo. **Comprovado em produção (20/09): 51 compras aprovadas, 384 diárias, 33 baixas automáticas, 79 diárias consumidas e zero saldo negativo.** Pendência separada: 8 compras aprovadas sem vínculo de cadastro (todas com CPF; a baixa funciona, mas não aparecem na conta corrente) | Concluído | Andrey + Kaline; Geraldo homologa · 20/09 |
+| VEN-05 | Fechar o carrinho por data no servidor, valendo para link antigo e chamada direta à API. **Sem trava de lote: as 200 unidades são comunicação, não limite (decisão de 20/09).** Recusa comprovada com HTTP 409 antes de gravar; venda corrente preservada | Concluído | Andrey · 20/09 |
+| VEN-06 | Definir tratamento de pedido criado antes e pago após o fechamento e o prazo do pagamento | Pendente | Geraldo + Andrey · até 13/11, antes de anunciar condições |
+| VEN-07 | Indicação: vínculo/pagamento aprovados; crédito único de baixa temporada, limite de duas diárias por CPF e passivo separado | Pendente | Andrey + Geraldo · até 13/11 |
+| VEN-08 | Recuperação por etapa, até três contatos individuais, saída/atendimento/compra rechecados e links seguros | Parcial | Kaline + Andrey · até 13/11 |
+| VEN-09 | Compra completa homologada, com saldo, reserva, estorno e indicação; registrar aceite e contingência | Pendente | Todos · até 20/11 |
+
+A estrutura anterior do ERP/checkout não basta para marcar essas entregas de novembro como concluídas. Preservar o regulamento; pontos operacionais indefinidos exigem decisão, não suposição. Provas de VEN-02 a VEN-05 na [revisão de vendas de 20/09](SSL26_Vendas_Fechamento_e_Contador_2026-09-20.md): o que está marcado como concluído ali tem teste registrado, não é a estrutura antiga sendo recontada.
+
+## 6. Aquecimento e visita guiada
+
+| ID | Entrega e critério de conclusão | Status | Responsável / prazo |
+|---|---|---|---|
+| LIVE-01 | Roteiro da visita, divisão de papéis e plano B escritos | Concluído | Geraldo + Kaline + Andrey · planejamento registrado |
+| LIVE-02 | Criar link real e conferir acesso; preparar gravação/replay e materiais de apoio | Pendente | Andrey + Geraldo · até 20/11 |
+| LIVE-03 | Ensaiar percurso, internet, áudio, luz, perguntas, links e contingência | Pendente | Todos · até 20/11 |
+| AQUE-01 | Publicar régua revisada por perfil; guia no cadastro e conteúdo pertinente, sem disparar atrasados em lote | Planejado | Geraldo aprova; Kaline + Andrey operam · 03–23/11 |
+| AQUE-02 | Conferir elegibilidade e enviar convites/lembretes testados, respeitando saída/atendimento | Planejado | Kaline + Andrey · 23–24/11 |
+| LIVE-04 | Realizar visita, registrar dúvidas e presença verificável; vendas só no dia seguinte | Planejado | Geraldo apresenta; Kaline/Andrey apoiam · 24/11, 19h |
+| LIVE-05 | Conferir e disponibilizar replay; somente então enviar link | Planejado | Andrey + Geraldo · após a live |
+
+## 7. Carrinho aberto: operação rumo aos R$ 600 mil
+
+| ID | Entrega e critério de conclusão | Status | Responsável / prazo |
+|---|---|---|---|
+| CAR-01 | Aceite final de página, checkout, estoque, pagamentos, saldo e atendimento; registrar autorização de abertura | Planejado | Todos; Geraldo aprova · antes de 25/11, 8h |
+| CAR-02 | Abrir vendas no horário; testar disponibilidade real e publicar só links corretos | Planejado | Andrey + Kaline; Geraldo aprova · 25/11, 8h |
+| CAR-03 | Conferir placar, fila, pagamentos, pacotes vendidos, falhas e distância para a meta | Planejado | Todos, com funções no placar · rotina proposta às 9h e 17h |
+| CAR-04 | Recuperar intenção/pagamentos pendentes dentro dos limites; retirar compradores dos avisos de aquisição | Planejado | Kaline + Andrey · 25/11–01/12 |
+| CAR-05 | Revisar resultado, objeções, criativos e atendimento; não mudar preço, prazo ou verba extra sem Geraldo | Planejado | Geraldo + equipe · durante as vendas |
+| CAR-06 | Avisos de esclarecimento, véspera e último dia aprovados, com prazo e número de vendidos verdadeiros. **Não usar contador fixo no código nem falar em vagas restantes**, já que não há limite | Planejado | Geraldo + Kaline + Andrey · 27/11, 30/11 e 01/12 |
+| CAR-07 | Registrar meta atingida só com faturamento aprovado, ajustado por cancelamentos conhecidos e conciliado | Planejado | Geraldo + Andrey · quando comprovado |
+
+Faixas aprovadas, ao preço-base: **150 pacotes / R$ 465 mil**, **194 / R$ 601.400**, **200 / R$ 620 mil**. São referências, não vendas feitas — e, desde 20/09, **também não são teto**: passar de 200 é permitido. Faturamento, recebido e lucro são diferentes. Não converter 194 pacotes em “194 compradores”: um comprador pode adquirir dois.
+
+## 8. Fechamento do carrinho e pós-venda
+
+| ID | Entrega e critério de conclusão | Status | Responsável / prazo |
+|---|---|---|---|
+| FIM-01 | Encerrar novas compras no servidor no prazo. **Mecanismo publicado e testado em 20/09, inclusive bloqueio por link antigo e chamada direta à API**; falta o evento acontecer na data | Parcial | Andrey; Geraldo acompanha · 01/12, 23h59 |
+| FIM-02 | Confirmar fechamento antes de anunciá-lo; parar anúncios/avisos de aquisição da oferta encerrada | Planejado | Andrey + Kaline; Geraldo aprova · no fechamento |
+| FIM-03 | Preservar recibos e atender pendentes conforme VEN-06, sem prorrogar o carrinho implicitamente | Planejado | Geraldo + Kaline + Andrey · fechamento e conciliação |
+| FIM-04 | Conciliar aprovados, cancelamentos/estornos, recebimentos, acréscimos, mídia e estoque | Planejado | Geraldo + Andrey · a partir de 02/12 |
+| POS-01 | Conferir saldo/validade e enviar orientação correta de reserva; manter atendimento operacional | Planejado | Kaline + Andrey; Geraldo valida · após cada aprovação |
+| POS-02 | Conferir indicações aprovadas, limites e créditos; não recompensar cadastro, clique ou pagamento pendente | Planejado | Andrey + Geraldo · após cada conciliação |
+| POS-03 | Registrar passivo final de diárias, regras de uso e responsável pelo acompanhamento posterior | Planejado | Geraldo + Kaline + Andrey · apuração final |
+| FIM-05 | Relatório final: resultado versus meta, origem, custos, pendências e aprendizados | Planejado | Geraldo + equipe · após conciliação, sem prazo final inventado |
+
+**Fechar o carrinho e bater a meta são marcos separados.** O prazo aprovado vale mesmo se a meta não tiver sido atingida. Chegar a R$ 600 mil não altera automaticamente o lote de 200 nem antecipa o fechamento por um critério novo. Não anunciar “meta batida” por projeção ou pedido pendente.
+
+## 9. Próximas ações, sem perder a ordem
+
+1. **AUT-05:** pausa/repetição, destino Geraldo e confirmação positiva testados → preparar entrada específica do pedido real → homologar falha/timeout/conversa fechada, sem reinscrição ou envio comercial.
+2. **AUT-06 a AUT-10:** audiência, saída, contato novo, falhas e aprovação da operação completa.
+3. **MET-01 / MET-02:** mensuração e placar no ERP; validar origem e números antes de depender deles para decisões.
+4. **CON-01 a CON-03:** finalizar materiais e guia; só liberar captação após condições técnicas/editoriais. Esta consolidação não muda a prioridade combinada de adiar o design.
+5. **VEN-01, VEN-03, VEN-06 a VEN-09:** página de novembro, conciliação/estorno, indicação e homologação fim a fim, em tempo do ensaio geral. Saldo (VEN-04) e fechamento por data (VEN-05) já entregues em 20/09; sobra a limpeza das 8 compras aprovadas sem vínculo de cadastro.
+6. Executar calendário de captação, aquecimento, live, vendas, fechamento e pós-venda com os aceites acima.
+
+## 10. Diário resumido e documentos de apoio
+
+| Data | Avanço comprovado | Ainda não significa |
+|---|---|---|
+| 16/09 | Definições comerciais, calendário, responsáveis e desenho do funil registrados | Campanha pronta/ativa |
+| 18/09 | Cadastro/e-mail/WhatsApp e três botões testados com autorização; saída comprovada e QA excluído | Fila automática global homologada |
+| 20/09 — publicação | Boa-vinda/API de pausa publicadas; testes e proteções conferidos | Pausa conectada ao atendimento real |
+| 20/09 — organização | Criado checklist mestre e modelo de placar; documentos anteriores apontam para cá | Dashboard automático ou avanço extra no percentual |
+| 20/09 — atendimento | AUT-05: rascunho ManyChat salvo/relido com tag, abertura e callback autenticado; autorização de teste solicitada | Fluxo publicado, contato alterado, pausa real homologada ou avanço extra no percentual |
+| 20/09 — teste autorizado | Geraldo substituiu QA pelo próprio contato e autorizou vínculo/tag; fluxo publicado sem gatilho, executado uma vez, pausa/repetição comprovadas e saída preservada | Atendimento público conectado, transição fechada→aberta comprovada ou campanha liberada |
+| 20/09 — destino e confirmação | Geraldo escolhido como destino provisório; revisão publicada e executada uma única vez com nova autorização. Confirmação booleana e limpeza da pendência comprovadas; demais dados preservados. 102 testes locais, TypeScript e READY conferidos | Entrada pública ou falha real homologadas; conversa antes fechada ou sem responsável testada; avanço automático no percentual |
+| 20/09 — vendas: prazo e contador | Decisão de não limitar em 200 registrada. Fechamento por data publicado no ERP (`7e1c879`) e site (`b10ee43`): handler real recusou pedido fora do prazo com HTTP 409 **antes de gravar**, janela conferida em sete datas e pedido dentro do prazo continuou entrando. Contador real no checkout (64 pacotes) via rota agregada autenticada. Auditoria da base: 51 aprovadas, 79 diárias consumidas, **zero saldo negativo**. VEN-04 e VEN-05 concluídos; **74% → 77%**. [Provas](SSL26_Vendas_Fechamento_e_Contador_2026-09-20.md) | Carrinho fechado de fato (o evento é em 01/12), página de vendas de novembro, conciliação, estorno ou indicação entregues. Não existe trava de 200 — por decisão, não por pendência |
+
+Próximos registros: data, IDs afetados, estado anterior/novo, prova, responsável e próxima pendência. Não armazenar telefones, e-mails individuais, senhas ou cartões neste checklist.
+
+- [Placar diário e conciliação da meta](SSL26_Placar_Diario.md): campos, fórmulas, rotina e fechamento.
+- [Matriz dos 74% e histórico técnico](SSL26_Painel_Preparacao.md): pesos/justificativas; não substituir por contagem de linhas concluídas.
+- [Definições comerciais](../Definicoes_Comerciais_Lancamento_Novembro_2026.md) e [funil](../Funil_Captacao_Vendas_Novembro_2026.md): decisões aprovadas, não execução.
+- [Produção e live](SSL26_Producao_e_Lancamento.md), [mensagens](SSL26_Regua_Conteudo.md) e [operação ManyChat](SSL26_Operacao_ManyChat.md): materiais e instruções detalhadas.
+- [Última publicação](SSL26_Publicacao_e_Pausa_2026-09-20.md): evidências e limites técnicos.
+- [Vendas: fechamento por data e contador real](SSL26_Vendas_Fechamento_e_Contador_2026-09-20.md): provas de VEN-02 a VEN-05 e FIM-01, auditoria da base e decisão sobre o lote.
+
+**Regra de atualização:** status executivo aqui; pontuação na matriz; resultados medidos no placar; provas/incidentes nos relatórios datados. Havendo divergência, conferir a evidência mais recente e registrar a correção — nunca assumir que um planejamento foi executado.
