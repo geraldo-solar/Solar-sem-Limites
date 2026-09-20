@@ -1,13 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CheckoutForm } from './Checkout-Solar-sem-Limites/components/CheckoutForm';
 import { sendOrderToGoogleSheets } from './Checkout-Solar-sem-Limites/services/googleSheetsService';
 import { sendOrderToErp } from './Checkout-Solar-sem-Limites/services/solarErpService';
 import { addContactAndSendEmail } from './Checkout-Solar-sem-Limites/services/brevoService';
 import { CustomerData } from './Checkout-Solar-sem-Limites/types';
 
+interface StatusCarrinho {
+  aberto: boolean;
+  fechaEm: string;
+  abreEm: string;
+  pacotesVendidos: number;
+}
+
 export default function CheckoutPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [status, setStatus] = useState<StatusCarrinho | null>(null);
+  const [fechouAgora, setFechouAgora] = useState<string | null>(null);
+
+  // Prazo e contador vêm do ERP. Se a consulta falhar, o formulário continua
+  // aparecendo: quem decide de verdade se o pedido entra é a rota de
+  // ingestão, não esta tela.
+  useEffect(() => {
+    fetch('/api/solar-status')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d?.success && setStatus(d))
+      .catch(() => {});
+  }, []);
 
   const handleSubmit = async (data: CustomerData) => {
     setIsLoading(true);
@@ -19,14 +38,20 @@ export default function CheckoutPage() {
         paymentStatus: 'pending',
       };
 
-      const [, syncedWithErp] = await Promise.all([
+      const [, resultadoErp] = await Promise.all([
         sendOrderToGoogleSheets(order),
         sendOrderToErp(order),
       ]);
-      if (!syncedWithErp) {
+      if (resultadoErp.carrinhoFechado) {
+        // Fechou com a aba já aberta: não é erro de conexão, e mandar tentar
+        // de novo só faria o cliente repetir em vão.
+        setFechouAgora(resultadoErp.mensagem || 'As vendas foram encerradas.');
+        return;
+      }
+      if (!resultadoErp.ok) {
         throw new Error('O pedido nao foi sincronizado com o ERP.');
       }
-      
+
       // 3. ADD CONTACT TO BREVO AND SEND CONFIRMATION EMAIL (Omitted await to not block UI)
       addContactAndSendEmail({
         email: data.email,
@@ -49,6 +74,27 @@ export default function CheckoutPage() {
       setIsLoading(false);
     }
   };
+
+  const carrinhoFechado = fechouAgora || (status && !status.aberto);
+  if (carrinhoFechado && !isSuccess) {
+    return (
+      <div className="min-h-screen bg-sand-50 flex items-center justify-center p-4">
+        <div className="bg-white max-w-lg p-8 rounded-lg shadow-md text-center">
+          <h2 className="text-3xl font-serif text-moss-800 mb-4">Vendas encerradas</h2>
+          <p className="text-gray-600 mb-6 font-medium">
+            {fechouAgora || 'As vendas deste lote foram encerradas.'}
+          </p>
+          <p className="text-gray-500 text-sm">
+            Fale com a gente pelo WhatsApp (91) 98100-0800 ou por reserva@hotelsolar.tur.br
+            para saber das próximas datas.
+          </p>
+          <a href="#/" className="mt-8 inline-block bg-moss-800 text-white font-bold py-3 px-6 rounded hover:bg-moss-900 transition-colors">
+            Voltar
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   if (isSuccess) {
     return (
@@ -78,6 +124,11 @@ export default function CheckoutPage() {
           <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
             Garantia de segurança máxima. Seus dados estão protegidos por criptografia de ponta a ponta.
           </p>
+          {status && status.pacotesVendidos > 0 && (
+            <p className="mt-4 inline-block rounded-full border border-gold-500/40 bg-gold-50 px-4 py-1.5 text-sm font-semibold text-moss-800">
+              {status.pacotesVendidos} pacotes já garantidos por outras famílias
+            </p>
+          )}
         </div>
         <CheckoutForm onSubmit={handleSubmit} isLoading={isLoading} />
       </div>
