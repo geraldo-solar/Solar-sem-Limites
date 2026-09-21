@@ -2,13 +2,15 @@
 
 **Modelo operacional preparado em 20/09/2026. Ainda não conectado automaticamente ao ERP, Brevo, ManyChat ou Meta.**
 
+Revisão de 21/09: preparação em 80% — kit de captação produzido e decisão de compra autenticada instalada/homologada em produção; referências de estoque alinhadas à decisão de não limitar vendas a 200.
+
 [Voltar ao checklist mestre](SSL26_Checklist_Mestre.md). Horários de Belém. Valores abaixo são metas ou campos a preencher, nunca faturamento já realizado.
 
 ## 1. Três controles separados
 
 | Controle | Referência | Estado registrado |
 |---|---|---|
-| Preparação | Matriz ponderada de entregas | 77%; consolidar documentos não aumenta esse percentual |
+| Preparação | Matriz ponderada de entregas | 80%; kit de captação produzido/conferido e decisão de compra autenticada em produção; imagens/textos para revisão final; consolidar documentos não aumenta esse percentual |
 | Captação | 5.000 leads válidos, sem QA/duplicados | Não apurada nesta rodada; campanha ainda não ativada |
 | Vendas | R$ 600.000 de faturamento bruto aprovado e conciliado | Não apuradas nesta rodada; carrinho previsto para 25/11–01/12 |
 
@@ -20,7 +22,7 @@ Conferência às **9h e 17h** durante a campanha; não foi criado lembrete, agen
 
 1. **Andrey:** conferir integrações, horário da extração, origem/duplicidade e conciliação; marcar indisponibilidade de fonte em vez de apresentar dado antigo como novo.
 2. **Kaline:** informar fila comercial, dúvidas, recuperação, atendimento ativo e saídas; não colocar dados individuais neste documento compartilhado.
-3. **Geraldo:** revisar vendas, valores, custo, estoque e decisões. Reserva adicional de mídia, mudanças comerciais ou de prazo não são liberadas por fórmula.
+3. **Geraldo:** revisar vendas, valores, custo, passivo de diárias/capacidade e decisões. Reserva adicional de mídia, mudanças comerciais ou de prazo não são liberadas por fórmula.
 4. Registrar resultado, pendência, ação, responsável e próximo prazo. No fechamento, conferir também no horário do corte, sem depender apenas da reunião das 17h.
 
 ## 3. Campos e fontes do futuro painel
@@ -38,7 +40,7 @@ Conferência às **9h e 17h** durante a campanha; não foi criado lembrete, agen
 | Vendas-base e acréscimos do cartão | Componentes do mesmo pedido, separados; não contar entrada + total duas vezes |
 | Faturamento bruto válido | Total aprovado conciliado, descontados cancelamentos/devoluções conhecidos; não é lucro ou caixa líquido |
 | Recebido e a receber | Extrato/provedor; autorização do cartão não significa liquidação de todas as parcelas |
-| Estoque disponível | Controle transacional do ERP, incluindo retenções válidas conforme política aprovada |
+| Passivo de diárias e capacidade | Saldo de diárias por tipo/validade e capacidade por período; 200 pacotes não é teto e não gera “vagas restantes” |
 | Diárias / indicação | Movimentações do ERP; regulares, bônus e indicação separados; diárias não são unidades vendidas |
 | Pendências e qualidade | Falhas, divergências, responsável, data/hora; nenhuma marcação de meta sem conciliação |
 
@@ -52,7 +54,7 @@ Na meta, somar cada pedido aprovado **uma vez**, pelos valores efetivos. Mostrar
 - **Pacotes por lead:** unidades confirmadas válidas ÷ leads válidos únicos. Referência: 194 ÷ 5.000 = 3,88%.
 - **Compradores por lead:** compradores únicos confirmados ÷ leads válidos únicos; indicador separado da conversão em pacotes.
 - **CPL pago:** gasto de mídia ÷ leads pagos válidos únicos. Denominador zero/dado indisponível = “não calculável”, não zero.
-- **Estoque:** não usar simplesmente `200 − pedidos`. Conciliar unidades vendidas, retenções válidas, expirações e devoluções conforme regra aprovada; compra de dois consome dois.
+- **Unidades e passivo:** não calcular `200 − pedidos` nem anunciar estoque de pacotes. Conciliar unidades aprovadas, cancelamentos e devoluções; compra de dois soma dois pacotes. Apurar separadamente as diárias devidas, usadas e devolvidas, por tipo/validade, sem prometer qualquer data de hospedagem.
 - **Recebimentos:** somar lançamentos liquidados/conciliados; registrar taxas/devoluções separadamente. Não chamar faturamento bruto de lucro.
 
 O benchmark de 194 unidades desconsidera acréscimos do cartão. A meta aprovada é financeira; no atingimento, mostrar também unidades, compradores, base e acréscimos, sem pressupor o mesmo meio de pagamento em todas as compras.
@@ -89,7 +91,7 @@ A referência de aproximadamente 121 leads pagos/dia é 3.500 ÷ 29, de 26/10 a 
 | 01/12 | — | — | — | — | Não apurado; corte às 23h59 (sem encerramento por esgotamento) |
 | Apuração posterior | — | — | — | — | Conciliar pendentes/cancelamentos; não é reabertura |
 
-Anexar à conferência, em registro privado apropriado: relatório de pedidos, base, acréscimos, liquidado/a receber, cancelamentos, estoque disponível e retenções. Aqui só totais e referência da prova, sem cartão, CPF ou contatos.
+Anexar à conferência, em registro privado apropriado: relatório de pedidos, base, acréscimos, liquidado/a receber, cancelamentos e passivo de diárias. Aqui só totais e referência da prova, sem cartão, CPF ou contatos.
 
 ## 7. Ações quando os números exigirem atenção
 
@@ -98,7 +100,7 @@ Anexar à conferência, em registro privado apropriado: relatório de pedidos, b
 | Falha de pagamento, duplicidade, identidade ou descadastro | Conter integração afetada, preservar registros e avisar responsáveis; não repetir envio/pagamento incerto sem conciliar |
 | CPL alto / captação abaixo da trajetória | Revisar origem, criativo, página e qualidade; Geraldo decide ajustes/reserva de mídia |
 | Intenção alta e baixa aprovação | Kaline verifica dúvidas/pendências com limite de contatos; Andrey investiga checkout |
-| Estoque abaixo de 20 | Conciliar saldo antes de comunicar escassez; incluir retenções válidas |
+| Passivo de diárias acima da capacidade planejada por período | Geraldo + equipe revisam capacidade e reservas conforme o regulamento; não criar teto, escassez ou mudança comercial automaticamente |
 | Meta aparentemente atingida | Geraldo + Andrey conciliam momento, total, base/acréscimos e prova; só então marcar “atingida” |
 | Meta não atingida no prazo | Encerrar conforme anunciado, apurar resultado/aprendizados; não estender automaticamente |
 | Fonte indisponível/desatualizada | Mostrar aviso e última leitura; suspender conclusões baseadas em dado incompleto |
@@ -108,7 +110,7 @@ Anexar à conferência, em registro privado apropriado: relatório de pedidos, b
 - [ ] **FIM-01:** novas compras bloqueadas no servidor e teste de link antigo concluído.
 - [ ] **FIM-02:** página/mensagens coerentes com encerramento; aquisição da oferta encerrada parada.
 - [ ] **FIM-03:** pedidos anteriores ao corte tratados pela política aprovada; pendências preservadas.
-- [ ] **FIM-04:** conciliar base, acréscimos, cancelamentos, recebido/a receber, mídia e estoque.
+- [ ] **FIM-04:** conciliar base, acréscimos, cancelamentos, recebido/a receber, mídia e passivo de diárias.
 - [ ] **POS-01:** saldo e orientação de reserva corretos para cada compra aprovada.
 - [ ] **POS-02 / POS-03:** indicações, bônus e passivo de diárias conferidos.
 - [ ] **FIM-05:** relatório aprovado por Geraldo: resultado/meta, custos, origem, dúvidas e melhorias.

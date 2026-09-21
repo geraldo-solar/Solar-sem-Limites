@@ -8,13 +8,13 @@ Da preparação ao fechamento do carrinho e à conferência do pós-venda. Este 
 
 | Controle | Situação |
 |---|---|
-| Preparação | **79%**, pela matriz ponderada: +2 por peças efetivamente produzidas/conferidas; design aprovado, com imagens/textos adiados para a revisão final. Reorganizar documentos não acrescenta pontos |
+| Preparação | **80%**, pela matriz ponderada: +2 por peças efetivamente produzidas/conferidas e +1 pela decisão de compra autenticada instalada e homologada em produção. Design aprovado, com imagens/textos adiados para a revisão final. Reorganizar documentos não acrescenta pontos |
 | Campanha | **Não ativada**; sem liberação de anúncios, disparos ou verba nesta consolidação |
 | Meta comercial | **R$ 600.000 de faturamento bruto**; referência de 194 pacotes × R$ 3.100 = R$ 601.400 |
 | Lote | **200 unidades como referência de comunicação, não como limite** (decisão de 20/09): ultrapassar 200 é permitido e desejado, e não há trava no servidor. Uma compra de dois pacotes consome duas unidades |
 | Captação | **5.000 leads**: 3.500 pagos, 700 da base, 500 orgânicos, 300 por indicação |
-| Última entrega | **Aprovação/recusa PCDA autenticadas e auditadas preparadas localmente**: senha do ERP, transação única, bloqueio de repetição e vínculo legado separado. 538 testes ERP + 69 da página e verificações visuais desktop/mobile aprovados. **Não instalado/publicado.** [Entrega e limites](<../../ERP Hotel Solar/docs/pcda-aprovacao-autenticada.md>). Imagens/textos continuam para o final |
-| Próxima entrega | **Conectar a origem ao checkout exclusivo de novembro com repetição segura** e concluir rechecagem central de e-mail. Aprovação protegida ainda exige instalação coordenada e homologação; depois metadados/filtros e testes controlados. AUT-05 ainda precisa de timeout real e conversa inicialmente fechada/com outro responsável. Nenhuma nova execução ou ativação autorizada por este checklist |
+| Última entrega | **Aprovação/recusa PCDA autenticadas e auditadas instaladas e homologadas em produção** (21/09, 18h50): migração aplicada, escrita anônima na tabela de compras removida, decisão exige senha/cargo do ERP e grava auditoria imutável. Recusa real executada por Geraldo com e-mail entregue. [Entrega, instalação e limites](<../../ERP Hotel Solar/docs/pcda-aprovacao-autenticada.md>). Imagens/textos continuam para o final |
+| Próxima entrega | **Conectar a origem ao checkout exclusivo de novembro com repetição segura** e concluir rechecagem central de e-mail; depois metadados/filtros e testes controlados. Pendência imediata criada pela nova trava: a ingestão ainda usa `upsert` por `source_order_id` e, se reenviar pedido já decidido, o gatilho recusa e o cliente vê erro — adaptar esse retorno. AUT-05 ainda precisa de timeout real e conversa inicialmente fechada/com outro responsável. Nenhuma nova execução ou ativação autorizada por este checklist |
 | Placar de vendas | [Modelo de acompanhamento diário preparado](SSL26_Placar_Diario.md); painel automático no ERP **ainda não implementado** |
 
 O percentual de preparação não mede vendas, lucro, tempo decorrido ou chance de sucesso. A meta financeira só será marcada como atingida com valores aprovados e conciliados; não há resultado presumido.
