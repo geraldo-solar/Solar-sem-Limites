@@ -62,7 +62,7 @@ Base vai de 28/11/2025 a 01/09/2026. Sustenta VEN-04 com dado real: uma aprovaç
 
 Resolvido: 2 compras reaproveitaram cadastro já existente por CPF (mesmo comprador, nome grafado de dois jeitos) e 6 ganharam cadastro novo criado com nome, CPF, e-mail e telefone da própria compra. Todos receberam a etiqueta `[SOLAR_SEM_LIMITES]` e conta corrente aberta, como a aprovação faz. Conferido depois: **51 de 51 aprovadas vinculadas, nenhum CPF com cadastro duplicado**. Nenhuma compra foi apagada, e nenhum valor ou validade foi alterado.
 
-**Fica registrado:** o e-mail de uma compradora está gravado com `.con` no lugar de `.com`. Não foi corrigido — trocar endereço de cliente sem confirmação pode mandar mensagem para a pessoa errada.
+**Correção de e-mail, autorizada em seguida:** o e-mail de uma compradora estava gravado terminando em `.con`, erro de digitação no checkout. Levantado primeiro e corrigido **somente após autorização de Geraldo** — trocar endereço de cliente por conta própria pode mandar mensagem para a pessoa errada. Ajustado nos dois lugares em que aparecia (a compra e o cadastro criado a partir dela), com valor anterior, data e autorização registrados na observação da própria compra. Foi um caso pontual já identificado, não uma varredura de qualidade da base.
 
 **Passivo a vencer:** 23 pacotes (138 diárias) vencem entre 28/11 e 22/12/2026, 22 deles concentrados de 17 a 22/12 — logo depois do fechamento do carrinho. São compras de dezembro/2025 que não foram usadas.
 
