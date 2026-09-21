@@ -111,13 +111,15 @@ function trackEvent(eventName: string, params: Record<string, string | boolean> 
   window.gtag?.('event', eventName, params);
 }
 
-function trackLead(tracking: TrackingData) {
+function trackLead(tracking: TrackingData, eventId: string) {
   const params = analyticsParams(tracking);
   trackEvent('generate_lead', params);
+  // O eventID é o mesmo leadId que o servidor manda pela Conversions API. É o
+  // que faz a Meta entender que os dois são o mesmo lead, e não dois.
   window.fbq?.('track', 'Lead', {
     content_name: analyticsCampaign,
     content_category: params.source,
-  });
+  }, { eventID: eventId });
 }
 
 export default function CapturaNovembro() {
@@ -130,6 +132,11 @@ export default function CapturaNovembro() {
   const [message, setMessage] = useState('');
   const [profile, setProfile] = useState<LeadProfile | null>(null);
   const [profileSaved, setProfileSaved] = useState(false);
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileError, setProfileError] = useState('');
+  const [profileToken, setProfileToken] = useState('');
+  const [emailDeliveryFailed, setEmailDeliveryFailed] = useState(false);
+  const [emailDeliverySuppressed, setEmailDeliverySuppressed] = useState(false);
   const [submissionId] = useState(() => `ssl26-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`);
   const tracking = useMemo(getTrackingData, []);
   const formStarted = useRef(false);
@@ -183,7 +190,10 @@ export default function CapturaNovembro() {
       }
 
       setStatus('success');
-      trackLead(tracking);
+      setProfileToken(data.profileToken || '');
+      setEmailDeliveryFailed(data.emailDelivery === 'failed');
+      setEmailDeliverySuppressed(data.emailDelivery === 'suppressed');
+      trackLead(tracking, submissionId);
       window.setTimeout(() => {
         document.getElementById('cadastro-concluido')?.scrollIntoView({
           behavior: 'smooth',
@@ -197,8 +207,10 @@ export default function CapturaNovembro() {
   }
 
   async function saveProfile(selectedProfile: LeadProfile) {
+    if (profileSaving) return;
     setProfile(selectedProfile);
-    setProfileSaved(true);
+    setProfileSaving(true);
+    setProfileError('');
 
     try {
       const response = await fetch('/api/capture-lead', {
@@ -206,6 +218,7 @@ export default function CapturaNovembro() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'profile',
+          profileToken,
           email: email.trim(),
           phone,
           profile: selectedProfile,
@@ -216,12 +229,15 @@ export default function CapturaNovembro() {
         }),
       });
       if (!response.ok) throw new Error('Não foi possível salvar o perfil.');
+      setProfileSaved(true);
       trackEvent('ssl26_profile_saved', {
         ...analyticsParams(tracking),
         lead_profile: selectedProfile,
       });
     } catch {
-      // O guia continua disponível mesmo se a etapa opcional de perfil falhar.
+      setProfileError('Não conseguimos salvar sua resposta. Você pode tentar novamente; o botão para baixar o guia continua disponível.');
+    } finally {
+      setProfileSaving(false);
     }
   }
 
@@ -376,7 +392,11 @@ export default function CapturaNovembro() {
                     <p className="mt-5 text-xs font-bold uppercase tracking-[0.18em] text-[#b18433]">Cadastro concluído</p>
                     <h2 className="mt-2 font-serif text-3xl font-semibold leading-tight">Pronto, {firstName.split(' ')[0]}!</h2>
                     <p className="mt-3 leading-relaxed text-slate-600">
-                      Seu guia já está liberado. Também enviamos o acesso para o seu e-mail.
+                      {emailDeliverySuppressed
+                        ? 'Seu guia está liberado abaixo. Respeitamos sua preferência de não receber os avisos por e-mail deste lançamento.'
+                        : emailDeliveryFailed
+                        ? 'Seu cadastro está salvo e o guia está liberado abaixo. Não conseguimos enviar o e-mail agora; baixe por aqui.'
+                        : 'Seu guia já está liberado. O envio por e-mail foi solicitado; confira também a caixa de spam.'}
                     </p>
                     <a
                       href={assetUrl('guia-salinas-em-familia.pdf')}
@@ -415,13 +435,16 @@ export default function CapturaNovembro() {
                               key={option.value}
                               type="button"
                               onClick={() => saveProfile(option.value)}
-                              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-left transition hover:border-[#0f5c45] hover:bg-[#f4f8f6]"
+                              disabled={profileSaving}
+                              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-left transition hover:border-[#0f5c45] hover:bg-[#f4f8f6] disabled:cursor-wait disabled:opacity-60"
                             >
                               <strong className="block text-sm text-[#173a35]">{option.title}</strong>
                               <span className="mt-0.5 block text-xs text-slate-500">{option.description}</span>
                             </button>
                           ))}
                         </div>
+                        {profileSaving && <p role="status" className="mt-3 text-sm text-slate-600">Salvando sua resposta...</p>}
+                        {profileError && <p role="alert" className="mt-3 text-sm text-red-700">{profileError}</p>}
                       </>
                     ) : (
                       <div className="rounded-2xl bg-[#f4f8f6] p-5 text-center">

@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "setup:brevo": "node scripts/setup_brevo_ssl26.mjs"
+    "setup:brevo": "node scripts/setup_brevo_ssl26.mjs",
+    "setup:manychat": "node scripts/setup_manychat_ssl26.mjs",
+    "test:manychat": "node --test tests/manychat-setup.test.mjs",
+    "test:capture": "node --experimental-strip-types --test tests/capture-lead.test.mjs",
+    "test:capture:ui": "playwright test --config=playwright.capture.config.ts"
   },
   "dependencies": {
     "@google/genai": "^2.19.0",

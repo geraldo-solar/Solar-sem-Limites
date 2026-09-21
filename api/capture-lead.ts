@@ -1,10 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { randomUUID } from 'node:crypto';
+import { createHash, createHmac, randomUUID, timingSafeEqual } from 'node:crypto';
 
 const BREVO_API_URL = 'https://api.brevo.com/v3';
 const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
 const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'geraldo@hotelsolar.tur.br';
-const SENDER_NAME = process.env.BREVO_SENDER_NAME || 'Hotel Solar';
+const SENDER_NAME = process.env.BREVO_SENDER_NAME || 'Geraldo | Hotel Solar';
+const REPLY_TO_EMAIL = process.env.BREVO_REPLY_TO_EMAIL || 'reserva@hotelsolar.tur.br';
+const REPLY_TO_NAME = process.env.BREVO_REPLY_TO_NAME || 'Reservas | Hotel Solar';
 const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://hotelsolar.tur.br/solarsemlimitescadastro').replace(/\/$/, '');
 const WHATSAPP_CHANNEL_URL = process.env.WHATSAPP_CHANNEL_URL || 'https://whatsapp.com/channel/0029Vb8iEz73gvWjJea5rt3k';
 
@@ -24,10 +26,11 @@ interface LeadBody {
   utmContent?: string;
   utmTerm?: string;
   referral?: string;
+  profileToken?: string;
 }
 
-function normalizeBrazilianPhone(value = '') {
-  const digits = value.replace(/\D/g, '');
+function normalizeBrazilianPhone(value: unknown = '') {
+  const digits = clean(value, 40).replace(/\D/g, '');
   if (digits.length === 10 || digits.length === 11) return `+55${digits}`;
   if ((digits.length === 12 || digits.length === 13) && digits.startsWith('55')) return `+${digits}`;
   return '';
@@ -60,23 +63,225 @@ async function brevoRequest(path: string, payload: unknown) {
       'api-key': BREVO_API_KEY,
     },
     body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(8000),
+    redirect: 'error',
+    cache: 'no-store',
   });
 
-  if (!response.ok && response.status !== 204) {
-    const details = await response.text();
-    console.error(`Brevo request failed (${response.status})`, details.slice(0, 500));
+  if (!response.ok) {
+    // Provider responses can contain contact data. Log status only.
+    console.error(JSON.stringify({ message: 'Brevo request failed', path, status: response.status }));
     throw new Error('BREVO_REQUEST_FAILED');
   }
 }
 
-async function notifyIntegration(body: LeadBody) {
-  const webhookUrl = process.env.LEAD_WEBHOOK_URL;
-  if (!webhookUrl) return;
+// Read only this submitted identity, never the whole contact database. Preserve
+// withdrawal even when a previously registered person requests the guide again.
+async function readEmailSuppression(email: string, phone: string) {
+  const exclusionAttributes = ['SSL26_OPT_OUT', 'SSL26_QA', 'SSL26_ATENDIMENTO_PAUSA', 'SSL26_COMPRADOR'];
+  const response = await fetch(`${BREVO_API_URL}/contacts/${encodeURIComponent(email)}`, {
+    method: 'GET', headers: { accept: 'application/json', 'api-key': BREVO_API_KEY },
+    signal: AbortSignal.timeout(8000), redirect: 'error', cache: 'no-store',
+  });
+  if (response.status === 404) return false;
+  if (!response.ok) throw new Error('BREVO_STATE_UNAVAILABLE');
+  const contact = await response.json();
+  if (!contact || typeof contact.email !== 'string' || contact.email.toLowerCase() !== email
+    || !contact.attributes || typeof contact.attributes !== 'object' || Array.isArray(contact.attributes)
+    || (contact.attributes.SMS && normalizeBrazilianPhone(contact.attributes.SMS) !== phone)
+    || exclusionAttributes.some(name => contact.attributes[name] !== undefined && typeof contact.attributes[name] !== 'boolean')
+    || (contact.emailBlacklisted !== undefined && typeof contact.emailBlacklisted !== 'boolean')) throw new Error('BREVO_IDENTITY_REQUIRES_REVIEW');
+  // Existing mirrored holds block recapture; absence is NOT proof that the ERP
+  // has no hold. Central pre-send eligibility remains a release prerequisite.
+  return exclusionAttributes.some(name => contact.attributes[name] === true) || contact.emailBlacklisted === true;
+}
 
-  const capturedAt = new Date().toISOString();
+type CaptureReceipt = { email: string; phone: string; firstName: string; leadId: string; capturedAt: string; expiresAt: number };
+
+function signReceipt(payload: string) {
+  return createHmac('sha256', BREVO_API_KEY).update(`ssl26-profile-v1:${payload}`).digest('base64url');
+}
+
+function createProfileToken(receipt: CaptureReceipt) {
+  const payload = Buffer.from(JSON.stringify(receipt)).toString('base64url');
+  return `${payload}.${signReceipt(payload)}`;
+}
+
+function readProfileToken(value: unknown): CaptureReceipt | null {
+  if (typeof value !== 'string' || value.length > 4096) return null;
+  const parts = value.split('.');
+  if (parts.length !== 2) return null;
+  const [payload, signature] = parts;
+  const expected = Buffer.from(signReceipt(payload));
+  const actual = Buffer.from(signature);
+  if (expected.length !== actual.length || !timingSafeEqual(expected, actual)) return null;
+  try {
+    const receipt = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')) as CaptureReceipt;
+    if (!validEmail(receipt.email) || !Number.isFinite(receipt.expiresAt) || receipt.expiresAt <= Date.now()) return null;
+    return receipt;
+  } catch {
+    return null;
+  }
+}
+
+// Conversions API da Meta.
+//
+// O Pixel do navegador perde uma fatia relevante dos eventos: bloqueador de
+// anúncio, ITP do Safari/iOS e aba fechada antes do disparo. O servidor já tem
+// o lead validado na mão, então manda o mesmo evento por fora do navegador.
+//
+// Mora neste arquivo, e não num módulo próprio, porque nenhuma função de api/
+// importa arquivo vizinho hoje — e foi um import que a Vercel não conseguiu
+// resolver que derrubou as compras em produção antes. Separar não paga esse
+// risco a 35 dias da mídia paga.
+
+const META_GRAPH_URL = 'https://graph.facebook.com';
+// "Hotel Solar - Site", do portfólio Hotel Solar Salinópolis. Tem de ser o
+// MESMO de metaPixel.ts: IDs diferentes nos dois lados desligam a
+// deduplicação sem erro visível.
+const META_PIXEL_ID_PADRAO = '743518114034395';
+
+type MetaCapiResult = 'accepted' | 'failed' | 'not_configured' | 'skipped';
+
+function sha256Hex(value: string) {
+  return createHash('sha256').update(value, 'utf8').digest('hex');
+}
+
+// A Meta exige normalizar antes de gerar o hash. Se o formato variar, o hash
+// muda e o lead deixa de casar com a pessoa do outro lado.
+function hashedEmail(value: string) {
+  const normalized = value.trim().toLowerCase();
+  return normalized ? sha256Hex(normalized) : '';
+}
+
+function hashedPhone(value: string) {
+  // E.164 sem o '+': +5591988887777 vira 5591988887777.
+  const digits = value.replace(/\D/g, '');
+  return digits ? sha256Hex(digits) : '';
+}
+
+function hashedName(value: string) {
+  const normalized = value.trim().toLowerCase();
+  return normalized ? sha256Hex(normalized) : '';
+}
+
+function readCookie(cookieHeader: string, name: string) {
+  for (const part of cookieHeader.split(';')) {
+    const separator = part.indexOf('=');
+    if (separator === -1) continue;
+    if (part.slice(0, separator).trim() !== name) continue;
+    try {
+      return decodeURIComponent(part.slice(separator + 1).trim());
+    } catch {
+      return '';
+    }
+  }
+  return '';
+}
+
+// O fbclid pode chegar na query ou depois do '#': a página usa rota por hash
+// (#/lista-vip) e o anúncio cola o parâmetro no fim da URL que for usada.
+function readFbclid(pageUrl: string) {
+  try {
+    const url = new URL(pageUrl);
+    const fromQuery = url.searchParams.get('fbclid');
+    if (fromQuery) return fromQuery;
+    const marker = url.hash.indexOf('?');
+    if (marker === -1) return '';
+    return new URLSearchParams(url.hash.slice(marker + 1)).get('fbclid') || '';
+  } catch {
+    return '';
+  }
+}
+
+interface MetaLead {
+  eventId: string;
+  firstName: string;
+  email: string;
+  phone: string;
+  pageUrl: string;
+  source: string;
+  cookieHeader: string;
+  clientIp: string;
+  userAgent: string;
+  eventTimeMs: number;
+}
+
+async function notifyMeta(lead: MetaLead): Promise<MetaCapiResult> {
+  const pixelId = clean(process.env.META_PIXEL_ID, 40) || META_PIXEL_ID_PADRAO;
+  // O token é o único valor que falta configurar: sem ele, nada é enviado.
+  const token = process.env.META_CAPI_TOKEN || '';
+  if (!token) return 'not_configured';
+
+  const apiVersion = clean(process.env.META_API_VERSION, 10) || 'v21.0';
+  const testEventCode = clean(process.env.META_TEST_EVENT_CODE, 40);
+
+  const fbclid = readFbclid(lead.pageUrl);
+  const fbc = readCookie(lead.cookieHeader, '_fbc')
+    || (fbclid ? `fb.1.${lead.eventTimeMs}.${fbclid}` : '');
+  const fbp = readCookie(lead.cookieHeader, '_fbp');
+
+  const userData: Record<string, unknown> = { country: [sha256Hex('br')] };
+  const email = hashedEmail(lead.email);
+  const phone = hashedPhone(lead.phone);
+  const firstName = hashedName(lead.firstName);
+  if (email) userData.em = [email];
+  if (phone) userData.ph = [phone];
+  if (firstName) userData.fn = [firstName];
+  // fbp/fbc e IP não são hasheados: a Meta os recebe em claro por definição.
+  if (fbp) userData.fbp = fbp;
+  if (fbc) userData.fbc = fbc;
+  if (lead.clientIp) userData.client_ip_address = lead.clientIp;
+  if (lead.userAgent) userData.client_user_agent = lead.userAgent;
+
+  const response = await fetch(`${META_GRAPH_URL}/${apiVersion}/${pixelId}/events`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    // O token vai no corpo, nunca na query: URL entra em log de servidor.
+    body: JSON.stringify({
+      access_token: token,
+      ...(testEventCode ? { test_event_code: testEventCode } : {}),
+      data: [
+        {
+          event_name: 'Lead',
+          event_time: Math.floor(lead.eventTimeMs / 1000),
+          // Mesmo id que o navegador manda em fbq(..., { eventID }). Sem isso a
+          // Meta contaria o lead duas vezes e o CPL apareceria pela metade —
+          // erro que só apareceria depois da mídia paga já ter rodado.
+          event_id: lead.eventId,
+          action_source: 'website',
+          ...(lead.pageUrl ? { event_source_url: lead.pageUrl } : {}),
+          user_data: userData,
+          custom_data: { content_name: 'ssl26_novembro_2026', content_category: lead.source },
+        },
+      ],
+    }),
+    signal: AbortSignal.timeout(8000),
+    redirect: 'error',
+  });
+
+  if (!response.ok) {
+    // Só o status: o corpo de erro da Meta devolve trecho do que foi enviado.
+    console.error(JSON.stringify({
+      level: 'error',
+      message: 'Meta CAPI rejected event',
+      status: response.status,
+    }));
+    return 'failed';
+  }
+  return 'accepted';
+}
+
+async function notifyIntegration(body: LeadBody, capturedAt: string) {
+  const webhookUrl = process.env.LEAD_WEBHOOK_URL;
+  if (!webhookUrl) return 'not_configured' as const;
+  if (new URL(webhookUrl).protocol !== 'https:' || !process.env.LEAD_WEBHOOK_TOKEN) {
+    throw new Error('LEAD_WEBHOOK_CONFIGURATION_INVALID');
+  }
+
   const isProfileEvent = body.action === 'profile';
   const eventType = isProfileEvent ? 'profile' : 'capture';
-  const eventId = `${clean(body.leadId, 100) || randomUUID()}:${eventType}`;
+  const eventId = `${clean(body.leadId, 100) || randomUUID()}:${eventType}${isProfileEvent ? `:${randomUUID()}` : ''}`;
 
   const response = await fetch(webhookUrl, {
     method: 'POST',
@@ -87,14 +292,18 @@ async function notifyIntegration(body: LeadBody) {
         : {}),
     },
     body: JSON.stringify({
+      schemaVersion: 1,
       event: isProfileEvent ? 'ssl26_lead_profiled' : 'ssl26_lead_captured',
       eventId,
       tag: 'SSL26_LEAD',
       tags: isProfileEvent ? ['SSL26_LEAD'] : ['SSL26_LEAD', 'SSL26_CAPTADO'],
       capturedAt,
+      occurredAt: new Date().toISOString(),
       consent: {
         granted: body.consent === true,
         source: 'landing_ssl26',
+        version: 'ssl26_landing_2026_09_v1',
+        text: 'Concordo em receber o guia e comunicações do Hotel Solar por e-mail e WhatsApp. Posso cancelar quando quiser.',
       },
       lead: {
         firstName: clean(body.firstName, 80),
@@ -112,20 +321,29 @@ async function notifyIntegration(body: LeadBody) {
         referral: clean(body.referral, 100),
       },
     }),
+    signal: AbortSignal.timeout(8000),
+    redirect: 'error',
   });
 
   if (!response.ok) {
-    console.error(`Lead webhook failed (${response.status})`);
+    throw new Error('LEAD_WEBHOOK_FAILED');
   }
+  const acknowledgement = await response.json().catch(() => null);
+  if (acknowledgement?.success !== true || acknowledgement?.persisted !== true) {
+    throw new Error('LEAD_WEBHOOK_NOT_PERSISTED');
+  }
+  return 'accepted' as const;
 }
 
-function confirmationEmail(firstName: string) {
+export function confirmationEmail(firstName: string) {
   const guideUrl = `${PUBLIC_SITE_URL}/guia-salinas-em-familia.pdf`;
   const safeName = escapeHtml(firstName);
   return {
     sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+    replyTo: { name: REPLY_TO_NAME, email: REPLY_TO_EMAIL },
     to: [{ email: '', name: firstName }],
     subject: `${firstName}, seu Guia Salinas em Família chegou`,
+    textContent: `Olá, ${firstName}! Seu Guia Salinas em Família: ${guideUrl}\nCanal VIP: ${WHATSAPP_CHANNEL_URL}\nVisita guiada: 24 de novembro de 2026, às 19h (horário de Belém).\nVocê recebeu esta mensagem porque solicitou o guia do Hotel Solar.`,
     htmlContent: `
       <!doctype html>
       <html lang="pt-BR">
@@ -169,42 +387,55 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Método não permitido.' });
   }
 
+  res.setHeader('Cache-Control', 'no-store');
+
   if (!BREVO_API_KEY) {
     console.error('BREVO_API_KEY is not configured');
     return res.status(503).json({ error: 'Cadastro temporariamente indisponível.' });
   }
 
-  const body = (req.body || {}) as LeadBody;
+  if (!req.body || typeof req.body !== 'object' || Array.isArray(req.body)) {
+    return res.status(400).json({ error: 'Dados de cadastro inválidos.' });
+  }
+  const body = req.body as LeadBody;
   if (body.website) return res.status(200).json({ success: true });
+  if (body.action && body.action !== 'capture' && body.action !== 'profile') {
+    return res.status(400).json({ error: 'Ação inválida.' });
+  }
 
   try {
     if (body.action === 'profile') {
-      const email = clean(body.email).toLowerCase();
+      const receipt = readProfileToken(body.profileToken);
+      if (!receipt || (body.email && clean(body.email).toLowerCase() !== receipt.email)) {
+        return res.status(403).json({ error: 'Não foi possível confirmar este cadastro. O guia continua disponível.' });
+      }
+      const email = receipt.email;
       const allowedProfiles = ['ja_hospedou', 'conhece', 'nao_conhece'];
       if (!validEmail(email) || !allowedProfiles.includes(clean(body.profile, 40))) {
         return res.status(400).json({ error: 'Dados de perfil inválidos.' });
       }
 
       const profileAttribute = clean(process.env.BREVO_PROFILE_ATTRIBUTE || 'SSL26_PROFILE', 50);
-      const profileTasks: Array<Promise<unknown>> = [notifyIntegration(body)];
       if (profileAttribute) {
-        profileTasks.push(brevoRequest('/contacts', {
+        await brevoRequest('/contacts', {
           email,
           attributes: { [profileAttribute]: clean(body.profile, 40) },
           updateEnabled: true,
-        }));
+        });
       }
 
-      await Promise.all(profileTasks);
+      const integration = await notifyIntegration({ ...body, ...receipt, consent: true }, receipt.capturedAt)
+        .catch(() => 'failed' as const);
       console.log(JSON.stringify({
         level: 'info',
         message: 'SSL26 lead profile saved',
         route: '/api/capture-lead',
         action: 'profile',
+        integration,
         requestId,
         durationMs: Date.now() - startedAt,
       }));
-      return res.status(200).json({ success: true });
+      return res.status(200).json({ success: true, integration });
     }
 
     const firstName = clean(body.firstName, 80);
@@ -218,7 +449,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Lista criada em 16/09/2026 pelo instalador SSL26. A variável permite
     // substituir o ID sem novo deploy caso a estrutura seja migrada no Brevo.
     const listId = Number(process.env.BREVO_LEADS_LIST_ID || 24);
+    if (!Number.isInteger(listId) || listId <= 0) {
+      return res.status(503).json({ error: 'Cadastro temporariamente indisponível.' });
+    }
+    const suppressed = await readEmailSuppression(email, phone);
     const capturedAt = new Date().toISOString();
+    const leadId = clean(body.leadId, 100) || randomUUID();
     const extendedAttributesEnabled = process.env.BREVO_SSL26_ATTRIBUTES_ENABLED !== 'false';
     const source = clean(body.utmSource, 100) || (clean(body.referral, 100) ? 'indicacao' : 'direto');
     const attributes: Record<string, string> = { FIRSTNAME: firstName, SMS: phone };
@@ -233,31 +469,72 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       attributes,
       updateEnabled: true,
     };
-    if (Number.isInteger(listId) && listId > 0) contactPayload.listIds = [listId];
+    if (!suppressed) contactPayload.listIds = [listId];
 
     const emailPayload = confirmationEmail(firstName);
     emailPayload.to[0].email = email;
-    await Promise.all([
-      brevoRequest('/contacts', contactPayload),
-      brevoRequest('/smtp/email', emailPayload),
-      notifyIntegration({ ...body, action: 'capture', firstName, email, phone }),
+    // Save the lead before any delivery. A secondary failure must not invite
+    // resubmission of an already saved registration (and duplicate messages).
+    // A new form submission is not permission to reset an earlier withdrawal.
+    // Skip all Brevo writes for suppressed contacts, including consent overwrite.
+    if (!suppressed) await brevoRequest('/contacts', contactPayload);
+    // Re-read after the upsert to catch a withdrawal arriving during capture.
+    // The campaign audience must ALSO exclude SSL26_OPT_OUT=true, even if a
+    // concurrent capture temporarily restores list membership.
+    let emailSuppressed = suppressed;
+    let suppressionCheckFailed = false;
+    if (!suppressed) {
+      try { emailSuppressed = await readEmailSuppression(email, phone); }
+      catch { suppressionCheckFailed = true; }
+    }
+    const [mailResult, integrationResult, metaResult] = await Promise.allSettled([
+      emailSuppressed || suppressionCheckFailed ? Promise.resolve() : brevoRequest('/smtp/email', emailPayload),
+      notifyIntegration({ ...body, action: 'capture', firstName, email, phone, leadId }, capturedAt),
+      // Quem pediu para sair não é enviado à Meta: consentimento retirado vale
+      // para medição também, não só para mensagem.
+      emailSuppressed
+        ? Promise.resolve('skipped' as const)
+        : notifyMeta({
+            eventId: leadId,
+            firstName,
+            email,
+            phone,
+            pageUrl: clean(body.pageUrl, 500),
+            source,
+            cookieHeader: String(req.headers.cookie || ''),
+            clientIp: String(req.headers['x-forwarded-for'] || '').split(',')[0].trim()
+              || String(req.headers['x-real-ip'] || '').trim(),
+            userAgent: String(req.headers['user-agent'] || ''),
+            eventTimeMs: Date.now(),
+          }),
     ]);
+    const emailDelivery = emailSuppressed ? 'suppressed' : suppressionCheckFailed || mailResult.status === 'rejected' ? 'failed' : 'accepted';
+    const integration = integrationResult.status === 'fulfilled' ? integrationResult.value : 'failed';
+    const metaCapi = metaResult.status === 'fulfilled' ? metaResult.value : 'failed';
     console.log(JSON.stringify({
       level: 'info',
       message: 'SSL26 lead captured',
       route: '/api/capture-lead',
       action: 'capture',
+      emailDelivery,
+      integration,
+      metaCapi,
       requestId,
       durationMs: Date.now() - startedAt,
     }));
-    return res.status(200).json({ success: true });
+    return res.status(200).json({
+      success: true,
+      emailDelivery,
+      integration,
+      profileToken: createProfileToken({ email, phone, firstName, leadId, capturedAt, expiresAt: Date.now() + 60 * 60 * 1000 }),
+    });
   } catch (error) {
     console.error(JSON.stringify({
       level: 'error',
       message: 'SSL26 lead capture failed',
       route: '/api/capture-lead',
       requestId,
-      error: error instanceof Error ? error.message : 'unknown error',
+      error: 'PROVIDER_UNAVAILABLE',
       durationMs: Date.now() - startedAt,
     }));
     return res.status(502).json({ error: 'Não conseguimos concluir agora. Tente novamente em instantes.' });
