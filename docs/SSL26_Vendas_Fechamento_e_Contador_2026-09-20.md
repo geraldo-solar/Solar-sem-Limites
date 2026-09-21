@@ -58,7 +58,13 @@ Levantamento direto na produção, não estimativa:
 
 Base vai de 28/11/2025 a 01/09/2026. Sustenta VEN-04 com dado real: uma aprovação gera um saldo, e reserva/ajuste descontam e devolvem sem estourar para negativo.
 
-**Pendência encontrada:** 8 das 51 compras aprovadas estão **sem vínculo de cadastro** (`guest_id` nulo). Todas têm CPF, então a baixa automática na reserva ainda funciona pelo CPF, mas essas compras **não aparecem na conta corrente do hóspede** nem na coluna de crédito. São compras anteriores ao vínculo automático. É limpeza de dados, não defeito de código.
+**Pendência encontrada e resolvida no mesmo dia:** 8 das 51 compras aprovadas estavam **sem vínculo de cadastro** (`guest_id` nulo) — compras reais, não testes, marcadas como aprovadas direto no banco na importação do histórico, sem passar pelo botão de aprovar (que é quem preenche o vínculo). A baixa automática funcionava pelo CPF, mas o crédito não aparecia na conta corrente do hóspede.
+
+Resolvido: 2 compras reaproveitaram cadastro já existente por CPF (mesmo comprador, nome grafado de dois jeitos) e 6 ganharam cadastro novo criado com nome, CPF, e-mail e telefone da própria compra. Todos receberam a etiqueta `[SOLAR_SEM_LIMITES]` e conta corrente aberta, como a aprovação faz. Conferido depois: **51 de 51 aprovadas vinculadas, nenhum CPF com cadastro duplicado**. Nenhuma compra foi apagada, e nenhum valor ou validade foi alterado.
+
+**Fica registrado:** o e-mail de uma compradora está gravado com `.con` no lugar de `.com`. Não foi corrigido — trocar endereço de cliente sem confirmação pode mandar mensagem para a pessoa errada.
+
+**Passivo a vencer:** 23 pacotes (138 diárias) vencem entre 28/11 e 22/12/2026, 22 deles concentrados de 17 a 22/12 — logo depois do fechamento do carrinho. São compras de dezembro/2025 que não foram usadas.
 
 ## O que isto não significa
 
