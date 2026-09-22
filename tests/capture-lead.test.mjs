@@ -288,14 +288,54 @@ for (const marker of ['SSL26_QA', 'SSL26_ATENDIMENTO_PAUSA', 'SSL26_COMPRADOR'])
     assert.equal(calls[0].payload.attributes[marker], undefined);
   });
 }
-test('suppression read outages, malformed data and conflicting phones fail closed without writes', async () => {
+test('suppression read outages and malformed data fail closed without writes', async () => {
   for (const contact of ['error', { email: 'wrong@example.test', attributes: {} },
-    { email: 'teste@example.test', attributes: { SMS: '+5591888880000' } },
     { email: 'teste@example.test', attributes: { SSL26_OPT_OUT: 'false' } }]) {
     existingContact = contact;
     assert.equal((await request()).status, 502); assert.equal(calls.length, 0);
   }
   assert.ok(!logs.join(' ').includes('teste@example.test'));
+});
+
+test('quem trocou de telefone se cadastra, e o numero antigo nao e sobrescrito', async () => {
+  // Antes isso virava 502 com "tente novamente em instantes", que nunca
+  // funcionaria: so passaria quem adivinhasse o proprio numero antigo. O lead
+  // se perdia inteiro — sem guia, sem ManyChat, sem Meta.
+  process.env.LEAD_WEBHOOK_URL = 'https://integration.example.test/leads';
+  process.env.LEAD_WEBHOOK_TOKEN = 'test-token';
+  existingContact = { email: 'teste@example.test', attributes: { SMS: '+5591888880000' } };
+
+  const result = await request();
+  assert.equal(result.status, 200);
+  assert.equal(result.body.emailDelivery, 'accepted');
+  assert.ok(result.body.profileToken);
+
+  // A atribuicao de campanha e gravada, mas identidade nao se sobrescreve a
+  // partir de um cadastro que nao bate com o registro existente.
+  const contato = calls.find((call) => call.url.endsWith('/contacts'));
+  assert.equal(contato.payload.attributes.SMS, undefined);
+  assert.equal(contato.payload.attributes.FIRSTNAME, undefined);
+  assert.equal(contato.payload.attributes.SSL26_SOURCE, 'qa');
+  assert.deepEqual(contato.payload.listIds, [24]);
+
+  // O numero novo continua chegando ao ManyChat, que e o destino que importa.
+  const webhook = calls.find((call) => call.url.includes('integration.example.test'));
+  assert.equal(webhook.payload.lead.phone, '+5591999990000');
+
+  assert.match(logs.join('\n'), /"contactStorage":"saved_phone_mismatch"/);
+});
+
+test('telefone divergente nao anula a supressao: o e-mail bateu', async () => {
+  // A decisao de supressao e pelo e-mail. Numero diferente nao pode virar
+  // brecha para recadastrar quem pediu para sair.
+  existingContact = {
+    email: 'teste@example.test',
+    attributes: { SMS: '+5591888880000', SSL26_OPT_OUT: true },
+  };
+  const result = await request();
+  assert.equal(result.status, 200);
+  assert.equal(result.body.emailDelivery, 'suppressed');
+  assert.equal(calls.filter((call) => call.url.endsWith('/contacts')).length, 0);
 });
 test('withdrawal or read outage after saving never sends an email or loses saved capture', async () => {
   for (const contact of ['error', { email: 'teste@example.test', attributes: { SMS: '+5591999990000', SSL26_OPT_OUT: true } }]) {
@@ -479,4 +519,52 @@ test('outros erros do Brevo nao viram nova tentativa e registram so o codigo', a
   // O codigo e um enum do provedor; a mensagem pode trazer dado do contato.
   assert.ok(!registro.includes('Private contact detail'));
   assert.ok(!registro.includes('teste@example.test'));
+});
+
+test('sem conseguir reconfirmar o estado, nao manda para a Meta nem por e-mail', async () => {
+  // Se a duvida basta para segurar um e-mail que a pessoa pediu, basta para nao
+  // mandar os dados dela a uma plataforma de anuncio. Antes falhava fechado no
+  // e-mail e aberto na Meta.
+  process.env.META_CAPI_TOKEN = 'test-only-not-a-real-token';
+  afterSaveContact = 'error';
+
+  const result = await request();
+  assert.equal(result.status, 200);
+  assert.equal(result.body.emailDelivery, 'failed');
+  assert.equal(metaCall(), undefined, 'nao deveria ter enviado evento a Meta');
+  assert.match(logs.join('\n'), /"metaCapi":"skipped"/);
+
+  // O cadastro em si nao se perde.
+  assert.ok(calls.find((call) => call.url.endsWith('/contacts')));
+  assert.ok(result.body.profileToken);
+});
+
+test('perfil de quem pediu para sair nao grava no Brevo', async () => {
+  // A captura ja pula toda gravacao para contato suprimido; o perfil nao pode
+  // ser a porta dos fundos pela qual o mesmo contato entra.
+  process.env.LEAD_WEBHOOK_URL = 'https://integration.example.test/leads';
+  process.env.LEAD_WEBHOOK_TOKEN = 'test-token';
+  existingContact = { email: 'teste@example.test', attributes: { SMS: '+5591999990000', SSL26_OPT_OUT: true } };
+
+  const captura = await request();
+  assert.equal(captura.body.emailDelivery, 'suppressed');
+
+  calls = []; logs = [];
+  const perfil = await request({ action: 'profile', profileToken: captura.body.profileToken, profile: 'conhece' });
+  assert.equal(perfil.status, 200);
+  assert.equal(calls.filter((call) => call.url.endsWith('/contacts')).length, 0);
+  assert.match(logs.join('\n'), /"profileStorage":"skipped"/);
+
+  // A resposta ainda segue para o ManyChat, que e o destino que importa.
+  assert.equal(perfil.body.integration, 'accepted');
+});
+
+test('perfil de contato normal continua sendo gravado', async () => {
+  const captura = await request();
+  calls = []; logs = [];
+  const perfil = await request({ action: 'profile', profileToken: captura.body.profileToken, profile: 'ja_hospedou' });
+  assert.equal(perfil.status, 200);
+  const contato = calls.find((call) => call.url.endsWith('/contacts'));
+  assert.equal(contato.payload.attributes.SSL26_PROFILE, 'ja_hospedou');
+  assert.match(logs.join('\n'), /"profileStorage":"saved"/);
 });
