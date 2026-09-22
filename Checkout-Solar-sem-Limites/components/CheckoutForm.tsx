@@ -41,7 +41,7 @@ O titular pode transferir o pacote para terceiros mediante aviso prévio no ato 
 6. GARANTIAS E CRÉDITOS
 
 6.1. Após o término da vigência do pacote, o valor das diárias não utilizadas ficam como crédito por mais 360 dias para futuras reservas.
-6.2. Em caso de arrependimento imediatamente após o primeiro check-in, o Hotel Solar efetuará o cancelamento da compra e fará o reembolso do valor restante proporcionalmente.
+6.2. Em caso de arrependimento imediatamente após o primeiro check-in, o Hotel Solar cancela a compra e devolve o valor proporcional às diárias não utilizadas.
 6.3. Se cancelar dentro de 30 dias após a compra, devolvemos 100% do seu valor sem perguntas e sem burocracia.
 
 7. DISPONIBILIDADE

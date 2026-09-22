@@ -166,8 +166,11 @@ const REGRAS = [
 ];
 
 // Garantias exatamente como estão no item 7 do regulamento. A página de julho
-// prometia crédito vitalício (o contrato dá 360 dias) e reembolso proporcional
-// após o primeiro check-in (o contrato devolve o valor integral).
+// prometia crédito vitalício, que o contrato não dá: são 360 dias.
+//
+// O reembolso após o primeiro check-in era o inverso — o regulamento dizia
+// "valor integral" e o texto aceito no checkout dizia "proporcional". Geraldo
+// decidiu em 22/09 que o proporcional é a regra, e os três foram alinhados.
 const GARANTIAS = [
   {
     titulo: '30 dias para desistir',
@@ -175,7 +178,7 @@ const GARANTIAS = [
   },
   {
     titulo: 'Arrependimento no primeiro check-in',
-    texto: 'Em caso de arrependimento imediatamente após o primeiro check-in, cancelamos a compra e devolvemos o valor integral recebido.',
+    texto: 'Em caso de arrependimento imediatamente após o primeiro check-in, cancelamos a compra e devolvemos o valor proporcional às diárias não utilizadas.',
   },
   {
     titulo: 'Crédito por 360 dias',
