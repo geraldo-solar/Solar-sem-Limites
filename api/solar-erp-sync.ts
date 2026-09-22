@@ -37,7 +37,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     console.log('Pedido sincronizado com o ERP:', data.id);
-    return res.status(200).json({ success: true, id: data.id });
+    // checkoutUrl: pagina de pagamento da Cielo, quando o cartao e pago la.
+    return res.status(200).json({
+      success: true,
+      id: data.id,
+      checkoutUrl: typeof data.checkoutUrl === 'string' ? data.checkoutUrl : undefined,
+      pagamentoIndisponivel: data.pagamentoIndisponivel === true ? true : undefined,
+    });
   } catch (error) {
     console.error('Erro na sincronizacao com o ERP:', error);
     return res.status(500).json({ success: false, error: 'Internal server error' });

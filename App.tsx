@@ -3,6 +3,7 @@ import JulhoLP from './JulhoLP';
 import CheckoutPage from './CheckoutPage';
 import CapturaNovembro from './CapturaNovembro';
 import VendasNovembro from './VendasNovembro';
+import PagamentoConcluido from './PagamentoConcluido';
 
 interface Props { children: React.ReactNode; }
 interface State { hasError: boolean; error: Error | null; }
@@ -52,6 +53,9 @@ export default function App() {
   let content = <JulhoLP />;
   if (hash === '#/checkout') {
     content = <CheckoutPage />;
+  } else if (hash === '#/obrigado') {
+    // Retorno da página de pagamento da Cielo.
+    content = <PagamentoConcluido />;
   } else if (hash.startsWith('#/vendas') || isSalesRoute) {
     content = <VendasNovembro />;
   } else if (isMainSiteCaptureRoute || hash.startsWith('#/lista-vip')) {

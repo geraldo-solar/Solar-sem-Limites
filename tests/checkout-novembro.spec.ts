@@ -17,12 +17,16 @@ const CPF = '529.982.247-25'; // CPF de teste, dígitos verificadores válidos
 
 type Capturado = { erp: any[]; brevo: any[]; planilha: number };
 
-async function abrirCheckout(page: Page, erpResponde = { status: 200, body: { success: true, id: 'x' } }) {
+async function abrirCheckout(
+  page: Page,
+  erpResponde: { status: number; body: Record<string, unknown> } = { status: 200, body: { success: true, id: 'x' } },
+  cartaoPelaCielo = false,
+) {
   const capturado: Capturado = { erp: [], brevo: [], planilha: 0 };
   await page.route('**/api/solar-status', (r) => r.fulfill({
     status: 200, contentType: 'application/json',
     body: JSON.stringify({ success: true, aberto: true, abreEm: '2026-11-25T08:00:00-03:00',
-      fechaEm: '2026-12-01T23:59:59-03:00', pacotesVendidos: 0 }),
+      fechaEm: '2026-12-01T23:59:59-03:00', pacotesVendidos: 0, cartaoPelaCielo }),
   }));
   await page.route('**/api/solar-erp-sync', async (r) => {
     capturado.erp.push(r.request().postDataJSON());
@@ -155,4 +159,95 @@ test('sem aceitar o regulamento, o botão não envia', async ({ page }) => {
   await preencherDados(page, 1);
   await expect(page.locator('button[type="submit"]')).toBeDisabled();
   expect(c.erp).toHaveLength(0);
+});
+
+// ---- Cartão pela página da Cielo (quando o ERP diz que a Cielo está ativa) ----
+
+const CIELO = 'https://cieloecommerce.cielo.com.br/transacional/order/index?id=teste123';
+
+test('Cielo: cartão não é pedido no site e o cliente vai para a página da Cielo', async ({ page }) => {
+  const c = await abrirCheckout(page, { status: 200, body: { success: true, id: 'x', checkoutUrl: CIELO } }, true);
+  let chegouNaCielo = '';
+  await page.route('https://cieloecommerce.cielo.com.br/**', (r) => {
+    chegouNaCielo = r.request().url();
+    return r.fulfill({ status: 200, contentType: 'text/html', body: '<h1>Cielo (simulada)</h1>' });
+  });
+  await preencherDados(page, 2);
+  await page.getByText('Cartão de crédito', { exact: true }).click();
+  await expect(page.getByPlaceholder('0000 0000 0000 0000')).toHaveCount(0);
+  const t = await texto(page);
+  expect(t).toContain('Pagamento na página segura da Cielo');
+  expect(t).toContain('R$ 6.820,00');
+  expect(t).toContain('12x de R$ 568,33');
+  await aceitarEEnviar(page);
+  await expect(page.getByText('Cielo (simulada)')).toBeVisible();
+  expect(chegouNaCielo).toBe(CIELO);
+
+  expect(c.erp[0]).toMatchObject({ quantity: 2, paymentMethod: 'credit_card', cartaoNaCielo: true });
+  expect(JSON.stringify(c.erp[0])).not.toMatch(/cardNumber|cardCvv|cardHolder/);
+});
+
+test('Cielo: Pix + cartão mostra o Pix da entrada e o botão da Cielo', async ({ page }) => {
+  const c = await abrirCheckout(page, { status: 200, body: { success: true, id: 'x', checkoutUrl: CIELO } }, true);
+  await preencherDados(page, 2);
+  await page.getByText('Dividir Pagamento (Entrada no Pix + Restante no Cartão)').click();
+  await page.getByRole('button', { name: /^50%/ }).click();
+  await expect(page.getByPlaceholder('0000 0000 0000 0000')).toHaveCount(0);
+  await aceitarEEnviar(page);
+  await expect(page.getByText('Pré-reserva Garantida!')).toBeVisible();
+  const t = await texto(page);
+  expect(t).toContain('Pague a entrada de R$ 3.100,00 no Pix');
+  expect(t).toContain('Pague o restante de R$ 3.410,00 no cartão');
+  await expect(page.getByRole('link', { name: 'Pagar no cartão pela Cielo' })).toHaveAttribute('href', CIELO);
+  expect(c.erp[0]).toMatchObject({ paymentMethod: 'pix_credit_card', splitPercent: 50, cartaoNaCielo: true });
+});
+
+test('Cielo fora do ar: pedido guardado, e tentar de novo manda o MESMO pedido', async ({ page }) => {
+  const c = await abrirCheckout(page, { status: 200, body: { success: true, id: 'x', pagamentoIndisponivel: true } }, true);
+  await preencherDados(page, 1);
+  await page.getByText('Cartão de crédito', { exact: true }).click();
+  await aceitarEEnviar(page);
+  await expect(page.getByText('Não conseguimos abrir a página de pagamento')).toBeVisible();
+  await page.getByRole('button', { name: 'Tentar abrir o pagamento' }).click();
+  await expect.poll(() => c.erp.length).toBe(2);
+  expect(c.erp[1].id).toBe(c.erp[0].id);
+});
+
+test('endereço de pagamento fora da Cielo é ignorado: o cliente não é levado para lá', async ({ page }) => {
+  await abrirCheckout(page, { status: 200, body: { success: true, id: 'x', checkoutUrl: 'https://golpe.example/pagar' } }, true);
+  await preencherDados(page, 1);
+  await page.getByText('Cartão de crédito', { exact: true }).click();
+  await aceitarEEnviar(page);
+  await expect(page.getByText('Não conseguimos abrir a página de pagamento')).toBeVisible();
+  expect(page.url()).not.toContain('golpe.example');
+});
+
+test('erro de conexão e nova tentativa não criam um segundo pedido', async ({ page }) => {
+  // Antes, cada clique em concluir gerava um número novo: quem tentava de
+  // novo depois de um erro virava dois pedidos no ERP.
+  let chamadas = 0;
+  const c = await abrirCheckout(page);
+  await page.unroute('**/api/solar-erp-sync');
+  await page.route('**/api/solar-erp-sync', async (r) => {
+    chamadas += 1;
+    c.erp.push(r.request().postDataJSON());
+    await r.fulfill(chamadas === 1
+      ? { status: 502, contentType: 'application/json', body: '{"success":false}' }
+      : { status: 200, contentType: 'application/json', body: '{"success":true,"id":"x"}' });
+  });
+  page.on('dialog', (d) => void d.dismiss());
+  await preencherDados(page, 1);
+  await aceitarEEnviar(page);
+  await expect.poll(() => chamadas).toBe(1);
+  await page.locator('button[type="submit"]').click();
+  await expect(page.getByText('Pré-reserva Garantida!')).toBeVisible();
+  expect(c.erp[1].id).toBe(c.erp[0].id);
+});
+
+test('Cielo desligada no ERP: o checkout segue exatamente como antes', async ({ page }) => {
+  await abrirCheckout(page, undefined, false);
+  await preencherDados(page, 1);
+  await page.getByText('Cartão de crédito', { exact: true }).click();
+  await expect(page.getByPlaceholder('0000 0000 0000 0000').locator('visible=true')).toHaveCount(1);
+  expect(await texto(page)).not.toContain('página segura da Cielo');
 });

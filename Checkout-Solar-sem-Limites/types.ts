@@ -32,6 +32,11 @@ export interface CustomerData {
   // pelo comprador: vem da URL e atravessa a visita. Só registro — o crédito
   // de indicação é decidido no ERP, depois do pagamento aprovado.
   referral?: string;
+
+  // Cartão pago na página da Cielo: o pedido não leva o cartão, e o ERP
+  // devolve o endereço de pagamento. Só vale quando o ERP diz que a Cielo
+  // está ativa (cartaoPelaCielo no status).
+  cartaoNaCielo?: boolean;
 }
 
 export interface OrderState {

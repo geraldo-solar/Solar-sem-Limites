@@ -6,7 +6,14 @@ export interface ResultadoSincronizacao {
   carrinhoFechado?: boolean;
   /** Texto pronto para mostrar ao cliente quando o carrinho está fechado. */
   mensagem?: string;
+  /** Página de pagamento na Cielo, quando o cartão é pago lá. */
+  checkoutUrl?: string | null;
+  /** O pedido entrou, mas a Cielo não abriu a página de pagamento agora. */
+  pagamentoIndisponivel?: boolean;
 }
+
+// Só endereço da própria Cielo: é para lá que o cliente vai digitar o cartão.
+const PAGINA_DA_CIELO = /^https:\/\/cieloecommerce\.cielo\.com\.br\//;
 
 // Substitui o antigo POST direto para o Google Apps Script
 // (services/googleSheetsService.ts), cujo link morreu. Chama a função
@@ -34,8 +41,10 @@ export const sendOrderToErp = async (order: CustomerData): Promise<ResultadoSinc
       return { ok: false };
     }
 
-    console.log("Pedido sincronizado com o ERP");
-    return { ok: true };
+    const dados = await response.json().catch(() => ({}));
+    const url = typeof dados?.checkoutUrl === "string" && PAGINA_DA_CIELO.test(dados.checkoutUrl)
+      ? dados.checkoutUrl : null;
+    return { ok: true, checkoutUrl: url, pagamentoIndisponivel: dados?.pagamentoIndisponivel === true };
   } catch (error) {
     console.error("❌ Erro ao sincronizar pedido com o ERP:", error);
     return { ok: false };

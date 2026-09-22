@@ -5,6 +5,8 @@ import { CustomerData } from '../types';
 interface CheckoutFormProps {
   onSubmit: (data: CustomerData) => Promise<void>;
   isLoading: boolean;
+  /** Cartão pago na página da Cielo: o formulário não pede o cartão. Vem do ERP. */
+  cartaoPelaCielo?: boolean;
 }
 
 // Updated Policy Text
@@ -132,7 +134,7 @@ const detectCardBrand = (number: string): 'visa' | 'mastercard' | 'amex' | 'elo'
   return 'unknown';
 }
 
-export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading }) => {
+export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading, cartaoPelaCielo = false }) => {
   const [formData, setFormData] = useState<CustomerData>({
     firstName: '',
     lastName: '',
@@ -219,7 +221,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
     if (formData.quantity < 1) return false;
 
     // Check payment data
-    if (formData.paymentMethod === 'credit_card' || formData.paymentMethod === 'pix_credit_card') {
+    if (!cartaoPelaCielo && (formData.paymentMethod === 'credit_card' || formData.paymentMethod === 'pix_credit_card')) {
       if (!formData.cardNumber) return false;
       if (!isValidCreditCard(formData.cardNumber)) return false;
       if (!formData.cardHolder) return false;
@@ -232,7 +234,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
     if (!acceptedTerms) return false;
 
     return true;
-  }, [formData, acceptedTerms]);
+  }, [formData, acceptedTerms, cartaoPelaCielo]);
 
   const handleBlur = (field: keyof CustomerData) => {
     setTouched(prev => ({ ...prev, [field]: true }));
@@ -701,6 +703,14 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
                 <span>É previsto o pagamento do valor total de <strong>{formatCurrency(creditCardTotal)}</strong> (incluindo 10% referente às taxas administrativas da operadora do cartão).</span>
               </div>
 
+              {cartaoPelaCielo && (
+                <div className="bg-gray-50 border border-gray-200 rounded p-4 text-sm text-gray-700 space-y-2">
+                  <p className="font-bold text-moss-800">Pagamento na página segura da Cielo</p>
+                  <p>Ao concluir, você vai para a página da Cielo pagar <strong>{formatCurrency(creditCardTotal)}</strong> no cartão, à vista ou em até 12x de {formatCurrency(creditCardTotal / 12)}, sem juros além dos 10% já incluídos.</p>
+                  <p className="text-xs text-gray-500">O hotel não recebe os dados do seu cartão. Parcelamento somente com cartões emitidos no Brasil.</p>
+                </div>
+              )}
+              {!cartaoPelaCielo && (<>
               <div>
                 <label className={labelClass}>Parcelamento (até 12 vezes)</label>
                 <div className="grid grid-cols-3 md:grid-cols-4 gap-2 mt-2">
@@ -821,9 +831,11 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
                 </div>
               </div>
 
+              </>)}
+
               <div className="bg-success-100 border border-success-500/20 p-4 rounded text-moss-900 text-sm flex items-center gap-2">
                 <Icons.Lock />
-                <span>Todos os dados serão codificados e transmitidos através de uma conexão segura</span>
+                <span>{cartaoPelaCielo ? 'O cartão é digitado na página da Cielo, com conexão segura. O hotel não recebe esses dados.' : 'Todos os dados serão codificados e transmitidos através de uma conexão segura'}</span>
               </div>
             </div>
           )}
@@ -843,7 +855,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
             <div className="p-6 md:p-8 space-y-6 animate-in slide-in-from-top-2">
               <div className="bg-sand-100 border border-gold-500/30 p-4 rounded text-moss-900 text-sm font-medium flex items-start gap-3">
                 <Icons.CheckCircle className="text-gold-600 w-5 h-5 flex-shrink-0" />
-                <span><strong>Entrada no Pix + restante no cartão.</strong> Você define quanto quer dar de entrada agora, paga o Pix na hora e parcela só a diferença no cartão. Nossa equipe processa a cobrança do cartão em até 2 dias úteis.</span>
+                <span><strong>Entrada no Pix + restante no cartão.</strong> Você define quanto quer dar de entrada agora, paga o Pix na hora e parcela só a diferença no cartão. {cartaoPelaCielo ? 'O cartão é pago na página segura da Cielo, logo após concluir.' : 'Nossa equipe processa a cobrança do cartão em até 2 dias úteis.'}</span>
               </div>
 
               {/* Seletor de percentual da entrada */}
@@ -908,8 +920,16 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
 
               {/* Bloco Cartão (restante) */}
               <div>
-                <p className="font-bold text-moss-800 mb-2">2. Informe o cartão para o restante de {formatCurrency(restanteCardTotal)}</p>
+                <p className="font-bold text-moss-800 mb-2">{cartaoPelaCielo ? `2. Pague o restante de ${formatCurrency(restanteCardTotal)} no cartão` : `2. Informe o cartão para o restante de ${formatCurrency(restanteCardTotal)}`}</p>
 
+                {cartaoPelaCielo && (
+                  <div className="bg-gray-50 border border-gray-200 rounded p-4 text-sm text-gray-700 space-y-2">
+                    <p className="font-bold text-moss-800">Pagamento na página segura da Cielo</p>
+                    <p>Ao concluir, você vai para a página da Cielo pagar <strong>{formatCurrency(restanteCardTotal)}</strong> no cartão, à vista ou em até 12x de {formatCurrency(restanteCardTotal / 12)}, sem juros além dos 10% já incluídos. A entrada no Pix é paga à parte, com os dados acima.</p>
+                    <p className="text-xs text-gray-500">O hotel não recebe os dados do seu cartão. Parcelamento somente com cartões emitidos no Brasil.</p>
+                  </div>
+                )}
+                {!cartaoPelaCielo && (
                 <div className="space-y-6">
                   <div>
                     <label className={labelClass}>Parcelamento do restante (até 12 vezes)</label>
@@ -1030,11 +1050,12 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
                     </div>
                   </div>
                 </div>
+                )}
               </div>
 
               <div className="bg-success-100 border border-success-500/20 p-4 rounded text-moss-900 text-sm flex items-center gap-2">
                 <Icons.Lock />
-                <span>Todos os dados serão codificados e transmitidos através de uma conexão segura</span>
+                <span>{cartaoPelaCielo ? 'O cartão é digitado na página da Cielo, com conexão segura. O hotel não recebe esses dados.' : 'Todos os dados serão codificados e transmitidos através de uma conexão segura'}</span>
               </div>
             </div>
           )}
