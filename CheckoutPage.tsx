@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { CheckoutForm } from './Checkout-Solar-sem-Limites/components/CheckoutForm';
-import { sendOrderToGoogleSheets } from './Checkout-Solar-sem-Limites/services/googleSheetsService';
 import { sendOrderToErp } from './Checkout-Solar-sem-Limites/services/solarErpService';
 import { addContactAndSendEmail } from './Checkout-Solar-sem-Limites/services/brevoService';
 import { CustomerData } from './Checkout-Solar-sem-Limites/types';
@@ -41,10 +40,9 @@ export default function CheckoutPage() {
         referral: indicacaoDaVisita() || undefined,
       };
 
-      const [, resultadoErp] = await Promise.all([
-        sendOrderToGoogleSheets(order),
-        sendOrderToErp(order),
-      ]);
+      // Só o ERP. A planilha do Google recebia nome, CPF e telefone num
+      // endereço que parou de funcionar: dado pessoal indo para lugar nenhum.
+      const resultadoErp = await sendOrderToErp(order);
       if (resultadoErp.carrinhoFechado) {
         // Fechou com a aba já aberta: não é erro de conexão, e mandar tentar
         // de novo só faria o cliente repetir em vão.

@@ -104,8 +104,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           : paymentMethod === 'pix_credit_card'
             ? `Envie o comprovante da entrada de ${fmt(entradaPix)} para reserva@hotelsolar.tur.br. Recebemos os dados do seu cartão com segurança e nossa equipe processará a cobrança do restante em breve.`
             : 'Recebemos os dados do seu cartão com segurança. Nossa equipe processará a cobrança em breve e você receberá a confirmação por e-mail assim que o pagamento for concluído.',
-        REGULAMENTO_URL: 'https://solar-sem-limites.vercel.app/Regulamento_SSL.pdf',
-        RECIBO_URL: 'https://solar-sem-limites.vercel.app/#/checkout'
+        // O endereço de julho guarda a versão anterior do regulamento (6x e
+        // sem reembolso proporcional); o cliente precisa receber a que aceitou.
+        REGULAMENTO_URL: 'https://www.hotelsolar.tur.br/solarsemlimites2026/Regulamento_SSL.pdf',
+        RECIBO_URL: 'https://www.hotelsolar.tur.br/solarsemlimites2026'
       }
     };
 
