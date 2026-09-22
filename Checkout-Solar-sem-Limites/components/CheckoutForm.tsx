@@ -29,7 +29,7 @@ Permitida hospedagem de até 4 pessoas em apartamento tipo Quádruplo.
 As diárias bônus são cortesia, válidas exclusivamente para períodos de baixa temporada (fora de férias e feriados).
 
 3. VALOR E PAGAMENTO
-O pacote custa R$ 3.100,00, podendo ser parcelado em até 6x no cartão de crédito, acrescido das taxas da operadora.
+O pacote custa R$ 3.100,00 no Pix, transferência ou depósito. No cartão de crédito incide acréscimo de 10% sobre o valor processado, podendo ser parcelado em até 12x. Também é possível combinar entrada no Pix e saldo no cartão, com o acréscimo de 10% incidindo apenas sobre a parte financiada.
 
 4. CANCELAMENTO DE RESERVA
 • Cancelamentos podem ser feitos até 7 dias antes do check-in.
@@ -702,9 +702,9 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
               </div>
 
               <div>
-                <label className={labelClass}>Parcelamento (até 6 vezes)</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
-                  {[1, 2, 3, 4, 5, 6].map((installNum) => {
+                <label className={labelClass}>Parcelamento (até 12 vezes)</label>
+                <div className="grid grid-cols-3 md:grid-cols-4 gap-2 mt-2">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((installNum) => {
                     const val = creditCardTotal / installNum;
                     const isSelected = formData.installments === String(installNum);
                     return (
@@ -912,9 +912,9 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
 
                 <div className="space-y-6">
                   <div>
-                    <label className={labelClass}>Parcelamento do restante (até 6 vezes)</label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
-                      {[1, 2, 3, 4, 5, 6].map((installNum) => {
+                    <label className={labelClass}>Parcelamento do restante (até 12 vezes)</label>
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-2 mt-2">
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((installNum) => {
                         const val = restanteCardTotal / installNum;
                         const isSelected = formData.installments === String(installNum);
                         return (
