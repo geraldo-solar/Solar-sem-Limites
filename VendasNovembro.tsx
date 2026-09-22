@@ -79,12 +79,34 @@ const OPCOES = [
 
 // Fotos reais do hotel, já usadas e autorizadas nas peças da campanha.
 const GALERIA = [
-  { arquivo: 'hotel-piscina.jpg', legenda: 'Piscina' },
-  { arquivo: 'hotel-cafe-manha.jpg', legenda: 'Café da manhã colonial' },
-  { arquivo: 'hotel-panoramica-rio.jpg', legenda: 'Vista do rio' },
-  { arquivo: 'hotel-fachada.jpg', legenda: 'Fachada' },
-  { arquivo: 'hotel-bicicletas.jpg', legenda: 'Bicicletas à disposição' },
+  { arquivo: 'quarto-hotel-solar.jpg', legenda: 'Apartamento quádruplo' },
+  { arquivo: 'hotel-piscina.jpg', legenda: 'Área da piscina' },
+  { arquivo: 'hotel-cafe-manha.jpg', legenda: 'Café da manhã regional' },
+  { arquivo: 'blog-espadarte.png', legenda: 'Praia Ponta do Espadarte' },
+  { arquivo: 'hotel-capela.jpg', legenda: 'Capela histórica' },
+  { arquivo: 'hotel-playground-criancas.jpg', legenda: 'Parque infantil' },
+  { arquivo: 'hotel-area-jogos.jpg', legenda: 'Sala de jogos' },
   { arquivo: 'galeria-aerea.jpg', legenda: 'Salinópolis do alto' },
+];
+
+// Todos os números e distâncias abaixo saem do conteúdo publicado pelo próprio
+// hotel em hotelsolar.tur.br, mais a contagem de apartamentos das definições
+// comerciais. Nada aqui é estimativa.
+const FATOS = [
+  { numero: '1973', rotulo: 'ano em que o hotel abriu' },
+  { numero: '54', rotulo: 'apartamentos' },
+  { numero: '800 m', rotulo: 'até a praia do Maçarico' },
+];
+
+const ESTRUTURA = [
+  'Piscina e bar da piscina',
+  'Restaurante e trapiche sobre a água',
+  'Café da manhã regional incluso',
+  'Sala de jogos e quadra poliesportiva',
+  'Parque infantil e hidromassagem',
+  'Capela histórica',
+  'Recepção 24 horas e Wi-Fi',
+  'Acesso a uma faixa de praia tranquila',
 ];
 
 // Depoimentos confirmados por Geraldo como de clientes reais (21/09/2026).
@@ -359,29 +381,75 @@ export default function VendasNovembro() {
         </div>
       </header>
 
-      {/* O hotel: boa parte de quem chega aqui nunca ouviu falar do Solar. */}
+      {/* O hotel.
+          A maior parte de quem chega aqui vem de anúncio e nunca ouviu falar do
+          Solar — são 3.500 leads previstos de tráfego pago, decidindo R$ 3.100
+          antecipados num lugar que nunca viram. Esta seção existe para responder
+          o que essa pessoa precisa saber antes de olhar preço: onde fica, o que
+          tem, e há quanto tempo o hotel existe. */}
       <section className="mx-auto max-w-4xl px-4 py-14 sm:px-6 sm:py-20">
         <h2 className="text-center font-serif text-2xl font-semibold sm:text-3xl">
           Primeiro, o hotel
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-center leading-relaxed text-[#52625e]">
-          O Hotel Solar fica em Salinópolis, no Pará, na faixa de litoral que chamam de
-          Amazônia Atlântica. São 54 apartamentos, com piscina, capela, área de jogos e
-          café da manhã colonial. O programa Solar Sem Limites existe desde 2025 e hoje
-          tem mais de 50 famílias com diárias ativas.
+          O Hotel Solar recebe hóspedes em Salinópolis, no Pará, <strong>desde 1973</strong>.
+          Fica na parte alta da cidade, com vista para o mar, a 800 metros da praia do
+          Maçarico e a 15 minutos da praia do Atalaia — e com acesso a uma faixa de praia
+          tranquila, longe do movimento das mais cheias.
         </p>
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+
+        <dl className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-3 text-center">
+          {FATOS.map((fato) => (
+            <div key={fato.rotulo} className="rounded-xl bg-white px-2 py-5 shadow-sm">
+              <dt className="sr-only">{fato.rotulo}</dt>
+              <dd>
+                <span className="block font-serif text-2xl font-semibold text-[#0f5c45] sm:text-3xl">
+                  {fato.numero}
+                </span>
+                <span className="mt-1 block text-xs leading-snug text-[#74817d]">{fato.rotulo}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
           {GALERIA.map((foto) => (
             <figure key={foto.arquivo} className="overflow-hidden rounded-xl bg-white shadow-sm">
               <img
                 src={assetUrl(foto.arquivo)}
                 alt={foto.legenda}
                 loading="lazy"
-                className="h-32 w-full object-cover sm:h-40"
+                className="h-32 w-full object-cover sm:h-36"
               />
-              <figcaption className="px-3 py-2 text-xs text-[#74817d]">{foto.legenda}</figcaption>
+              <figcaption className="px-3 py-2 text-xs leading-snug text-[#74817d]">
+                {foto.legenda}
+              </figcaption>
             </figure>
           ))}
+        </div>
+
+        <div className="mt-10 rounded-2xl border border-[#e0ded7] bg-white p-6 sm:p-7">
+          <h3 className="font-serif text-lg font-semibold sm:text-xl">O que tem no hotel</h3>
+          <ul className="mt-4 grid gap-x-6 gap-y-2 text-sm leading-relaxed text-[#284f48] sm:grid-cols-2">
+            {ESTRUTURA.map((item) => (
+              <li key={item} className="flex gap-2">
+                <span aria-hidden="true" className="text-[#0f5c45]">·</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-[#e0ded7] bg-[#f4f8f6] p-6 sm:p-7">
+          <h3 className="font-serif text-lg font-semibold sm:text-xl">
+            O passeio de barco que já vem incluído
+          </h3>
+          <p className="mt-3 text-sm leading-relaxed text-[#52625e]">
+            Um passeio pelos manguezais do Rio Arapepó, conduzido por uma associação local
+            de pescadores, terminando com banho na Praia Ponta do Espadarte. Ele não é um
+            extra a comprar: está incluído nas diárias do pacote, junto com o café da manhã
+            e as bicicletas.
+          </p>
         </div>
       </section>
 
