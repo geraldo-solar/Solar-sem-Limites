@@ -52,10 +52,10 @@ export default function App() {
   let content = <JulhoLP />;
   if (hash === '#/checkout') {
     content = <CheckoutPage />;
+  } else if (hash.startsWith('#/vendas') || isSalesRoute) {
+    content = <VendasNovembro />;
   } else if (isMainSiteCaptureRoute || hash.startsWith('#/lista-vip')) {
     content = <CapturaNovembro />;
-  } else if (isSalesRoute || hash.startsWith('#/vendas')) {
-    content = <VendasNovembro />;
   }
 
   return <ErrorBoundary>{content}</ErrorBoundary>;

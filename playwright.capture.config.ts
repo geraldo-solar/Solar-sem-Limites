@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  testMatch: 'capture-ui.spec.ts',
+  testMatch: ['capture-ui.spec.ts', 'janela-de-vendas.spec.ts'],
   outputDir: './tmp/capture-ui-results',
   workers: 1,
   use: { baseURL: 'http://127.0.0.1:4187', screenshot: 'only-on-failure' },
