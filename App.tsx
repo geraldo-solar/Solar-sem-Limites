@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import JulhoLP from './JulhoLP';
 import CheckoutPage from './CheckoutPage';
 import CapturaNovembro from './CapturaNovembro';
+import VendasNovembro from './VendasNovembro';
 
 interface Props { children: React.ReactNode; }
 interface State { hasError: boolean; error: Error | null; }
@@ -34,6 +35,9 @@ export default function App() {
   const [hash, setHash] = useState(window.location.hash);
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
   const isMainSiteCaptureRoute = pathname === '/solarsemlimitescadastro';
+  // Página de vendas de novembro. Publicada em /solarsemlimites2026, endereço
+  // que hoje redireciona para a captação enquanto esta página não entra no ar.
+  const isSalesRoute = pathname === '/solarsemlimites2026';
 
   useEffect(() => {
     const handleHashChange = () => setHash(window.location.hash);
@@ -41,11 +45,17 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  // O checkout vem primeiro de propósito: as outras rotas são decididas pelo
+  // caminho da URL, e enquanto essa checagem ficava por último o link
+  // #/checkout era ignorado dentro de /solarsemlimites2026 — o botão de
+  // comprar não levava a lugar nenhum.
   let content = <JulhoLP />;
-  if (isMainSiteCaptureRoute || hash.startsWith('#/lista-vip')) {
-    content = <CapturaNovembro />;
-  } else if (hash === '#/checkout') {
+  if (hash === '#/checkout') {
     content = <CheckoutPage />;
+  } else if (isMainSiteCaptureRoute || hash.startsWith('#/lista-vip')) {
+    content = <CapturaNovembro />;
+  } else if (isSalesRoute || hash.startsWith('#/vendas')) {
+    content = <VendasNovembro />;
   }
 
   return <ErrorBoundary>{content}</ErrorBoundary>;

@@ -384,13 +384,19 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
   return (
     <form onSubmit={handleSubmit} className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
-      {/* Urgency Banner */}
-      <div className="bg-red-50 border border-red-200 p-4 rounded-lg flex items-center gap-4 shadow-sm animate-pulse-slow">
-        <span className="text-2xl" role="img" aria-label="Atenção">⚠️</span>
-        <div>
-          <p className="text-red-800 font-bold text-sm md:text-base uppercase tracking-wide mb-1">Finalize seu pagamento imediatamente</p>
-          <p className="text-red-700 text-xs md:text-sm">Seu convite para o Grupo Seleto VIP está pré-reservado. Complete os dados abaixo (Pix, Transferência ou Cartão de Crédito) para garantir uma das últimas vagas remanescentes.</p>
-        </div>
+      {/* Orientação de preenchimento.
+          Aqui havia um aviso vermelho pulsante — "finalize imediatamente",
+          "uma das últimas vagas remanescentes" — que prometia escassez que não
+          existe. Desde 20/09 as 200 unidades são referência de comunicação e
+          não limite de venda, e o criativo A7 proíbe promessa de vagas
+          restantes. A página de vendas não usa escassez; o checkout que ela
+          alimenta não pode contradizê-la a um clique de distância. */}
+      <div className="bg-[#f4f8f6] border border-[#cbd8d3] p-4 rounded-lg shadow-sm">
+        <p className="text-[#173a35] font-bold text-sm md:text-base mb-1">Falta pouco para concluir</p>
+        <p className="text-[#52625e] text-xs md:text-sm">
+          Preencha seus dados e escolha como prefere pagar: Pix, transferência, cartão ou
+          entrada no Pix com o saldo no cartão. As vendas seguem abertas até o prazo anunciado.
+        </p>
       </div>
       {/* Personal Data Section */}
       <div className="bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
