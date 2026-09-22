@@ -24,7 +24,7 @@ Etapa concluída em 16/09/2026. As definições abaixo formam a base comercial a
 - Verba de mídia aprovada: R$ 50.000,00 de orçamento-base e R$ 10.000,00 de reserva condicionada ao desempenho, totalizando teto de R$ 60.000,00.
 - Pagamento: Pix/transferência/depósito pelo preço-base; cartão em até 12 vezes com acréscimo de 10%; ou entrada no Pix e saldo no cartão, também com acréscimo de 10% sobre a parcela financiada.
 - Apresentação da oferta: opção de 1 pacote (6 diárias por R$ 3.100,00, com validade de 1 ano) ou 2 pacotes (12 diárias por R$ 6.200,00, com validade de 2 anos), com maior destaque visual para a opção de 2 pacotes e sem desconto adicional.
-- Programa de indicação: o cliente recebe 1 diária adicional de baixa temporada por novo comprador indicado com pagamento aprovado, limitado a 2 diárias por CPF.
+- Programa de indicação: o cliente recebe 1 diária adicional de baixa temporada por novo comprador indicado com pagamento aprovado, limitado a 5 diárias por CPF (era 2; revisto em 22/09). Válido somente para este lançamento.
 - Responsabilidades: Geraldo — aprovação final da campanha, decisões comerciais e aprovação dos pagamentos; Kaline — atendimento dos leads no WhatsApp, acompanhamento dos compradores e reservas; Andrey — página de vendas, automações, integrações e controle técnico no ERP.
 
 ## Decisões comerciais pendentes
@@ -39,7 +39,7 @@ Etapa concluída em 16/09/2026. As definições abaixo formam a base comercial a
 - [x] Verba de mídia: R$ 50.000,00 de base + R$ 10.000,00 de reserva de escala; teto de R$ 60.000,00.
 - [x] Formas de pagamento: Pix/transferência/depósito, cartão em até 12 vezes e pagamento combinado; acréscimo de 10% sobre o valor processado no cartão.
 - [x] Apresentação comercial: 1 pacote por R$ 3.100,00 e validade de 1 ano, ou 2 pacotes por R$ 6.200,00 e validade de 2 anos, destacando a segunda opção para quem pretende viajar mais vezes.
-- [x] Recompensa por indicação: 1 diária adicional de baixa temporada por novo comprador aprovado, limitada a 2 diárias por CPF.
+- [x] Recompensa por indicação: 1 diária adicional de baixa temporada por novo comprador aprovado, limitada a 5 diárias por CPF (revisto em 22/09).
 - [x] Responsabilidades distribuídas entre Geraldo, Kaline e Andrey.
 
 ## Registro de decisões
@@ -54,7 +54,7 @@ Etapa concluída em 16/09/2026. As definições abaixo formam a base comercial a
 | 6 | Verba de mídia | R$ 50.000,00 de orçamento-base e R$ 10.000,00 de reserva, com teto de R$ 60.000,00 | O histórico indica CPL aproximado de R$ 10,00. A base cobre a meta de 5.000 leads; a reserva será liberada somente conforme custo e qualidade dos leads. |
 | 7 | Formas de pagamento | Preço-base no Pix/transferência/depósito; cartão em até 12 vezes; pagamento combinado com entrada no Pix e saldo parcelado | O valor processado no cartão recebe acréscimo de 10%. Para um pacote integralmente no cartão, o total é R$ 3.410,00, ou 12 parcelas aproximadas de R$ 284,17. |
 | 8 | Apresentação de quantidade | Oferecer 1 pacote/6 diárias e 1 ano de validade por R$ 3.100,00 ou 2 pacotes/12 diárias e 2 anos de validade por R$ 6.200,00 | A opção de 2 pacotes terá maior destaque visual, sem desconto novo, e consumirá duas unidades do estoque oficial. A validade segue o regulamento vigente. |
-| 9 | Programa de indicação | 1 diária adicional de baixa temporada por novo comprador indicado com pagamento aprovado, limitada a 2 recompensas por CPF | O benefício tem alto valor percebido, não reduz o preço do pacote e mantém o custo operacional concentrado na baixa temporada. |
+| 9 | Programa de indicação | 1 diária adicional de baixa temporada por novo comprador indicado com pagamento aprovado, limitada a **5** recompensas por CPF, liberada 30 dias após a compra do indicado e com a validade do pacote mais recente do indicador. Válido somente para este lançamento | O benefício tem alto valor percebido, não reduz o preço do pacote e mantém o custo operacional concentrado na baixa temporada. **Revisão de 22/09: o teto passou de 2 para 5.** O teto por CPF não limita o passivo total do programa — esse é limitado pelo número de compras indicadas, com ou sem teto. O que o limite de 2 fazia era cortar justamente quem mais indica. Fica um teto para evitar concentração extrema e a dinâmica de indicador profissional. A liberação após 30 dias substitui conceder-e-estornar: o indicado pode cancelar nesse prazo, e estornar diária já usada deixaria saldo negativo |
 | 10 | Responsáveis | Geraldo: aprovação, decisões e pagamentos; Kaline: atendimento, compradores e reservas; Andrey: página, automações, integrações e ERP | Cada frente possui um responsável principal, reduzindo atrasos e duplicidade durante o lançamento. |
 
 ## Proposta de estoque para o lançamento

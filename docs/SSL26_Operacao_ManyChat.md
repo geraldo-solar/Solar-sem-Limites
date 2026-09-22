@@ -233,7 +233,7 @@ Após pagamento aprovado e saldo conciliado:
 
 > {{nome}}, seu pagamento foi aprovado! A equipe enviará a confirmação do pacote, seu saldo de diárias e as orientações de reserva. A utilização depende de disponibilidade e do regulamento. Vamos ajudar você a planejar sua próxima visita ao Solar.
 
-Só informar saldo/validade vindos do pedido aprovado, nunca valores fixos da automação. Programa de indicação: 1 diária adicional de baixa temporada por novo comprador indicado com pagamento aprovado, até 2 por CPF. Não gerar recompensa por cadastro, clique ou pagamento pendente. Não publicar promessa de crédito automático antes do teste no ERP.
+Só informar saldo/validade vindos do pedido aprovado, nunca valores fixos da automação. Programa de indicação: 1 diária adicional de baixa temporada por novo comprador indicado com pagamento aprovado, até 5 por CPF (revisto em 22/09), liberada 30 dias após a compra do indicado. Não gerar recompensa por cadastro, clique ou pagamento pendente. Não publicar promessa de crédito automático antes do teste no ERP.
 
 ## 9. Aceite técnico antes de ativar
 

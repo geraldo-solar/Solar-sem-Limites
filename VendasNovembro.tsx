@@ -621,7 +621,7 @@ export default function VendasNovembro() {
           <h2 className="font-serif text-2xl font-semibold sm:text-3xl">Programa de indicação</h2>
           <p className="mt-4 leading-relaxed text-[#5c4a22]">
             Quem compra recebe 1 diária adicional de baixa temporada a cada novo comprador
-            indicado com pagamento aprovado, limitado a 2 diárias por CPF. O crédito é
+            indicado com pagamento aprovado, limitado a 5 diárias por CPF. O crédito é
             liberado somente depois que o pagamento do indicado for aprovado.
           </p>
         </div>

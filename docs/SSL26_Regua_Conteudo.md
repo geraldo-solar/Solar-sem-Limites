@@ -208,6 +208,6 @@ Canal, após confirmação técnica do fechamento: “A janela de vendas foi enc
 
 ## Indicação — após aprovação do pagamento
 
-> Gostou da proposta e conhece alguém que gostaria de conhecer o Solar? Depois da aprovação da sua compra, você poderá participar do programa de indicação: 1 diária adicional de baixa temporada por novo comprador indicado com pagamento aprovado, limitada a 2 diárias por CPF, conforme as condições. Compartilhe seu link individual quando ele for disponibilizado pela equipe.
+> Gostou da proposta e conhece alguém que gostaria de conhecer o Solar? Depois da aprovação da sua compra, você poderá participar do programa de indicação: 1 diária adicional de baixa temporada por novo comprador indicado com pagamento aprovado, limitada a 5 diárias por CPF e liberada 30 dias após a compra do indicado, conforme as condições. Compartilhe seu link individual quando ele for disponibilizado pela equipe.
 
 Não enviar até o registro do indicador, a apuração e o crédito terem sido testados. Não pedir lista de telefones de amigos; a pessoa indicada se cadastra voluntariamente.
