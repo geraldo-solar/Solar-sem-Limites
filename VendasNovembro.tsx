@@ -54,15 +54,11 @@ const precoCartao = (pacotes: number) =>
 
 const parcelaCartao = (pacotes: number) => Math.round(precoCartao(pacotes) / PARCELAS_MAX);
 
+// Dois pacotes vêm primeiro, no celular e no computador. A decisão 8 do
+// registro comercial pede maior destaque visual para essa opção, e empilhada em
+// segundo lugar ela só recebia o selo — quem decidisse no primeiro cartão nem
+// chegava a vê-la.
 const OPCOES = [
-  {
-    pacotes: 1,
-    titulo: 'Um pacote',
-    diarias: '6 diárias',
-    composicao: '5 diárias regulares + 1 diária bônus',
-    validade: 'Validade de 1 ano a partir da compra',
-    destaque: false,
-  },
   {
     pacotes: 2,
     titulo: 'Dois pacotes',
@@ -70,6 +66,14 @@ const OPCOES = [
     composicao: '10 diárias regulares + 2 diárias bônus',
     validade: 'Validade de 2 anos a partir da compra',
     destaque: true,
+  },
+  {
+    pacotes: 1,
+    titulo: 'Um pacote',
+    diarias: '6 diárias',
+    composicao: '5 diárias regulares + 1 diária bônus',
+    validade: 'Validade de 1 ano a partir da compra',
+    destaque: false,
   },
 ] as const;
 
