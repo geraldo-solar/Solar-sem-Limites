@@ -95,6 +95,7 @@ const GALERIA = [
 const FATOS = [
   { numero: '1973', rotulo: 'ano em que o hotel abriu' },
   { numero: '54', rotulo: 'apartamentos' },
+  { numero: '220 km', rotulo: 'de Belém, 3 a 4 horas de carro' },
   { numero: '800 m', rotulo: 'até a praia do Maçarico' },
 ];
 
@@ -183,6 +184,10 @@ const GARANTIAS = [
 ];
 
 const FAQ = [
+  {
+    pergunta: 'Como se chega ao Hotel Solar?',
+    resposta: 'O hotel fica em Salinópolis, no Pará, a cerca de 220 km de Belém — de 3 a 4 horas de carro. Fica na parte alta da cidade, a 800 metros da praia do Maçarico e a 15 minutos da praia do Atalaia.',
+  },
   {
     pergunta: 'Preciso escolher as datas agora?',
     resposta: 'Não. Você compra as diárias e escolhe quando usar dentro da validade, conforme a disponibilidade na data que pedir. A reserva é solicitada pelo WhatsApp ou por e-mail.',
@@ -398,7 +403,7 @@ export default function VendasNovembro() {
           tranquila, longe do movimento das mais cheias.
         </p>
 
-        <dl className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-3 text-center">
+        <dl className="mx-auto mt-10 grid max-w-2xl grid-cols-2 gap-3 text-center sm:grid-cols-4">
           {FATOS.map((fato) => (
             <div key={fato.rotulo} className="rounded-xl bg-white px-2 py-5 shadow-sm">
               <dt className="sr-only">{fato.rotulo}</dt>
