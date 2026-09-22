@@ -13,7 +13,7 @@ delete process.env.BREVO_SENDER_EMAIL;
 delete process.env.BREVO_SENDER_NAME;
 delete process.env.BREVO_REPLY_TO_EMAIL;
 delete process.env.BREVO_REPLY_TO_NAME;
-const { default: handler } = await import('../api/capture-lead.ts');
+const { default: handler, resetIntegrationAlertThrottle } = await import('../api/capture-lead.ts');
 let calls = [];
 let logs = [];
 let fail = '';
@@ -39,6 +39,8 @@ beforeEach(() => {
   delete process.env.META_PIXEL_ID;
   delete process.env.META_CAPI_TOKEN;
   delete process.env.META_TEST_EVENT_CODE;
+  delete process.env.OPS_ALERT_EMAIL;
+  resetIntegrationAlertThrottle();
   process.env.BREVO_LEADS_LIST_ID = '24';
   process.env.BREVO_SSL26_ATTRIBUTES_ENABLED = 'true';
   globalThis.fetch = async (url, options) => {
@@ -185,7 +187,9 @@ test('webhook requires HTTPS and a token before transmitting contact data', asyn
     calls = [];
     process.env.LEAD_WEBHOOK_URL = url;
     assert.equal((await request()).body.integration, 'failed');
-    assert.equal(calls.length, 2);
+    // O que importa nao e a contagem de chamadas, e que nenhum dado de contato
+    // tenha saido para o endpoint inseguro.
+    assert.equal(calls.filter((call) => call.url.includes('integration.example.test')).length, 0);
   }
 });
 
@@ -567,4 +571,83 @@ test('perfil de contato normal continua sendo gravado', async () => {
   const contato = calls.find((call) => call.url.endsWith('/contacts'));
   assert.equal(contato.payload.attributes.SSL26_PROFILE, 'ja_hospedou');
   assert.match(logs.join('\n'), /"profileStorage":"saved"/);
+});
+
+const alertaCall = () => calls.find((call) =>
+  call.url.endsWith('/smtp/email') && String(call.payload.subject).includes('ManyChat'));
+
+async function capturaComManyChatQuebrado() {
+  process.env.LEAD_WEBHOOK_URL = 'https://integration.example.test/leads';
+  process.env.LEAD_WEBHOOK_TOKEN = 'test-token';
+  fail = 'integration.example.test';
+  return request();
+}
+
+test('cadastro que nao chega ao ManyChat gera aviso, sem dado pessoal', async () => {
+  process.env.OPS_ALERT_EMAIL = 'ops@example.test';
+  const result = await capturaComManyChatQuebrado();
+
+  // O cadastro em si continua valendo: avisar nao e o mesmo que falhar.
+  assert.equal(result.status, 200);
+  assert.equal(result.body.integration, 'failed');
+  assert.ok(result.body.profileToken);
+
+  const aviso = alertaCall();
+  assert.ok(aviso, 'deveria ter enviado o aviso');
+  assert.deepEqual(aviso.payload.to, [{ email: 'ops@example.test' }]);
+
+  // O aviso diz onde procurar; quem procura ja tem acesso legitimo aos dados.
+  const corpo = JSON.stringify(aviso.payload);
+  for (const pessoal of ['teste@example.test', 'Teste', '5591999990000', '99999-0000']) {
+    assert.ok(!corpo.includes(pessoal), `dado pessoal no aviso: ${pessoal}`);
+  }
+  assert.match(aviso.payload.textContent, /integration":"failed"/);
+  assert.match(logs.join('\n'), /"integrationAlert":"sent"/);
+});
+
+test('captacao normal nao dispara aviso', async () => {
+  process.env.OPS_ALERT_EMAIL = 'ops@example.test';
+  process.env.LEAD_WEBHOOK_URL = 'https://integration.example.test/leads';
+  process.env.LEAD_WEBHOOK_TOKEN = 'test-token';
+  const result = await request();
+  assert.equal(result.body.integration, 'accepted');
+  assert.equal(alertaCall(), undefined);
+  assert.match(logs.join('\n'), /"integrationAlert":"not_needed"/);
+});
+
+test('queda do ManyChat nao vira enxurrada de avisos', async () => {
+  // Com ~172 leads/dia, um aviso por lead faria o alerta deixar de ser lido
+  // justamente durante a queda.
+  process.env.OPS_ALERT_EMAIL = 'ops@example.test';
+  await capturaComManyChatQuebrado();
+  assert.ok(alertaCall(), 'o primeiro deveria avisar');
+
+  for (let i = 0; i < 5; i++) {
+    calls = []; logs = [];
+    await capturaComManyChatQuebrado();
+    assert.equal(alertaCall(), undefined, 'os seguintes nao deveriam avisar de novo');
+    assert.match(logs.join('\n'), /"integrationAlert":"throttled"/);
+  }
+});
+
+test('aviso que falha nao deixa a proxima captacao em silencio', async () => {
+  // Marcar "ja avisei" quando o aviso nem saiu esconderia o problema por 30
+  // minutos — exatamente o contrario do que o alerta existe para fazer.
+  process.env.OPS_ALERT_EMAIL = 'ops@example.test';
+  // URL insegura derruba a integracao sem depender de rede; o fail derruba o
+  // envio do proprio aviso, que sai pelo Brevo.
+  process.env.LEAD_WEBHOOK_URL = 'http://integration.example.test/leads';
+  process.env.LEAD_WEBHOOK_TOKEN = 'test-token';
+  fail = '/smtp/email';
+
+  const primeira = await request();
+  assert.equal(primeira.status, 200);
+  assert.equal(primeira.body.integration, 'failed');
+  assert.match(logs.join('\n'), /"integrationAlert":"failed"/);
+
+  // Com o envio de volta, a proxima captacao avisa em vez de ficar 30 minutos
+  // em silencio achando que ja avisou.
+  calls = []; logs = []; fail = '';
+  await request();
+  assert.ok(alertaCall(), 'deveria tentar de novo em vez de achar que ja avisou');
 });
