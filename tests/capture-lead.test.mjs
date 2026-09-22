@@ -20,6 +20,8 @@ let fail = '';
 let reads = [];
 let existingContact = null;
 let afterSaveContact;
+let rejectSms = false;
+let failCode = '';
 console.log = (...args) => logs.push(args.join(' '));
 console.error = (...args) => logs.push(args.join(' '));
 
@@ -30,6 +32,8 @@ beforeEach(() => {
   reads = [];
   existingContact = null;
   afterSaveContact = undefined;
+  rejectSms = false;
+  failCode = '';
   delete process.env.LEAD_WEBHOOK_URL;
   delete process.env.LEAD_WEBHOOK_TOKEN;
   delete process.env.META_PIXEL_ID;
@@ -45,7 +49,20 @@ beforeEach(() => {
       return contact ? Response.json(contact) : new Response(null, { status: 404 });
     }
     calls.push({ url, payload: JSON.parse(options.body), options });
+    // O Brevo recusa gravar um telefone que ja pertence a outro contato.
+    if (rejectSms && url.endsWith('/contacts') && JSON.parse(options.body)?.attributes?.SMS) {
+      return new Response(
+        JSON.stringify({ code: 'duplicate_parameter', message: 'Private contact detail that must not appear in logs' }),
+        { status: 400, headers: { 'content-type': 'application/json' } },
+      );
+    }
     if (fail && url.includes(fail)) {
+      if (failCode) {
+        return new Response(
+          JSON.stringify({ code: failCode, message: 'Private contact detail that must not appear in logs' }),
+          { status: 400, headers: { 'content-type': 'application/json' } },
+        );
+      }
       return new Response('Private contact detail that must not appear in logs', { status: 503 });
     }
     if (url.includes('integration.example.test')) return Response.json({ success: true, persisted: true }, { status: 202 });
@@ -405,4 +422,61 @@ test('a Meta outage neither breaks the capture nor leaks the lead into logs', as
   for (const plain of ['teste@example.test', 'Private contact detail']) {
     assert.ok(!registro.includes(plain), `dado sensivel em log: ${plain}`);
   }
+});
+
+test('telefone ja usado por outro contato nao faz o lead inteiro se perder', async () => {
+  // O Brevo recusa o mesmo telefone em dois contatos. Antes, o cadastro morria
+  // ai — sem guia, sem ManyChat, sem Meta — e a tela dizia "tente novamente",
+  // que nunca funcionaria. O lead vale mais que o campo SMS.
+  process.env.LEAD_WEBHOOK_URL = 'https://integration.example.test/leads';
+  process.env.LEAD_WEBHOOK_TOKEN = 'test-token';
+  process.env.META_CAPI_TOKEN = 'test-only-not-a-real-token';
+  rejectSms = true;
+
+  const result = await request();
+  assert.equal(result.status, 200);
+  assert.equal(result.body.emailDelivery, 'accepted');
+  assert.equal(result.body.integration, 'accepted');
+  assert.ok(result.body.profileToken);
+
+  // Primeira tentativa com SMS, segunda sem — e so o SMS foi removido.
+  const contatos = calls.filter((call) => call.url.endsWith('/contacts'));
+  assert.equal(contatos.length, 2);
+  assert.equal(contatos[0].payload.attributes.SMS, '+5591999990000');
+  assert.equal(contatos[1].payload.attributes.SMS, undefined);
+  assert.equal(contatos[1].payload.attributes.FIRSTNAME, 'Teste');
+  assert.equal(contatos[1].payload.attributes.SSL26_SOURCE, 'qa');
+  assert.deepEqual(contatos[1].payload.listIds, [24]);
+
+  // O telefone continua chegando ao ManyChat, que e onde o WhatsApp importa.
+  const webhook = calls.find((call) => call.url.includes('integration.example.test'));
+  assert.equal(webhook.payload.lead.phone, '+5591999990000');
+  assert.ok(metaCall(), 'evento da Meta deveria ter sido enviado mesmo assim');
+
+  assert.match(logs.join('\n'), /"contactStorage":"saved_without_phone"/);
+});
+
+test('telefone duplicado que persiste continua falhando em vez de fingir sucesso', async () => {
+  // Se a segunda tentativa tambem for recusada, a causa nao era o telefone:
+  // fechar como sucesso esconderia um lead que nao foi gravado.
+  fail = '/contacts';
+  failCode = 'duplicate_parameter';
+  const result = await request();
+  assert.equal(result.status, 502);
+  assert.equal(calls.filter((call) => call.url.endsWith('/contacts')).length, 2);
+});
+
+test('outros erros do Brevo nao viram nova tentativa e registram so o codigo', async () => {
+  fail = '/contacts';
+  failCode = 'invalid_parameter';
+  const result = await request();
+  assert.equal(result.status, 502);
+  // Uma tentativa so: remover o SMS nao resolveria.
+  assert.equal(calls.filter((call) => call.url.endsWith('/contacts')).length, 1);
+
+  const registro = logs.join('\n');
+  assert.match(registro, /"code":"invalid_parameter"/);
+  // O codigo e um enum do provedor; a mensagem pode trazer dado do contato.
+  assert.ok(!registro.includes('Private contact detail'));
+  assert.ok(!registro.includes('teste@example.test'));
 });
