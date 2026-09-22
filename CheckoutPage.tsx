@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CheckoutForm } from './Checkout-Solar-sem-Limites/components/CheckoutForm';
 import { sendOrderToErp } from './Checkout-Solar-sem-Limites/services/solarErpService';
-import { addContactAndSendEmail } from './Checkout-Solar-sem-Limites/services/brevoService';
 import { CustomerData } from './Checkout-Solar-sem-Limites/types';
 import { indicacaoDaVisita } from './codigoDeIndicacao';
 
@@ -53,20 +52,8 @@ export default function CheckoutPage() {
         throw new Error('O pedido nao foi sincronizado com o ERP.');
       }
 
-      // 3. ADD CONTACT TO BREVO AND SEND CONFIRMATION EMAIL (Omitted await to not block UI)
-      addContactAndSendEmail({
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phone: data.phone,
-        quantity: data.quantity,
-        paymentMethod: data.paymentMethod,
-        installments: data.installments,
-        cpf: data.cpf,
-        comments: data.comments,
-        splitPercent: data.splitPercent
-      }).catch(err => console.error("Brevo Error:", err));
-
+      // O e-mail de confirmação sai do ERP, ao gravar o pedido. Não daqui:
+      // uma rota que o navegador chama, qualquer um chama.
       setIsSuccess(true);
     } catch (error) {
       console.error(error);

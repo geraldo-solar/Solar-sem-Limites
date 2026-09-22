@@ -7,6 +7,10 @@ import { expect, test, type Page } from '@playwright/test';
 // esse valor, e que o pedido enviado leva exatamente o que o cliente escolheu
 // — quantidade, forma, parcelas e entrada —, com o cartão indo só para o
 // cofre do ERP. Nenhum pedido sai daqui: ERP e Brevo são interceptados.
+//
+// O e-mail de confirmação sai do ERP ao gravar o pedido (pedidoRecebido.ts,
+// testado lá). O navegador não chama o Brevo em caso nenhum: a rota que ele
+// chamava mandava e-mail do hotel para qualquer endereço, e foi removida.
 
 const CARTAO = '4111 1111 1111 1111'; // número de teste, válido no Luhn
 const CPF = '529.982.247-25'; // CPF de teste, dígitos verificadores válidos
@@ -77,8 +81,7 @@ test('1 pacote no Pix: R$ 3.100,00 na tela e no pedido, sem cartão em lugar nen
 
   expect(c.erp).toHaveLength(1);
   expect(c.erp[0]).toMatchObject({ quantity: 1, paymentMethod: 'pix' });
-  expect(c.brevo).toHaveLength(1);
-  expect(JSON.stringify(c.brevo[0])).not.toMatch(/card|cvv/i);
+  expect(c.brevo, 'confirmação sai do ERP, não do navegador').toHaveLength(0);
   expect(c.planilha, 'nada vai para a planilha antiga').toBe(0);
 });
 
@@ -97,7 +100,7 @@ test('2 pacotes no cartão em 12x: R$ 6.820,00, parcela de R$ 568,33', async ({ 
   expect(c.erp[0]).toMatchObject({ quantity: 2, paymentMethod: 'credit_card', installments: '12' });
   // O cartão vai para o ERP, que o guarda cifrado; nunca para o e-mail.
   expect(c.erp[0].cardCvv).toBe('123');
-  expect(JSON.stringify(c.brevo[0])).not.toMatch(/4111|cardNumber|cvv/i);
+  expect(c.brevo).toHaveLength(0);
   expect(c.planilha).toBe(0);
 });
 
@@ -118,8 +121,7 @@ test('2 pacotes, entrada de 50% no Pix + 6x: R$ 3.100,00 + R$ 3.410,00 = R$ 6.51
   expect(c.erp[0]).toMatchObject({
     quantity: 2, paymentMethod: 'pix_credit_card', splitPercent: 50, installments: '6',
   });
-  expect(c.brevo[0]).toMatchObject({ quantity: 2, paymentMethod: 'pix_credit_card', splitPercent: 50, installments: '6' });
-  expect(JSON.stringify(c.brevo[0])).not.toMatch(/4111|cardNumber|cvv/i);
+  expect(c.brevo).toHaveLength(0);
 });
 
 test('ERP fora do ar: cliente é avisado e nenhum e-mail de confirmação sai', async ({ page }) => {

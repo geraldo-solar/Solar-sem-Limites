@@ -6,7 +6,6 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { generateConfirmationMessage } from './services/geminiService';
 import { saveOrder } from './services/orderService';
 import { sendOrderToErp } from './services/solarErpService';
-import { addContactAndSendEmail } from './services/brevoService';
 import { CustomerData, Step, View } from './types';
 import { Icons } from './constants';
 
@@ -24,24 +23,14 @@ function App() {
       // 1. SAVE ORDER LOCALLY (Mock Database for Admin Dashboard)
       const savedOrder = saveOrder(data);
 
-      // 2. SYNC WITH ERP (Background Process)
-      // Não aguardamos para não travar a UI — se falhar, o e-mail de
-      // notificação para o hotel (passo 3, abaixo) ainda sai, então o pedido
-      // não fica invisível como ficava com o link antigo do Google Sheets.
-      sendOrderToErp(savedOrder).catch(err => console.error("ERP Sync Error:", err));
-
-      // 3. ADD CONTACT TO BREVO AND SEND CONFIRMATION EMAIL
-      addContactAndSendEmail({
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phone: data.phone,
-        quantity: data.quantity,
-        paymentMethod: data.paymentMethod,
-        installments: data.installments,
-        cpf: data.cpf,
-        comments: data.comments
-      }).catch(err => console.error("Brevo Error:", err));
+      // 2. O pedido só está feito quando o ERP confirma. É o ERP que manda o
+      // e-mail de confirmação ao cliente e o aviso ao hotel; antes, esse aviso
+      // saía do navegador por uma rota aberta, e mostrar sucesso sem esperar
+      // o ERP deixaria um pedido perdido sem ninguém saber.
+      const resultadoErp = await sendOrderToErp(savedOrder);
+      if (!resultadoErp.ok) {
+        throw new Error(resultadoErp.mensagem || 'O pedido nao foi sincronizado com o ERP.');
+      }
 
       // 4. Generate personalized confirmation message using AI
       const message = await generateConfirmationMessage(data);
