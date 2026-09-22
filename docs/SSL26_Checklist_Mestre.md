@@ -8,7 +8,7 @@ Da preparação ao fechamento do carrinho e à conferência do pós-venda. Este 
 
 | Controle | Situação |
 |---|---|
-| Preparação | **83%**, pela matriz ponderada. Em 22/09: +1 pela página de vendas de novembro publicada e aprovada. Em 21/09: +1 em mensuração (Pixel e CAPI provados em produção) e +1 em página/cadastro (três caminhos que perdiam o lead em silêncio corrigidos). Design aprovado, com imagens/textos adiados para a revisão final. Reorganizar documentos não acrescenta pontos |
+| Preparação | **84%**, pela matriz ponderada. Em 22/09 (noite): +1 pelo checkout de novembro homologado, com o cartão pela Cielo provado em modo teste. Em 22/09: +1 pela página de vendas de novembro publicada e aprovada. Em 21/09: +1 em mensuração (Pixel e CAPI provados em produção) e +1 em página/cadastro (três caminhos que perdiam o lead em silêncio corrigidos). Design aprovado, com imagens/textos adiados para a revisão final. Reorganizar documentos não acrescenta pontos |
 | Campanha | **Não ativada**; sem liberação de anúncios, disparos ou verba nesta consolidação |
 | Meta comercial | **R$ 600.000 de faturamento bruto**; referência de 194 pacotes × R$ 3.100 = R$ 601.400 |
 | Lote | **200 unidades como referência de comunicação, não como limite** (decisão de 20/09): ultrapassar 200 é permitido e desejado, e não há trava no servidor. Uma compra de dois pacotes consome duas unidades |
