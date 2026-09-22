@@ -26,3 +26,7 @@ scratch/
 
 # Saida dos testes de interface (playwright.capture.config.ts)
 tmp/
+
+# Vinculo local com a Vercel
+.vercel
+.env*

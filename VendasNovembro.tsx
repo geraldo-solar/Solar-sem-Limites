@@ -30,10 +30,13 @@ const REGULAMENTO_URL = 'Regulamento_SSL.pdf';
 const WHATSAPP = '(91) 98100-0800';
 const EMAIL_RESERVAS = 'reserva@hotelsolar.tur.br';
 
-// Datas anunciadas, usadas só para exibição enquanto o servidor não responde.
-// Quem decide se pode comprar é o servidor, nunca estes textos.
+// Datas anunciadas. Servem só para o que a página escreve na tela: informar
+// quando as vendas abrem e fecham. Quem autoriza a compra é sempre o servidor,
+// nunca estas constantes nem o relógio do visitante.
 const ABERTURA_TEXTO = '25 de novembro, às 8h';
 const FECHAMENTO_TEXTO = '1º de dezembro, às 23h59';
+const ABERTURA_ISO = '2026-11-25T08:00:00-03:00';
+const FECHAMENTO_ISO = '2026-12-01T23:59:59-03:00';
 
 const assetUrl = (fileName: string) => `${import.meta.env.BASE_URL}${fileName.replace(/^\/+/, '')}`;
 
@@ -233,14 +236,29 @@ export default function VendasNovembro() {
   const podeComprar = status?.aberto === true;
   const encerrado = status?.aberto === false && Boolean(status?.fechaEm) && new Date(status.fechaEm) < new Date();
 
+  // Sem resposta do servidor, a página ainda sabe as datas anunciadas — e
+  // informá-las é mais útil e mais honesto que exibir um alarme. O relógio do
+  // visitante decide apenas qual frase escrever; nunca se a compra é permitida.
+  const faseAnunciada = useMemo(() => {
+    const agora = Date.now();
+    if (agora < new Date(ABERTURA_ISO).getTime()) return 'antes' as const;
+    if (agora > new Date(FECHAMENTO_ISO).getTime()) return 'depois' as const;
+    return 'durante' as const;
+  }, []);
+
   const avisoJanela = useMemo(() => {
     if (podeComprar) return { tom: 'aberto' as const, texto: `As vendas estão abertas até ${FECHAMENTO_TEXTO}.` };
     if (encerrado) return { tom: 'encerrado' as const, texto: 'As vendas desta edição foram encerradas.' };
     if (statusIndisponivel) {
-      return { tom: 'espera' as const, texto: 'Não conseguimos confirmar o estado das vendas agora. Tente novamente em instantes ou fale com a gente.' };
+      if (faseAnunciada === 'durante') {
+        return { tom: 'espera' as const, texto: 'As vendas estão no ar, mas não conseguimos confirmar agora. Recarregue em instantes ou fale com a gente.' };
+      }
+      if (faseAnunciada === 'depois') {
+        return { tom: 'encerrado' as const, texto: 'As vendas desta edição foram encerradas.' };
+      }
     }
     return { tom: 'espera' as const, texto: `As vendas abrem em ${ABERTURA_TEXTO}, horário de Belém.` };
-  }, [podeComprar, encerrado, statusIndisponivel]);
+  }, [podeComprar, encerrado, statusIndisponivel, faseAnunciada]);
 
   function registrarClique(origem: string, vaiParaCheckout: boolean) {
     trackEvent('ssl26_vendas_cta', { origem });
@@ -267,8 +285,8 @@ export default function VendasNovembro() {
       // Três situações diferentes, e dizer a errada custa caro: afirmar a data
       // de abertura quando nem sabemos o estado atual soa confiante logo abaixo
       // de um aviso dizendo que não conseguimos confirmar nada.
-      const texto = statusIndisponivel
-        ? `Não conseguimos confirmar o estado das vendas agora. As datas anunciadas são ${ABERTURA_TEXTO} a ${FECHAMENTO_TEXTO}; confirme pelo WhatsApp ${WHATSAPP}.`
+      const texto = statusIndisponivel && faseAnunciada === 'durante'
+        ? `As vendas estão no ar, mas não conseguimos confirmar agora. Recarregue em instantes ou fale pelo WhatsApp ${WHATSAPP}.`
         : avisoJanela.tom === 'encerrado'
         ? `As vendas foram encerradas. Fale com a gente pelo WhatsApp ${WHATSAPP} para saber das próximas datas.`
         : `As vendas abrem em ${ABERTURA_TEXTO}. Guarde esta página ou acompanhe pelo Canal VIP.`;
