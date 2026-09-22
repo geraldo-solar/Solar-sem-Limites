@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { registrarIndicacaoDaUrl } from './codigoDeIndicacao';
 
 // Página de vendas do lançamento de novembro de 2026 (VEN-01).
 //
@@ -239,7 +240,10 @@ export default function VendasNovembro() {
   useEffect(() => {
     const anterior = document.title;
     document.title = 'Solar Sem Limites 2026 | Hotel Solar';
-    trackEvent('ssl26_vendas_view');
+    // Guarda o código de indicação do link antes de qualquer navegação: o
+    // visitante pode ir direto ao checkout sem passar por mais nada.
+    const indicacao = registrarIndicacaoDaUrl();
+    trackEvent('ssl26_vendas_view', indicacao ? { indicacao_presente: true } : {});
     window.fbq?.('track', 'ViewContent', {
       content_name: 'ssl26_novembro_2026',
       content_category: 'pagina_de_vendas',

@@ -27,6 +27,11 @@ export interface CustomerData {
   cardCvv?: string;
 
   splitPercent?: number; // % do valor pago via Pix quando paymentMethod = 'pix_credit_card'
+
+  // Código do link individual de quem indicou (criativo A8). Não é digitado
+  // pelo comprador: vem da URL e atravessa a visita. Só registro — o crédito
+  // de indicação é decidido no ERP, depois do pagamento aprovado.
+  referral?: string;
 }
 
 export interface OrderState {

@@ -4,6 +4,7 @@ import { sendOrderToGoogleSheets } from './Checkout-Solar-sem-Limites/services/g
 import { sendOrderToErp } from './Checkout-Solar-sem-Limites/services/solarErpService';
 import { addContactAndSendEmail } from './Checkout-Solar-sem-Limites/services/brevoService';
 import { CustomerData } from './Checkout-Solar-sem-Limites/types';
+import { indicacaoDaVisita } from './codigoDeIndicacao';
 
 interface StatusCarrinho {
   aberto: boolean;
@@ -36,6 +37,8 @@ export default function CheckoutPage() {
         id: crypto.randomUUID(),
         createdAt: new Date().toISOString(),
         paymentStatus: 'pending',
+        // Vem do link de indicação aberto nesta visita, não de campo digitado.
+        referral: indicacaoDaVisita() || undefined,
       };
 
       const [, resultadoErp] = await Promise.all([
