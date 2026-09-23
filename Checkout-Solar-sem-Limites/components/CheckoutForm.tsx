@@ -1136,8 +1136,12 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
         </div>
 
         <div>
-          <h3 className="text-moss-900 font-bold mb-1">A sua privacidade está garantida</h3>
-          <p className="text-sm text-gray-500">Todos os dados informados não serão utilizados para outras finalidades/reservas que não se trata da solicitação acima.</p>
+          <h3 className="text-moss-900 font-bold mb-1">Seus dados</h3>
+          <p className="text-sm text-gray-500">
+            Seus dados são usados para registrar e atender a sua compra, conforme o{' '}
+            <a href="https://www.hotelsolar.tur.br/solarsemlimites2026/privacidade.html" target="_blank" rel="noopener noreferrer" className="underline text-moss-800">Aviso de Privacidade</a>.
+            O cartão é digitado na página da Cielo; o hotel não recebe esses dados.
+          </p>
         </div>
 
         <div className="flex flex-col items-center">

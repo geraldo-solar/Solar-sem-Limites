@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { AVISO_DE_PRIVACIDADE_URL } from './avisoDePrivacidade';
 import {
   ArrowRight,
   CalendarDays,
@@ -364,7 +365,7 @@ export default function CapturaNovembro() {
                           onChange={(event) => setConsent(event.target.checked)}
                           className="mt-1 h-4 w-4 rounded border-slate-300 accent-[#0f5c45]"
                         />
-                        <span>Concordo em receber o guia e comunicações do Hotel Solar por e-mail e WhatsApp. Posso cancelar quando quiser.</span>
+                        <span>Concordo em receber o guia e comunicações do Hotel Solar por e-mail e WhatsApp. Posso cancelar quando quiser. Veja o <a href={AVISO_DE_PRIVACIDADE_URL} target="_blank" rel="noopener noreferrer" className="underline">Aviso de Privacidade</a>.</span>
                       </label>
 
                       {message && (
@@ -597,7 +598,7 @@ export default function CapturaNovembro() {
           <div className="flex items-center gap-2">
             <MapPin size={15} /> Av. Atlântica, s/n — Salinópolis/PA
           </div>
-          <p>© 2026 Hotel Solar. Todos os direitos reservados.</p>
+          <p>© 2026 Hotel Solar. Todos os direitos reservados. <a href={AVISO_DE_PRIVACIDADE_URL} target="_blank" rel="noopener noreferrer" className="underline">Aviso de Privacidade</a></p>
         </div>
       </footer>
     </div>

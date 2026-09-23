@@ -27,3 +27,17 @@ test('regulamento, política e página dizem o mesmo sobre indicação e devolu�
   assert.match(pag, /acréscimo de 10% da operadora não é devolvido/);
   assert.doesNotMatch(pag, /liberado somente depois que o pagamento do indicado for aprovado/);
 });
+
+test('aviso de privacidade publicado e ligado na captação, na página de vendas e no checkout', () => {
+  const aviso = ler('public/privacidade.html');
+  assert.match(aviso, /CNPJ 97\.519\.659\/0001-90/);
+  assert.match(aviso, /reserva@hotelsolar\.tur\.br/);
+  assert.match(aviso, /por 5 anos/);
+  assert.match(aviso, /não recebe nem guarda o número/);
+  const url = ler('avisoDePrivacidade.ts').match(/'(https:\/\/[^']+privacidade\.html)'/)[1];
+  assert.ok(ler('CapturaNovembro.tsx').includes('AVISO_DE_PRIVACIDADE_URL'), 'captação');
+  assert.ok(ler('VendasNovembro.tsx').includes('AVISO_DE_PRIVACIDADE_URL'), 'página de vendas');
+  const checkout = ler('Checkout-Solar-sem-Limites/components/CheckoutForm.tsx');
+  assert.ok(checkout.includes(url), 'checkout');
+  assert.doesNotMatch(checkout, /não serão utilizados para outras finalidades/, 'frase antiga saiu');
+});

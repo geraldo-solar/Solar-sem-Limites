@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { AVISO_DE_PRIVACIDADE_URL } from './avisoDePrivacidade';
 import { registrarIndicacaoDaUrl } from './codigoDeIndicacao';
 
 // Página de vendas do lançamento de novembro de 2026 (VEN-01).
@@ -681,6 +682,10 @@ export default function VendasNovembro() {
         <p className="mt-2">
           <a href={assetUrl(REGULAMENTO_URL)} target="_blank" rel="noopener noreferrer" className="underline">
             Regulamento Solar Sem Limites
+          </a>
+          {' · '}
+          <a href={AVISO_DE_PRIVACIDADE_URL} target="_blank" rel="noopener noreferrer" className="underline">
+            Aviso de Privacidade
           </a>
         </p>
         <p className="mt-4 text-xs leading-relaxed text-[#7e968f]">
