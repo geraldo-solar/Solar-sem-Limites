@@ -1,6 +1,6 @@
 # Aviso de Privacidade — Solar Sem Limites (RASCUNHO para aprovação)
 
-Situação: rascunho de 23/09/2026 (COM-05, item 2). **Não publicado.** Precisa da aprovação de Geraldo e, de preferência, da revisão de quem cuida do jurídico. Depois de aprovado, entra como página própria com link na captação, na página de vendas e no checkout, e substitui a frase atual do checkout ("Todos os dados informados não serão utilizados para outras finalidades…"), que não corresponde ao uso real.
+Situação: **publicado em 23/09/2026** em public/privacidade.html, com as decisões de Geraldo (contato reserva@, 5 anos, sem consentimento separado para medição, texto como está). Este arquivo fica como registro do rascunho. Precisa da aprovação de Geraldo e, de preferência, da revisão de quem cuida do jurídico. Depois de aprovado, entra como página própria com link na captação, na página de vendas e no checkout, e substitui a frase atual do checkout ("Todos os dados informados não serão utilizados para outras finalidades…"), que não corresponde ao uso real.
 
 Os fatos abaixo foram conferidos no código em 23/09. Os trechos entre [colchetes] dependem de decisão.
 
