@@ -43,7 +43,7 @@ Sem risco de quebrar nada. Cada item é independente.
 
 1. ~~**Fechar o cadastro público do login do Supabase**~~ — **feito por Geraldo em 23/09**; conferido de fora: configuração pública com cadastro desativado e tentativa de cadastro recusada ("Signups not allowed"). Contas existentes seguem entrando. Observação: o Guia interativo (não publicado) cria conta de visitante por esse cadastro; se for ao ar, refazer com outro método.
 2. ~~**Apagar a conta de fora**~~ — **feito por Geraldo em 23/09** (ues.edu.pl e hotmail); restam 3 contas, todas @hotelsolar.tur.br.
-3. **Cupons do Motor**: migração `202609231200_cupons_so_leitura_publica.sql` pronta (a chave pública só lê; o painel, com login, continua criando e apagando). Aguardando Geraldo rodar.
+3. ~~**Cupons do Motor**~~ — **feito em 23/09** (Geraldo rodou `202609231200`); conferido: a chave pública lê, e criar/alterar/apagar estão bloqueados. A lista de cupons ainda é legível — sai na fase 2, com a validação no servidor.
 4. ~~**Motor: rota de envio de e-mail**~~ — **fechada em 23/09**: era retransmissor aberto (qualquer destinatário, conteúdo e remetente, pela conta do Brevo do hotel), com a chave do Brevo escrita no código e pedaços dela expostos num GET. Agora remetente fixo do hotel, envio só para o hóspede da reserva informada ou para o endereço interno, chave só da variável; conferido no ar (GET 405, sem reserva 400, destinatário de fora 403). Nenhum site publicado carrega chave do Brevo no navegador. **Falta: trocar a chave do Brevo** (está no histórico do Git) nos 5 projetos da Vercel que a usam — erp-hotel-solar, motor-de-reservas-on-line-hotel-solar, sitehotelsolar, solar-sem-limites, checkout-solar-sem-limites.
 5. **5 cartões antigos** — limpar assim que a recepção confirmar a cobrança (dois check-ins em 25/09).
 
@@ -55,6 +55,8 @@ A base do resto. O login do ERP já emite um cookie assinado que o servidor conf
 2. A conexão única do navegador (`src/lib/supabase.ts`) passa a enviar esse token. As 96 telas continuam iguais.
 3. As 6 rotas do servidor que usam a chave pública passam para a chave do servidor.
 4. Sessões abertas antes da mudança pedem novo login (como no cookie de 22/09).
+
+**Andamento em 23/09:** código publicado e **desligado** — o login só entrega o token com `SUPABASE_JWT_SECRET` **e** `ERP_TOKEN_DO_BANCO=1`; sem o token, a conexão manda a chave pública como antes (inclusive no realtime). Rotas do servidor com a chave do servidor. **De passagem, fechadas 4 rotas que agiam em nome do hotel sem login**: emitir NFC-e (aceitava `isManual` de qualquer um, pulando a chave mestra), sincronizar NFC-e, montar o pacote da contabilidade e o Solar Intelligence — conferido no ar (401 sem login) e sem nenhum funcionário barrado; o caixa avisa se a nota não sair por sessão expirada. **Antes de ligar:** Geraldo cadastra o segredo, e o diagnóstico `/api/diagnostico/token-do-banco` (gerência logada) compara, tabela por tabela, o que o logado consegue com o que o público consegue hoje; só com zero perdas liga-se `ERP_TOKEN_DO_BANCO=1`.
 
 Ainda não fecha nada — só prepara. Conferência: navegar pelas telas principais (recepção, PDV, financeiro, CRM/PCDA, almoxarifado, pessoal, contabilidade) logado, com o registro de erros aberto.
 
