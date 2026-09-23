@@ -37,6 +37,8 @@ export interface CustomerData {
   // devolve o endereço de pagamento. Só vale quando o ERP diz que a Cielo
   // está ativa (cartaoPelaCielo no status).
   cartaoNaCielo?: boolean;
+  /** Versão do regulamento aceita no checkout (prova do aceite, COM-05). */
+  aceite?: { versao: string };
 }
 
 export interface OrderState {

@@ -44,7 +44,7 @@ O titular pode transferir o pacote para terceiros mediante aviso prévio no ato 
 
 6.1. Após o término da vigência do pacote, o valor das diárias não utilizadas ficam como crédito por mais 360 dias para futuras reservas.
 6.2. Em caso de arrependimento imediatamente após o primeiro check-in, o Hotel Solar cancela a compra e devolve o valor proporcional às diárias não utilizadas.
-6.3. Se cancelar dentro de 30 dias após a compra, devolvemos 100% do seu valor sem perguntas e sem burocracia.
+6.3. Se cancelar dentro de 30 dias após a compra, devolvemos 100% do valor do pacote sem perguntas e sem burocracia. Nos pagamentos com cartão de crédito, o acréscimo de 10% referente à operadora do cartão não é devolvido.
 
 7. DISPONIBILIDADE
 A reserva será garantida mediante disponibilidade para a data solicitada.
@@ -61,6 +61,13 @@ Solicitações podem ser feitas pelo WhatsApp (91 98100-0800) ou e-mail (reserva
 • Recomenda-se que o comprador contrate seguro viagem para eventuais imprevistos.
 • Endereço: Av. Atlântica, 634–672, Salinópolis – PA, 68721-000
 • Contatos: reserva@hotelsolar.tur.br | 91 98100-0800
+
+10. PROGRAMA DE INDICAÇÃO
+10.1. O comprador com pagamento aprovado recebe um link individual de indicação. Por novo comprador que adquirir o pacote por esse link neste lançamento, com pagamento aprovado, recebe 1 diária adicional, válida em datas de baixa temporada (fora de férias e feriados).
+10.2. A diária é liberada 30 dias após a compra do indicado e segue a validade do pacote mais recente de quem indicou. Se a compra do indicado for cancelada nesse prazo, a diária não é concedida.
+10.3. Limite de 5 diárias de indicação por CPF. A compra feita pelo próprio comprador, com o próprio link, não conta como indicação.
+
+Versão de 23/09/2026 do regulamento.
 `.trim();
 
 // CPF Validation Algorithm

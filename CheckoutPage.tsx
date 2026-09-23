@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CheckoutForm } from './Checkout-Solar-sem-Limites/components/CheckoutForm';
 import { sendOrderToErp } from './Checkout-Solar-sem-Limites/services/solarErpService';
+import { VERSAO_DO_REGULAMENTO } from './versaoDoRegulamento';
 import { CustomerData } from './Checkout-Solar-sem-Limites/types';
 import { indicacaoDaVisita } from './codigoDeIndicacao';
 import { UNIT_PRICE, CREDIT_CARD_SURCHARGE, formatCurrency } from './Checkout-Solar-sem-Limites/constants';
@@ -53,6 +54,8 @@ export default function CheckoutPage() {
         paymentStatus: 'pending',
         // Vem do link de indicação aberto nesta visita, não de campo digitado.
         referral: indicacaoDaVisita() || undefined,
+        // O formulário só envia com o aceite marcado; o ERP grava a hora.
+        aceite: { versao: VERSAO_DO_REGULAMENTO },
         cartaoNaCielo: cartaoNaCielo || undefined,
         // Na Cielo o cartão é digitado lá; nada de cartão sai daqui.
         ...(cartaoNaCielo ? {

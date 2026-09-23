@@ -175,7 +175,7 @@ const REGRAS = [
 const GARANTIAS = [
   {
     titulo: '30 dias para desistir',
-    texto: 'Cancelou dentro de 30 dias após a compra? Devolvemos 100% do valor, sem perguntas e sem burocracia.',
+    texto: 'Cancelou dentro de 30 dias após a compra? Devolvemos 100% do valor do pacote, sem perguntas e sem burocracia. No cartão, o acréscimo de 10% da operadora não é devolvido.',
   },
   {
     titulo: 'Arrependimento no primeiro check-in',
@@ -620,9 +620,10 @@ export default function VendasNovembro() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-serif text-2xl font-semibold sm:text-3xl">Programa de indicação</h2>
           <p className="mt-4 leading-relaxed text-[#5c4a22]">
-            Quem compra recebe 1 diária adicional de baixa temporada a cada novo comprador
-            indicado com pagamento aprovado, limitado a 5 diárias por CPF. O crédito é
-            liberado somente depois que o pagamento do indicado for aprovado.
+            Quem compra recebe um link individual e ganha 1 diária adicional de baixa
+            temporada a cada novo comprador que comprar por ele com pagamento aprovado,
+            limitado a 5 diárias por CPF. A diária é liberada 30 dias após a compra do
+            indicado, com a validade do seu pacote mais recente. Condições no regulamento.
           </p>
         </div>
       </section>
