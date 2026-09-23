@@ -41,7 +41,7 @@ Scripts avulsos na pasta Documentos também usam o endereço do banco; rodam só
 
 Sem risco de quebrar nada. Cada item é independente.
 
-1. **Fechar o cadastro público do login do Supabase** — Geraldo, no painel do Supabase: *Authentication → Sign In / Providers → "Allow new users to sign up"* desligado. Não afeta as contas existentes.
+1. ~~**Fechar o cadastro público do login do Supabase**~~ — **feito por Geraldo em 23/09**; conferido de fora: configuração pública com cadastro desativado e tentativa de cadastro recusada ("Signups not allowed"). Contas existentes seguem entrando. Observação: o Guia interativo (não publicado) cria conta de visitante por esse cadastro; se for ao ar, refazer com outro método.
 2. **Apagar a conta de fora** (ues.edu.pl) — Geraldo, em *Authentication → Users*. Conferir se a conta hotmail é de alguém da equipe; se não, apagar também.
 3. **Cupons do Motor**: tirar da chave pública a permissão de criar/alterar/apagar (o site só lê).
 4. **Motor: rota de envio de e-mail** (`api/send-email.ts`) — conferir se é aberta como era a do checkout e fechar; tirar a chave do Brevo escrita no código e **trocá-la no painel do Brevo** (está no histórico do Git).
