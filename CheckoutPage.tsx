@@ -5,6 +5,7 @@ import { VERSAO_DO_REGULAMENTO } from './versaoDoRegulamento';
 import { CustomerData } from './Checkout-Solar-sem-Limites/types';
 import { indicacaoDaVisita } from './codigoDeIndicacao';
 import { UNIT_PRICE, CREDIT_CARD_SURCHARGE, formatCurrency } from './Checkout-Solar-sem-Limites/constants';
+import { nextCampaignOrder, type CampaignOrderIdentity } from './identidadePedidoNovembro';
 
 interface StatusCarrinho {
   aberto: boolean;
@@ -26,10 +27,9 @@ export default function CheckoutPage() {
   const [concluido, setConcluido] = useState<Concluido | null>(null);
   const isSuccess = concluido !== null;
   const ultimoPedido = useRef<CustomerData | null>(null);
-  // Um número de pedido por visita: tentar de novo depois de um erro manda o
-  // MESMO pedido, e o ERP atualiza em vez de criar outro.
-  const idDoPedido = useRef<string>(crypto.randomUUID());
-  const criadoEm = useRef<string>(new Date().toISOString());
+  // Repetir após falha mantém o ID. Mudar comprador/valor inicia outro pedido;
+  // o comprovante de origem do pedido anterior não pode ser sobrescrito.
+  const identidadeDoPedido = useRef<CampaignOrderIdentity | null>(null);
   const [status, setStatus] = useState<StatusCarrinho | null>(null);
   const [fechouAgora, setFechouAgora] = useState<string | null>(null);
 
@@ -46,11 +46,14 @@ export default function CheckoutPage() {
   const handleSubmit = async (data: CustomerData) => {
     setIsLoading(true);
     try {
-      const cartaoNaCielo = status?.cartaoPelaCielo === true && data.paymentMethod !== 'pix';
+      // Novembro é exclusivamente online. Uma falha na consulta de status
+      // nunca pode fazer o formulário voltar a recolher cartão/CVV no hotel.
+      const cartaoNaCielo = data.paymentMethod !== 'pix';
+      identidadeDoPedido.current = nextCampaignOrder(identidadeDoPedido.current, data);
       const order: CustomerData = {
         ...data,
-        id: idDoPedido.current,
-        createdAt: criadoEm.current,
+        id: identidadeDoPedido.current.id,
+        createdAt: identidadeDoPedido.current.createdAt,
         paymentStatus: 'pending',
         // Vem do link de indicação aberto nesta visita, não de campo digitado.
         referral: indicacaoDaVisita() || undefined,
@@ -58,16 +61,14 @@ export default function CheckoutPage() {
         aceite: { versao: VERSAO_DO_REGULAMENTO },
         cartaoNaCielo: cartaoNaCielo || undefined,
         // Na Cielo o cartão é digitado lá; nada de cartão sai daqui.
-        ...(cartaoNaCielo ? {
-          cardNumber: undefined, cardHolder: undefined, cardExpiryMonth: undefined,
-          cardExpiryYear: undefined, cardCvv: undefined, installments: undefined,
-        } : {}),
+        cardNumber: undefined, cardHolder: undefined, cardExpiryMonth: undefined,
+        cardExpiryYear: undefined, cardCvv: undefined, installments: undefined,
       };
       ultimoPedido.current = data;
 
       // Só o ERP. A planilha do Google recebia nome, CPF e telefone num
       // endereço que parou de funcionar: dado pessoal indo para lugar nenhum.
-      const resultadoErp = await sendOrderToErp(order);
+      const resultadoErp = await sendOrderToErp(order, 'ssl26_novembro_2026');
       if (resultadoErp.carrinhoFechado) {
         // Fechou com a aba já aberta: não é erro de conexão, e mandar tentar
         // de novo só faria o cliente repetir em vão.
@@ -206,7 +207,7 @@ export default function CheckoutPage() {
             </p>
           )}
         </div>
-        <CheckoutForm onSubmit={handleSubmit} isLoading={isLoading} cartaoPelaCielo={status?.cartaoPelaCielo === true} />
+        <CheckoutForm onSubmit={handleSubmit} isLoading={isLoading} cartaoPelaCielo />
       </div>
     </div>
   );

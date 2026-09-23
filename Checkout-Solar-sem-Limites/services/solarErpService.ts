@@ -22,9 +22,9 @@ const PAGINA_DA_CIELO = /^https:\/\/cieloecommerce\.cielo\.com\.br\//;
 //
 // Devolve o motivo, e não só true/false, porque carrinho fechado não é falha
 // de conexão: mandar o cliente "tentar de novo" nesse caso é errado.
-export const sendOrderToErp = async (order: CustomerData): Promise<ResultadoSincronizacao> => {
+export const sendOrderToErp = async (order: CustomerData, campaign?: 'ssl26_novembro_2026'): Promise<ResultadoSincronizacao> => {
   try {
-    const response = await fetch("/api/solar-erp-sync", {
+    const response = await fetch(campaign === 'ssl26_novembro_2026' ? "/api/ssl26-checkout" : "/api/solar-erp-sync", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(order),
