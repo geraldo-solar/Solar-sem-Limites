@@ -2,6 +2,8 @@
 
 **23/09/2026 · preparação local; não publicada nem instalada. Campanha desligada.**
 
+> Registro histórico da preparação. A publicação e as migrações foram posteriormente autorizadas e concluídas em 23/09: [entrega em produção e limites](SSL26_AUT06_Publicacao_2026-09-23.md). A campanha continua desligada.
+
 O checkout de novembro foi conectado, no código, ao registro de origem da compra e à exclusão de compradores aprovada no ERP. A captura ganhou consulta central antes da inclusão na lista e imediatamente antes do e-mail. AUT-06 permanece **Parcial**, pois metadados, filtros, instalação e homologação reais ainda faltam. A pontuação registrada continua em 84%; a proposta anterior de 86% depende do aval de Geraldo e não é pontuada novamente por esta entrega.
 
 ## O que mudou
