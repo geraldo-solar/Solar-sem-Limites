@@ -14,11 +14,11 @@ test('dados do Pix iguais na tela e no e-mail', { skip: existsSync(EMAIL) ? fals
   // Sem o ponto final da frase, que a leitura do e-mail pega junto.
   const pegar = (texto, re) => (texto.match(re) || [])[1]?.replace(/\.$/, '');
   const campos = {
-    chave: [/Chave: <span[^>]*>(\d+)</, /Chave Pix \(celular\): (\d+)/],
-    cnpj: [/CNPJ: ([\d./-]+)/, /CNPJ ([\d./-]+)/],
-    agencia: [/Agência: (\d+)/, /agência (\d+)/],
-    conta: [/Conta Corrente: ([\d-]+)/, /conta corrente ([\d-]+)/],
-    operacao: [/Op: (\d+)/, /operação (\d+)/],
+    chave: [/Chave: <span[^>]*>(\d+)</, /PIX_CHAVE: "(\d+)"/],
+    cnpj: [/CNPJ: ([\d./-]+)/, /PIX_CNPJ: "([\d./-]+)"/],
+    agencia: [/Agência: (\d+)/, /PIX_AGENCIA: "(\d+)"/],
+    conta: [/Conta Corrente: ([\d-]+)/, /PIX_CONTA: "([\d-]+)"/],
+    operacao: [/Op: (\d+)/, /PIX_OPERACAO: "(\d+)"/],
   };
   for (const [nome, [naTela, noEmail]] of Object.entries(campos)) {
     const a = pegar(tela, naTela);
