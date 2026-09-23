@@ -1,6 +1,6 @@
 # Solar Sem Limites 2026 — placar diário e apuração dos R$ 600 mil
 
-**Modelo operacional preparado em 20/09/2026. Ainda não conectado automaticamente ao ERP, Brevo, ManyChat ou Meta.**
+**Modelo operacional preparado em 20/09/2026. Em 23/09 virou tela no ERP (`/placar-ssl26`, MET-02), lendo cadastros e pedidos do próprio ERP; Brevo, ManyChat e gasto da Meta continuam fora do placar.**
 
 Revisão de 21/09: preparação em 80% — kit de captação produzido e decisão de compra autenticada instalada/homologada em produção; referências de estoque alinhadas à decisão de não limitar vendas a 200.
 
