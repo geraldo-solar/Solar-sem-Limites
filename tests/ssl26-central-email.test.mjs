@@ -54,6 +54,24 @@ test('provider phone mismatch requires review even with central eligibility; no 
   contact={email:body.email,attributes:{SMS:'+5591888888888'},emailBlacklisted:false};
   assert.equal((await request()).body.emailDelivery,'failed');assert.equal(writes().length,0);
 });
+test('phone changed in provider after save holds delivery and Meta even with a positive central decision',async()=>{
+  process.env.META_CAPI_TOKEN='synthetic-meta-only';
+  contact={email:body.email,attributes:{SMS:'+5591999999999'},emailBlacklisted:false};
+  const mockedFetch=globalThis.fetch;
+  globalThis.fetch=async(url,options)=>{
+    const response=await mockedFetch(url,options);
+    if(String(url).endsWith('/v3/contacts')&&options.method==='POST') {
+      contact={...contact,attributes:{...contact.attributes,SMS:'+5591888888888'}};
+    }
+    return response;
+  };
+  const result=await request();
+  assert.equal(result.status,200);assert.equal(result.body.integration,'accepted');
+  assert.equal(result.body.emailDelivery,'failed');
+  assert.deepEqual(writes().map(c=>new URL(c.url).pathname),['/v3/contacts']);
+  assert.ok(!calls.some(c=>c.url.includes('graph.facebook.com')));
+  assert.equal(contact.attributes.SMS,'+5591888888888');
+});
 test('profile signed receipt is not a back door around a later central hold',async()=>{
   const captured=await request();decisions=['blocked'];calls=[];
   const result=await request({action:'profile',profileToken:captured.body.profileToken,profile:'conhece'});
