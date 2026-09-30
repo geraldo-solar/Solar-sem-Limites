@@ -1,6 +1,6 @@
 # Solar Sem Limites 2026 — checklist mestre do lançamento
 
-**Documento central de acompanhamento · atualizado em 24/09/2026 · horários de Belém.**
+**Documento central de acompanhamento · atualizado em 30/09/2026 · horários de Belém.**
 
 Da preparação ao fechamento do carrinho e à conferência do pós-venda. Este documento reúne o status atual; os relatórios vinculados guardam as evidências e o histórico.
 
@@ -20,6 +20,20 @@ Da preparação ao fechamento do carrinho e à conferência do pós-venda. Este 
 **Avanço mais recente — 24/09, 10h08:** código publicado em três destinos e duas revisões ManyChat publicadas, ambas **STOPPED/Salvo e sem gatilho**. Doze verificações de produção aprovadas, sem IDs de clientes ou solicitações de mensagem. A nova rotina privada permanece bloqueada; nenhuma configuração ou migração alterada. [Versões, verificações e próximos passos](SSL26_Guardas_Publicacao_2026-09-24.md). **AUT-06 parcial; 84% mantidos.**
 
 O percentual de preparação não mede vendas, lucro, tempo decorrido ou chance de sucesso. A meta financeira só será marcada como atingida com valores aprovados e conciliados; não há resultado presumido.
+
+### Publicação concluída — 30/09/2026
+
+| Projeto | Commit de código | Produção | Tecnologia / build |
+|---|---|---|---|
+| [Fonte do Solar Sem Limites](https://solar-sem-limites.vercel.app) | `c1410b1` | `dpl_FdjCgQ4ZhNGrPjCXausek8yNmdST` · READY | Vite · 19,9 s |
+| [Página no domínio oficial](https://www.hotelsolar.tur.br/solarsemlimites2026) | `af1de26` | `dpl_6N1QUJ1G2cU81rV5EfzXzdtoAQhw` · READY | Estático + funções · 19,1 s |
+| [ERP](https://erp-hotel-solar.vercel.app) | `5cc616f` | `dpl_5eE6ScvM2MUFN991s3Wt6QGrnUnF` · READY | Next.js · 96,0 s |
+
+**Entregue:** nome comercial **Solar Sem Limites 2027** na página de vendas, checkout, retorno da Cielo e nos e-mails de aprovação/pagamento não confirmado. Pedido recebido já atualizado no Brevo #94. Quatro espaços de vídeo vertical publicados, ainda sem arquivos de vídeo; seleção, autorização de imagem, legendas e transcrição continuam pendentes. Quantidade do checkout vem da opção de um/dois pacotes.
+
+**Verificação:** 140 testes da fonte isolada e o teste cruzado de dados Pix repetido no diretório original (141 ao todo), mais 39 testes dos e-mails; TypeScript, build e lint do ERP aprovados. Publicação pelo Git, sem arquivos locais/credenciais. Cópias compiladas de vendas e cadastro sincronizadas no site principal, sem alterar APIs, regulamento, preços ou configurações. Domínio oficial conferido no navegador: 2027 nas três telas, quatro espaços de vídeo, dois pacotes por R$ 6.200 no Pix, sem campos de cartão e sem erros de console; `?teste_checkout=real` não mostra modo de teste nem libera CTAs na página pública. Logs de erro/fatal dos três deployments sem ocorrências na janela consultada; sem auditoria de drains ou implantação de monitoramento permanente.
+
+**Limites preservados:** ponte de compras de teste ficou somente local; nenhum pedido, cobrança, e-mail, alteração de contato, migração, variável ou ativação de campanha nesta publicação. Abertura em 25/11/2026 às 8h e fechamento em 01/12/2026 às 23h59, horários de Belém, mantidos. O modo de testes da loja Cielo ainda precisa ser conferido antes de cobranças reais. Rascunhos/materiais antigos e trabalhos de outras frentes ficaram fora dos commits. **84% mantidos.**
 
 ### Como marcar nossa caminhada
 
