@@ -22,29 +22,28 @@ const PAGINA_DA_CIELO = /^https:\/\/cieloecommerce\.cielo\.com\.br\//;
 //
 // Devolve o motivo, e não só true/false, porque carrinho fechado não é falha
 // de conexão: mandar o cliente "tentar de novo" nesse caso é errado.
-export const sendOrderToErp = async (order: CustomerData, campaign?: 'ssl26_novembro_2026'): Promise<ResultadoSincronizacao> => {
+export const sendOrderToErp = async (order: CustomerData, campaign?: 'ssl26_novembro_2026', testeLocal?: { token: string }): Promise<ResultadoSincronizacao> => {
   try {
-    const response = await fetch(campaign === 'ssl26_novembro_2026' ? "/api/ssl26-checkout" : "/api/solar-erp-sync", {
+    const response = await fetch(testeLocal ? '/api/ssl26-teste-real' : campaign === 'ssl26_novembro_2026' ? "/api/ssl26-checkout" : "/api/solar-erp-sync", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...(testeLocal ? { 'x-ssl26-teste-local': testeLocal.token } : {}) },
       body: JSON.stringify(order),
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      console.error("❌ Erro ao sincronizar pedido com o ERP:", errorData);
 
       const detalhe = errorData?.error;
       if (detalhe?.carrinhoFechado) {
         return { ok: false, carrinhoFechado: true, mensagem: detalhe.error };
       }
-      return { ok: false };
+      return { ok: false, mensagem: testeLocal && typeof detalhe === 'string' ? detalhe : undefined };
     }
 
     const dados = await response.json().catch(() => ({}));
     const url = typeof dados?.checkoutUrl === "string" && PAGINA_DA_CIELO.test(dados.checkoutUrl)
       ? dados.checkoutUrl : null;
-    return { ok: true, checkoutUrl: url, pagamentoIndisponivel: dados?.pagamentoIndisponivel === true };
+    return { ok: dados?.success === true, checkoutUrl: url, pagamentoIndisponivel: dados?.pagamentoIndisponivel === true };
   } catch (error) {
     console.error("❌ Erro ao sincronizar pedido com o ERP:", error);
     return { ok: false };

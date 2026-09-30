@@ -6,6 +6,8 @@ import { CustomerData } from './Checkout-Solar-sem-Limites/types';
 import { indicacaoDaVisita } from './codigoDeIndicacao';
 import { UNIT_PRICE, CREDIT_CARD_SURCHARGE, formatCurrency } from './Checkout-Solar-sem-Limites/constants';
 import { nextCampaignOrder, type CampaignOrderIdentity } from './identidadePedidoNovembro';
+import { executarCheckoutComTeste, testeManualCheckoutAtivo, testeRealCheckoutAtivo } from './testeManualCheckout';
+import { NOME_DO_PACOTE, TITULO_DO_PACOTE } from './nomeDoPacote';
 
 interface StatusCarrinho {
   aberto: boolean;
@@ -22,7 +24,12 @@ type Concluido =
   | { tipo: 'cartao_na_cielo'; url: string; entradaPix: boolean }
   | { tipo: 'cielo_indisponivel' };
 
-export default function CheckoutPage() {
+export default function CheckoutPage({ quantidadeInicial = 1 }: { quantidadeInicial?: 1 | 2 }) {
+  const modoTeste = testeManualCheckoutAtivo();
+  const testeReal = testeRealCheckoutAtivo();
+  const [liberacao, setLiberacao] = useState<{ token: string; email: string; phoneFinal: string; expiresAt: string } | null>(null);
+  const [erroTesteReal, setErroTesteReal] = useState('');
+  const [testeConferido, setTesteConferido] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [concluido, setConcluido] = useState<Concluido | null>(null);
   const isSuccess = concluido !== null;
@@ -33,17 +40,40 @@ export default function CheckoutPage() {
   const [status, setStatus] = useState<StatusCarrinho | null>(null);
   const [fechouAgora, setFechouAgora] = useState<string | null>(null);
 
+  useEffect(() => {
+    document.title = `Finalizar compra | ${TITULO_DO_PACOTE}`;
+  }, []);
+
+  useEffect(() => {
+    // O CTA pode estar no rodapé da página de vendas: começar pelos dados,
+    // não herdar a rolagem e cair direto no botão de finalizar.
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [quantidadeInicial]);
+
+  useEffect(() => {
+    if (!testeReal) return;
+    let ativo = true;
+    fetch('/api/ssl26-teste-real/status', { cache: 'no-store' })
+      .then(async r => { const d = await r.json(); if (!r.ok || !d?.success) throw new Error(); return d; })
+      .then(d => { if (ativo) setLiberacao(d); })
+      .catch(() => { if (ativo) setErroTesteReal('Liberação local indisponível ou encerrada. Nenhum pedido pode ser enviado por este teste.'); });
+    return () => { ativo = false; };
+  }, [testeReal]);
+
   // Prazo e contador vêm do ERP. Se a consulta falhar, o formulário continua
   // aparecendo: quem decide de verdade se o pedido entra é a rota de
   // ingestão, não esta tela.
   useEffect(() => {
+    if (modoTeste || testeReal) return;
     fetch('/api/solar-status')
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => d?.success && setStatus(d))
       .catch(() => {});
-  }, []);
+  }, [modoTeste, testeReal]);
 
-  const handleSubmit = async (data: CustomerData) => {
+  const enviarPedidoReal = async (data: CustomerData) => {
+    if (testeReal && !liberacao) return;
+    setErroTesteReal('');
     setIsLoading(true);
     try {
       // Novembro é exclusivamente online. Uma falha na consulta de status
@@ -56,7 +86,7 @@ export default function CheckoutPage() {
         createdAt: identidadeDoPedido.current.createdAt,
         paymentStatus: 'pending',
         // Vem do link de indicação aberto nesta visita, não de campo digitado.
-        referral: indicacaoDaVisita() || undefined,
+        referral: testeReal ? undefined : indicacaoDaVisita() || undefined,
         // O formulário só envia com o aceite marcado; o ERP grava a hora.
         aceite: { versao: VERSAO_DO_REGULAMENTO },
         cartaoNaCielo: cartaoNaCielo || undefined,
@@ -68,7 +98,8 @@ export default function CheckoutPage() {
 
       // Só o ERP. A planilha do Google recebia nome, CPF e telefone num
       // endereço que parou de funcionar: dado pessoal indo para lugar nenhum.
-      const resultadoErp = await sendOrderToErp(order, 'ssl26_novembro_2026');
+      const resultadoErp = await sendOrderToErp(order, 'ssl26_novembro_2026',
+        testeReal && liberacao ? { token: liberacao.token } : undefined);
       if (resultadoErp.carrinhoFechado) {
         // Fechou com a aba já aberta: não é erro de conexão, e mandar tentar
         // de novo só faria o cliente repetir em vão.
@@ -76,6 +107,10 @@ export default function CheckoutPage() {
         return;
       }
       if (!resultadoErp.ok) {
+        if (testeReal) {
+          setErroTesteReal(resultadoErp.mensagem || 'O ERP não confirmou o pedido. Confira o PCDA antes de tentar novamente.');
+          return;
+        }
         throw new Error('O pedido nao foi sincronizado com o ERP.');
       }
 
@@ -101,7 +136,13 @@ export default function CheckoutPage() {
     }
   };
 
-  const carrinhoFechado = fechouAgora || (status && !status.aberto);
+  const handleSubmit = (data: CustomerData) => executarCheckoutComTeste(
+    modoTeste,
+    () => { setTesteConferido(true); window.scrollTo({ top: 0, behavior: 'smooth' }); },
+    () => enviarPedidoReal(data),
+  );
+
+  const carrinhoFechado = !modoTeste && !testeReal && (fechouAgora || (status && !status.aberto));
   if (carrinhoFechado && !isSuccess) {
     return (
       <div className="min-h-screen bg-sand-50 flex items-center justify-center p-4">
@@ -130,9 +171,10 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-screen bg-sand-50 flex items-center justify-center p-4">
         <div className="bg-white max-w-lg p-8 rounded-lg shadow-md text-center">
+          {testeReal && <p className="mb-5 rounded-lg bg-amber-100 p-4 text-sm text-amber-950">Teste real: pedido registrado no PCDA. Confira os e-mails do comprador e do hotel. Pagamento e aprovação não são simulados.</p>}
           <h2 className="text-3xl font-serif text-moss-800 mb-4">Pré-reserva Garantida!</h2>
           <p className="text-gray-600 mb-6 font-medium">
-            Sua solicitação do pacote <strong>Solar Sem Limites VIP</strong> foi registrada com sucesso.
+            Sua solicitação do pacote <strong>{NOME_DO_PACOTE}</strong> foi registrada com sucesso.
           </p>
 
           {concluido.tipo === 'pix' && (
@@ -196,10 +238,37 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-sand-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-4xl mx-auto">
+        {testeReal && (
+          <aside className="mb-6 rounded-xl border border-amber-300 bg-amber-100 p-5 text-sm leading-relaxed text-amber-950">
+            <strong className="block">Teste real — finalizar cria pedido e envia e-mails</strong>
+            {liberacao
+              ? <p>Use {liberacao.email} e o WhatsApp final {liberacao.phoneFinal}. Liberado até {new Date(liberacao.expiresAt).toLocaleTimeString('pt-BR', { timeZone: 'America/Belem', hour: '2-digit', minute: '2-digit' })} de hoje (Belém), para até seis pedidos.</p>
+              : <p>{erroTesteReal ? 'Envio não liberado.' : 'Conferindo a liberação local…'}</p>}
+            <p className="mt-2">Pix e cartão têm valores reais. No cartão, você conclui o pagamento na Cielo. Não há estorno automático.
+              Este ensaio usa o fluxo operacional do PCDA; não valida a atribuição à campanha de novembro nem libera disparos comerciais.</p>
+            <a href="#opcoes" className="mt-3 block w-fit font-bold underline underline-offset-4">Voltar às opções de pacote</a>
+          </aside>
+        )}
+        {testeReal && erroTesteReal && <p role="alert" className="mb-6 rounded-xl border border-red-300 bg-red-50 p-5 text-red-900">{erroTesteReal}</p>}
+        {modoTeste && (
+          <aside className="mb-6 rounded-xl border border-amber-300 bg-amber-100 p-5 text-sm leading-relaxed text-amber-950">
+            <strong className="block">Teste local do checkout — sem compra real</strong>
+            Use dados fictícios. Você pode conferir campos e valores; o teste não grava pedidos,
+            não envia mensagens, não abre a Cielo e não gera cobrança. A consulta automática de CEP está desligada.
+            <a href="#opcoes" className="mt-3 block w-fit font-bold underline underline-offset-4">Voltar às opções de pacote</a>
+          </aside>
+        )}
+        {modoTeste && testeConferido && (
+          <div role="status" className="mb-6 rounded-xl border border-green-300 bg-green-50 p-5 text-green-950">
+            <strong>Teste de preenchimento concluído.</strong> Nenhum pedido foi enviado ou pagamento iniciado.
+            Você pode alterar os campos e conferir novamente.
+          </div>
+        )}
         <div className="text-center mb-8">
+          <p className="mb-2 text-sm font-semibold text-moss-800">{NOME_DO_PACOTE}</p>
           <h1 className="text-3xl md:text-4xl font-serif font-bold text-moss-900 mb-2">Finalize a sua Reserva</h1>
           <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
-            Garantia de segurança máxima. Seus dados estão protegidos por criptografia de ponta a ponta.
+            No cartão, o pagamento é concluído na página da Cielo. Não pedimos número do cartão nem código de segurança aqui.
           </p>
           {status && status.pacotesVendidos > 0 && (
             <p className="mt-4 inline-block rounded-full border border-gold-500/40 bg-gold-50 px-4 py-1.5 text-sm font-semibold text-moss-800">
@@ -207,7 +276,7 @@ export default function CheckoutPage() {
             </p>
           )}
         </div>
-        <CheckoutForm onSubmit={handleSubmit} isLoading={isLoading} cartaoPelaCielo />
+        <CheckoutForm key={quantidadeInicial} onSubmit={handleSubmit} isLoading={isLoading || (testeReal && !liberacao)} cartaoPelaCielo quantidadeInicial={quantidadeInicial} modoTeste={modoTeste} />
       </div>
     </div>
   );

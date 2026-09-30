@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { AVISO_DE_PRIVACIDADE_URL } from './avisoDePrivacidade';
 import { registrarIndicacaoDaUrl } from './codigoDeIndicacao';
+import VideoVendas from './VideoVendas';
+import { VIDEO_APRESENTACAO, VIDEO_EXPLICACAO, VIDEOS_DEPOIMENTOS } from './videosVendas';
+import { testeManualCheckoutAtivo, testeRealCheckoutAtivo } from './testeManualCheckout';
+import { NOME_DO_PACOTE, TITULO_DO_PACOTE } from './nomeDoPacote';
 
 // Página de vendas do lançamento de novembro de 2026 (VEN-01).
 //
@@ -234,13 +238,16 @@ function trackEvent(nome: string, params: Record<string, string | number | boole
 }
 
 export default function VendasNovembro() {
+  const testeReal = testeRealCheckoutAtivo();
+  const modoTeste = testeManualCheckoutAtivo() || testeReal;
   const [status, setStatus] = useState<WindowStatus | null>(null);
   const [statusIndisponivel, setStatusIndisponivel] = useState(false);
   const [faqAberta, setFaqAberta] = useState<number | null>(null);
 
   useEffect(() => {
+    if (modoTeste) return;
     const anterior = document.title;
-    document.title = 'Solar Sem Limites 2026 | Hotel Solar';
+    document.title = TITULO_DO_PACOTE;
     // Guarda o código de indicação do link antes de qualquer navegação: o
     // visitante pode ir direto ao checkout sem passar por mais nada.
     const indicacao = registrarIndicacaoDaUrl();
@@ -252,9 +259,10 @@ export default function VendasNovembro() {
     return () => {
       document.title = anterior;
     };
-  }, []);
+  }, [modoTeste]);
 
   useEffect(() => {
+    if (modoTeste) return;
     let ativo = true;
     fetch('/api/solar-status')
       .then((resposta) => (resposta.ok ? resposta.json() : Promise.reject(resposta.status)))
@@ -270,7 +278,7 @@ export default function VendasNovembro() {
     return () => {
       ativo = false;
     };
-  }, []);
+  }, [modoTeste]);
 
   // Em que ponto da janela anunciada estamos, segundo o relógio do visitante.
   const faseAnunciada = useMemo(() => {
@@ -316,6 +324,7 @@ export default function VendasNovembro() {
   }, [podeComprar, encerrado, statusIndisponivel, faseAnunciada]);
 
   function registrarClique(origem: string, vaiParaCheckout: boolean) {
+    if (modoTeste) return;
     trackEvent('ssl26_vendas_cta', { origem });
     // Rolar até as opções não é iniciar uma compra. Marcar como se fosse
     // encheria o funil da Meta de gente que só desceu a página.
@@ -336,7 +345,7 @@ export default function VendasNovembro() {
     children: React.ReactNode;
     destino?: string;
   }) => {
-    if (!podeComprar) {
+    if (!podeComprar && !modoTeste) {
       // Três situações diferentes, e dizer a errada custa caro: afirmar a data
       // de abertura quando nem sabemos o estado atual soa confiante logo abaixo
       // de um aviso dizendo que não conseguimos confirmar nada.
@@ -354,7 +363,7 @@ export default function VendasNovembro() {
     return (
       <a
         href={destino}
-        onClick={() => registrarClique(origem, destino === CHECKOUT_URL)}
+        onClick={() => registrarClique(origem, destino.split('?')[0] === CHECKOUT_URL)}
         className="block w-full rounded-xl bg-[#0f5c45] px-6 py-4 text-center text-base font-bold text-white transition hover:bg-[#0b3d2e] focus:outline-none focus:ring-4 focus:ring-[#0f5c45]/20"
       >
         {children}
@@ -364,6 +373,14 @@ export default function VendasNovembro() {
 
   return (
     <div className="min-h-screen bg-[#faf7f0] font-sans text-[#173a35]">
+      {modoTeste && (
+        <aside className="border-b border-amber-300 bg-amber-100 px-4 py-4 text-center text-sm leading-relaxed text-amber-950">
+          <strong className="block">{testeReal ? 'Teste real local — pedido, e-mails e pagamento ativos' : 'Modo de teste local — botões ativos'}</strong>
+          {testeReal
+            ? 'Ao finalizar, o pedido entra no ERP e envia e-mails reais. Pix e Cielo usam valores reais. Restrito ao cadastro autorizado, sem abrir o carrinho público.'
+            : 'Você pode navegar, preencher e conferir os valores. Nenhum pedido, e-mail ou cobrança será gerado.'}
+        </aside>
+      )}
       {/* Estado da janela de vendas. Vem do servidor; nunca de data no cliente. */}
       <div
         role="status"
@@ -393,7 +410,7 @@ export default function VendasNovembro() {
             className="mx-auto mb-8 h-14 w-auto sm:h-16"
           />
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e1c084]">
-            Solar Sem Limites · Salinópolis, Pará
+            {NOME_DO_PACOTE} · Salinópolis, Pará
           </p>
           <h1 className="mt-4 font-serif text-3xl font-semibold leading-tight sm:text-5xl">
             Planeje seus próximos dias no Hotel Solar.
@@ -426,6 +443,10 @@ export default function VendasNovembro() {
           Maçarico e a 15 minutos da praia do Atalaia — e com acesso a uma faixa de praia
           tranquila, longe do movimento das mais cheias.
         </p>
+
+        <div className="mt-8 sm:mt-10">
+          <VideoVendas conteudo={VIDEO_APRESENTACAO} destaque />
+        </div>
 
         <dl className="mx-auto mt-10 grid max-w-2xl grid-cols-2 gap-3 text-center sm:grid-cols-4">
           {FATOS.map((fato) => (
@@ -486,6 +507,9 @@ export default function VendasNovembro() {
           novo — decisão 8 do registro comercial. */}
       <section id="opcoes" className="bg-white px-4 py-14 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-4xl">
+          <div className="mb-10 sm:mb-12">
+            <VideoVendas conteudo={VIDEO_EXPLICACAO} destaque />
+          </div>
           <h2 className="text-center font-serif text-2xl font-semibold sm:text-3xl">
             As duas opções
           </h2>
@@ -534,7 +558,7 @@ export default function VendasNovembro() {
                 </p>
 
                 <div className="mt-6">
-                  <Cta origem={`opcao_${opcao.pacotes}`}>
+                  <Cta origem={`opcao_${opcao.pacotes}`} destino={`${CHECKOUT_URL}?pacotes=${opcao.pacotes}`}>
                     {opcao.pacotes === 1 ? 'Quero um pacote' : 'Quero dois pacotes'}
                   </Cta>
                 </div>
@@ -550,12 +574,19 @@ export default function VendasNovembro() {
         </div>
       </section>
 
-      {/* Prova social. Os depoimentos serão trocados por vídeo conforme os
-          clientes gravarem; a estrutura já comporta os dois formatos. */}
+      {/* Os vídeos têm espaços próprios; os relatos confirmados em texto
+          continuam disponíveis e não são atribuídos às gravações futuras. */}
       <section className="mx-auto max-w-4xl px-4 py-14 sm:px-6 sm:py-20">
         <h2 className="text-center font-serif text-2xl font-semibold sm:text-3xl">
           Quem já usou
         </h2>
+        <div className="mt-8 grid gap-5 sm:mt-10 md:grid-cols-2">
+          {VIDEOS_DEPOIMENTOS.map((video) => (
+            <div key={video.id} className="min-w-0">
+              <VideoVendas conteudo={video} />
+            </div>
+          ))}
+        </div>
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {DEPOIMENTOS.map((depoimento) => (
             <blockquote
@@ -661,7 +692,7 @@ export default function VendasNovembro() {
       <section className="bg-white px-4 py-14 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-lg text-center">
           <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
-            {podeComprar ? 'Garanta suas diárias' : 'Solar Sem Limites 2026'}
+            {podeComprar ? 'Garanta suas diárias' : NOME_DO_PACOTE}
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-[#52625e]">
             {podeComprar

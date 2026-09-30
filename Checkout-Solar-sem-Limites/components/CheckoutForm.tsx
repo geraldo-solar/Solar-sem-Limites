@@ -7,6 +7,9 @@ interface CheckoutFormProps {
   isLoading: boolean;
   /** Cartão pago na página da Cielo: o formulário não pede o cartão. Vem do ERP. */
   cartaoPelaCielo?: boolean;
+  quantidadeInicial?: 1 | 2;
+  /** Somente a prévia local passa este modo; não é autorização de servidor. */
+  modoTeste?: boolean;
 }
 
 // Updated Policy Text
@@ -141,7 +144,7 @@ const detectCardBrand = (number: string): 'visa' | 'mastercard' | 'amex' | 'elo'
   return 'unknown';
 }
 
-export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading, cartaoPelaCielo = false }) => {
+export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading, cartaoPelaCielo = false, quantidadeInicial = 1, modoTeste = false }) => {
   const [formData, setFormData] = useState<CustomerData>({
     firstName: '',
     lastName: '',
@@ -154,7 +157,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
     phone: '',
     cpf: '',
     comments: '',
-    quantity: 1, // Default quantity
+    quantity: quantidadeInicial === 2 ? 2 : 1,
     paymentMethod: 'pix', // Defaulted to Pix based on layout changes
     installments: '1',
     cardNumber: '',
@@ -301,7 +304,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
     setFormData(prev => ({ ...prev, zipCode: formattedValue }));
 
     // Fetch Address if complete
-    if (value.length === 8) {
+    if (value.length === 8 && !modoTeste) {
       setIsCepLoading(true);
       try {
         const response = await fetch(`https://viacep.com.br/ws/${value}/json/`);
@@ -403,8 +406,9 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
       <div className="bg-[#f4f8f6] border border-[#cbd8d3] p-4 rounded-lg shadow-sm">
         <p className="text-[#173a35] font-bold text-sm md:text-base mb-1">Falta pouco para concluir</p>
         <p className="text-[#52625e] text-xs md:text-sm">
-          Preencha seus dados e escolha como prefere pagar: Pix, transferência, cartão ou
-          entrada no Pix com o saldo no cartão. As vendas seguem abertas até o prazo anunciado.
+          {modoTeste
+            ? 'Preencha dados fictícios e alterne as opções para conferir preços e validações. Este formulário está em simulação, sem envio de pedido ou pagamento.'
+            : 'Preencha seus dados e escolha como prefere pagar: Pix, transferência, cartão ou entrada no Pix com o saldo no cartão. As vendas seguem abertas até o prazo anunciado.'}
         </p>
       </div>
       {/* Personal Data Section */}
@@ -677,7 +681,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
               <p className="text-sm text-gray-600">
                 Não conseguiu usar tudo no prazo de validade? O valor das diárias vira crédito integral para abater em viagens futuras.
               </p>
-              <div className="bg-gray-50 p-4 rounded border border-gray-200 text-sm text-gray-700 space-y-1 font-mono">
+              {modoTeste ? <p className="rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">Simulação: dados bancários e Pix ocultos. Não efetue pagamento.</p> : <div className="bg-gray-50 p-4 rounded border border-gray-200 text-sm text-gray-700 space-y-1 font-mono">
                 <p className="font-bold mb-2 text-moss-800">Coordenadas bancárias:</p>
                 <p>Pix</p>
                 <p>Chave: <span className="font-bold">91981000800</span> (Celular)</p>
@@ -688,7 +692,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
                 <p>Op: 003</p>
                 <p>Favorecido: J Ramos Barros Hotelaria e Eventos Me</p>
                 <p>CNPJ: 97.519.659/0001-90</p>
-              </div>
+              </div>}
             </div>
           )}
 
@@ -713,7 +717,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
               {cartaoPelaCielo && (
                 <div className="bg-gray-50 border border-gray-200 rounded p-4 text-sm text-gray-700 space-y-2">
                   <p className="font-bold text-moss-800">Pagamento na página segura da Cielo</p>
-                  <p>Ao concluir, você vai para a página da Cielo pagar <strong>{formatCurrency(creditCardTotal)}</strong> no cartão, à vista ou em até 12x de {formatCurrency(creditCardTotal / 12)}, sem juros além dos 10% já incluídos.</p>
+                  <p>{modoTeste ? 'Na compra real, o pagamento seria de ' : 'Ao concluir, você vai para a página da Cielo pagar '}<strong>{formatCurrency(creditCardTotal)}</strong> no cartão, à vista ou em até 12x de {formatCurrency(creditCardTotal / 12)}, sem juros além dos 10% já incluídos.{modoTeste && ' Este teste não abre a Cielo.'}</p>
                   <p className="text-xs text-gray-500">O hotel não recebe os dados do seu cartão. Parcelamento somente com cartões emitidos no Brasil.</p>
                 </div>
               )}
@@ -910,7 +914,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
               </div>
 
               {/* Bloco Pix (entrada) */}
-              <div>
+              {modoTeste ? <p className="rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">Simulação: entrada de {formatCurrency(entradaPixValue)}. Dados bancários e Pix ocultos; não efetue pagamento.</p> : <div>
                 <p className="font-bold text-moss-800 mb-2">1. Pague a entrada de {formatCurrency(entradaPixValue)} via Pix</p>
                 <div className="bg-gray-50 p-4 rounded border border-gray-200 text-sm text-gray-700 space-y-1 font-mono">
                   <p>Pix</p>
@@ -923,7 +927,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
                   <p>Favorecido: J Ramos Barros Hotelaria e Eventos Me</p>
                   <p>CNPJ: 97.519.659/0001-90</p>
                 </div>
-              </div>
+              </div>}
 
               {/* Bloco Cartão (restante) */}
               <div>
@@ -932,7 +936,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
                 {cartaoPelaCielo && (
                   <div className="bg-gray-50 border border-gray-200 rounded p-4 text-sm text-gray-700 space-y-2">
                     <p className="font-bold text-moss-800">Pagamento na página segura da Cielo</p>
-                    <p>Ao concluir, você vai para a página da Cielo pagar <strong>{formatCurrency(restanteCardTotal)}</strong> no cartão, à vista ou em até 12x de {formatCurrency(restanteCardTotal / 12)}, sem juros além dos 10% já incluídos. A entrada no Pix é paga à parte, com os dados acima.</p>
+                    <p>{modoTeste ? 'Na compra real, o saldo no cartão seria de ' : 'Ao concluir, você vai para a página da Cielo pagar '}<strong>{formatCurrency(restanteCardTotal)}</strong> no cartão, à vista ou em até 12x de {formatCurrency(restanteCardTotal / 12)}, sem juros além dos 10% já incluídos. {modoTeste ? 'Este teste não abre a Cielo nem recebe a entrada.' : 'A entrada no Pix é paga à parte, com os dados acima.'}</p>
                     <p className="text-xs text-gray-500">O hotel não recebe os dados do seu cartão. Parcelamento somente com cartões emitidos no Brasil.</p>
                   </div>
                 )}
@@ -1092,7 +1096,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
 
             <div className="flex items-center gap-2">
               <label htmlFor="terms" className={`text-sm font-bold cursor-pointer select-none ${errors.terms ? 'text-red-600' : 'text-gray-700'}`}>
-                Concordo com a política de cancelamento e as condições de pagamento *
+                {modoTeste ? 'Conferi a política e as condições apenas para esta simulação, sem realizar compra *' : 'Concordo com a política de cancelamento e as condições de pagamento *'}
               </label>
 
               {/* Expand/Collapse Button - Styled as a small white box */}
@@ -1157,7 +1161,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
                 }
                 `}
             >
-              {isLoading ? "Processando..." : "CONCLUIR COMPRA"}
+              {isLoading ? "Processando..." : modoTeste ? "CONFERIR TESTE — SEM COMPRA" : "CONCLUIR COMPRA"}
             </button>
           </div>
 

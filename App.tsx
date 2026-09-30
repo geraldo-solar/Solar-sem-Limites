@@ -4,6 +4,7 @@ import CheckoutPage from './CheckoutPage';
 import CapturaNovembro from './CapturaNovembro';
 import VendasNovembro from './VendasNovembro';
 import PagamentoConcluido from './PagamentoConcluido';
+import { quantidadeDoLinkCheckout } from './testeManualCheckout';
 
 interface Props { children: React.ReactNode; }
 interface State { hasError: boolean; error: Error | null; }
@@ -51,8 +52,8 @@ export default function App() {
   // #/checkout era ignorado dentro de /solarsemlimites2026 — o botão de
   // comprar não levava a lugar nenhum.
   let content = <JulhoLP />;
-  if (hash === '#/checkout') {
-    content = <CheckoutPage />;
+  if (hash.split('?')[0] === '#/checkout') {
+    content = <CheckoutPage quantidadeInicial={quantidadeDoLinkCheckout(hash)} />;
   } else if (hash === '#/obrigado') {
     // Retorno da página de pagamento da Cielo.
     content = <PagamentoConcluido />;

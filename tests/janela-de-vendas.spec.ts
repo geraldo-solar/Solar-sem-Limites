@@ -49,7 +49,7 @@ for (const cenario of cenarios) {
     await pagina.goto('/solarsemlimitescadastro/#/vendas', { waitUntil: 'networkidle' });
     await pagina.waitForTimeout(600);
 
-    const botoes = pagina.locator('a[href="#/checkout"]');
+    const botoes = pagina.locator('a[href^="#/checkout"]');
     if (cenario.vende) {
       expect(await botoes.count()).toBeGreaterThan(0);
     } else {
