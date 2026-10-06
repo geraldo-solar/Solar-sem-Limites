@@ -34,7 +34,7 @@ Testes locais com provedores simulados: `npm run test:capture`. Testes de interf
 - Projeto-fonte da landing: `solar-sem-limites`
 - Domínio principal: `https://hotelsolar.tur.br`
 - Rota de captação: `https://hotelsolar.tur.br/solarsemlimitescadastro`
-- Canal VIP: `https://whatsapp.com/channel/0029Vb8iEz73gvWjJea5rt3k`
+- Canal Salinas em Família (WhatsApp; até 06/10/2026 chamado de Canal VIP): `https://whatsapp.com/channel/0029Vb8iEz73gvWjJea5rt3k`
 
 ## 1. Brevo
 
@@ -158,8 +158,8 @@ Próxima etapa: a parte página → banco ERP já foi conferida com cadastro/per
 
 - `SSL26_LEAD`
 - `SSL26_CAPTADO`
-- `SSL26_CANAL_VIP_CLICK`
-- `SSL26_CANAL_VIP`
+- `SSL26_CANAL_VIP_CLICK` (no ManyChat, renomear para `SSL26_CANAL_SALINAS_CLICK`; pendente em 06/10/2026)
+- `SSL26_CANAL_VIP` (no ManyChat, renomear para `SSL26_CANAL_SALINAS`; pendente em 06/10/2026)
 - `SSL26_ENGAJADO`
 - `SSL26_LIVE`
 - `SSL26_PAGINA_VENDAS`
@@ -195,7 +195,7 @@ Próxima etapa: a parte página → banco ERP já foi conferida com cadastro/per
 4. Se existir `SSL26_OPT_OUT` ou `ATENDIMENTO_HOTEL_ATIVO`, não iniciar mensagem comercial.
 5. Para contatos novos, usar o gatilho “New contact” com as condições “Opted-in through API” e “Opted-in for WhatsApp”.
 6. Enviar apenas modelo de mensagem aprovado quando o contato estiver fora da janela de 24 horas.
-7. A mensagem inicial deve entregar o guia e oferecer o link do Canal VIP; não deve apresentar a oferta de venda antes da programação aprovada.
+7. A mensagem inicial deve entregar o guia e oferecer o link do canal Salinas em Família; não deve apresentar a oferta de venda antes da programação aprovada.
 
 ## 4. Mapeamento de perfil
 
@@ -227,7 +227,7 @@ O GA4 do Hotel Solar (`G-0TN73829QP`) está instalado na landing. Os eventos aba
 | `generate_lead` | Cadastro concluído com sucesso |
 | `ssl26_profile_saved` | Perfil de relacionamento salvo |
 | `ssl26_guide_download` | Clique para baixar o guia |
-| `ssl26_whatsapp_channel_click` | Clique para entrar no Canal VIP |
+| `ssl26_whatsapp_channel_click` | Clique para seguir o canal Salinas em Família |
 
 Os eventos levam campanha e origem por UTM, quando presentes. No GA4, marcar `generate_lead` como evento principal e criar o funil `ssl26_capture_view` → `ssl26_form_start` → `generate_lead`.
 

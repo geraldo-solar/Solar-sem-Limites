@@ -35,7 +35,7 @@ Etapa concluída em 16/09/2026. As definições abaixo formam a base comercial a
 - [x] Quantidade real de pacotes disponíveis: 200 unidades.
 - [x] Meta mínima: 150 pacotes (R$ 465.000,00); meta principal: 194 pacotes (R$ 601.400,00); meta estendida: 200 pacotes (R$ 620.000,00).
 - [x] Meta principal de faturamento: R$ 600.000,00.
-- [x] Quantidade-alvo de leads na Lista VIP: 5.000 leads qualificados.
+- [x] Quantidade-alvo de leads cadastrados pelo guia: 5.000 leads qualificados. Até 06/10/2026 essa base era chamada de Lista VIP; desde então, Lista VIP é só a etapa do funil de venda, com quem demonstrou interesse no pacote.
 - [x] Verba de mídia: R$ 50.000,00 de base + R$ 10.000,00 de reserva de escala; teto de R$ 60.000,00.
 - [x] Formas de pagamento: Pix/transferência/depósito, cartão em até 12 vezes e pagamento combinado; acréscimo de 10% sobre o valor processado no cartão.
 - [x] Apresentação comercial: 1 pacote por R$ 3.100,00 e validade de 1 ano, ou 2 pacotes por R$ 6.200,00 e validade de 2 anos, destacando a segunda opção para quem pretende viajar mais vezes.
