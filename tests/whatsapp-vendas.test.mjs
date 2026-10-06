@@ -50,6 +50,17 @@ test('WhatsApp do atendimento no ManyChat, com a mensagem natural decidida em 06
   assert.match(html, /WhatsApp \(91\) 98122-9825/);
 });
 
+test('quem prefere ligar encontra o telefone que recebe ligações', () => {
+  const html = renderPage();
+  const ligacoes = [...html.matchAll(/<a [^>]*href="tel:\+5591981000800"[^>]*>/g)];
+  // Flutuante, depois das regras, depois das perguntas e no rodapé.
+  assert.ok(ligacoes.length >= 4, `esperava ao menos 4 links de ligação, achou ${ligacoes.length}`);
+  assert.match(html, /Prefere ligar\? \(91\) 98100-0800/);
+  assert.match(html, /ligação <a [^>]*href="tel:\+5591981000800"[^>]*>\(91\) 98100-0800<\/a>/);
+  // O número do ManyChat não recebe ligações: nunca vira link de telefone.
+  assert.doesNotMatch(html, /tel:\+5591981229825/);
+});
+
 test('o canal de reservas do regulamento continua o mesmo', () => {
   const html = renderPage();
   assert.match(html, /O pedido é feito pelo WhatsApp \(91\) 98100-0800 ou por reserva@hotelsolar\.tur\.br/);

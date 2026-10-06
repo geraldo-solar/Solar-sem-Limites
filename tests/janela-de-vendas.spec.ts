@@ -83,6 +83,9 @@ test('celular — barra fixa, WhatsApp e botões no meio da página', async ({ b
   const whatsappDaBarra = pagina.locator('a[aria-label="Tirar dúvidas no WhatsApp"]');
   await expect(whatsappDaBarra).toBeInViewport();
   expect(await whatsappDaBarra.getAttribute('href')).toMatch(/^https:\/\/wa\.me\/5591981229825\?text=/);
+  const ligarDaBarra = pagina.locator('a[aria-label^="Ligar para o hotel"]');
+  await expect(ligarDaBarra).toBeInViewport();
+  expect(await ligarDaBarra.getAttribute('href')).toBe('tel:+5591981000800');
 
   await pagina.getByRole('link', { name: 'Quero um pacote' }).scrollIntoViewIfNeeded();
   await expect(barra).not.toBeInViewport();

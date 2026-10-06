@@ -33,11 +33,14 @@ type WindowStatus = {
 
 const CHECKOUT_URL = '#/checkout';
 const REGULAMENTO_URL = 'Regulamento_SSL.pdf';
-// Reservas: canal citado no regulamento (item 7) e aceito no checkout. Não
-// trocar sem nova versão do regulamento.
-const WHATSAPP_RESERVAS = '(91) 98100-0800';
-// Dúvidas e atendimento: número oficial conectado ao ManyChat (decisão de
-// 06/10/2026), o mesmo do botão do site principal.
+// Telefone do hotel: recebe ligações e também tem WhatsApp. É o canal de
+// reservas citado no regulamento (item 7), aceito no checkout; não trocar sem
+// nova versão do regulamento. Quem prefere ligar usa este número.
+const TELEFONE_HOTEL = '(91) 98100-0800';
+const TELEFONE_LINK = 'tel:+5591981000800';
+// WhatsApp de dúvidas e atendimento: número oficial conectado ao ManyChat
+// (decisão de 06/10/2026), o mesmo do botão do site principal. Não recebe
+// ligações.
 const WHATSAPP_ATENDIMENTO = '(91) 98122-9825';
 const EMAIL_RESERVAS = 'reserva@hotelsolar.tur.br';
 
@@ -48,6 +51,12 @@ const EMAIL_RESERVAS = 'reserva@hotelsolar.tur.br';
 const WHATSAPP_LINK = `https://wa.me/5591981229825?text=${encodeURIComponent(
   `Olá! Tenho uma dúvida sobre o ${NOME_DO_PACOTE}.`,
 )}`;
+
+const IconeTelefone = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-none stroke-current" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+  </svg>
+);
 
 const IconeWhatsApp = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-current">
@@ -66,6 +75,10 @@ const assetUrl = (fileName: string) => `${import.meta.env.BASE_URL}${fileName.re
 
 const brl = (cents: number) =>
   (cents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+// Valor redondo, sem centavos, para espaços curtos como a barra do celular.
+const brlInteiro = (cents: number) =>
+  (cents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
 
 // Preço-base no Pix/transferência/depósito. O cartão recebe acréscimo de 10%
 // sobre o valor processado, em até 12x — decisão 7 do registro comercial.
@@ -177,7 +190,7 @@ const REGRAS = [
   },
   {
     titulo: 'Reservas dependem de disponibilidade',
-    texto: `A reserva é garantida desde que haja vaga na data solicitada. O pedido é feito pelo WhatsApp ${WHATSAPP_RESERVAS} ou por ${EMAIL_RESERVAS}.`,
+    texto: `A reserva é garantida desde que haja vaga na data solicitada. O pedido é feito pelo WhatsApp ${TELEFONE_HOTEL} ou por ${EMAIL_RESERVAS}.`,
   },
   {
     titulo: 'Cancelamento de uma reserva',
@@ -342,7 +355,7 @@ export default function VendasNovembro() {
     }
     // O servidor ainda não respondeu ou não confirma abertura.
     if (status) {
-      return { tom: 'espera' as const, texto: `As vendas não estão disponíveis neste momento. Fale com a gente pelo WhatsApp ${WHATSAPP_ATENDIMENTO}.` };
+      return { tom: 'espera' as const, texto: `As vendas não estão disponíveis neste momento. Fale com a gente pelo WhatsApp ${WHATSAPP_ATENDIMENTO} ou ligue para ${TELEFONE_HOTEL}.` };
     }
     return { tom: 'espera' as const, texto: 'Consultando a disponibilidade das vendas…' };
   }, [podeComprar, modoTeste, encerrado, statusIndisponivel, status]);
@@ -364,6 +377,27 @@ export default function VendasNovembro() {
     if (modoTeste) return;
     trackEvent('ssl26_vendas_whatsapp', { origem });
   }
+
+  function registrarLigacao(origem: string) {
+    if (modoTeste) return;
+    trackEvent('ssl26_vendas_ligacao', { origem });
+  }
+
+  const LinkLigacao = ({
+    origem,
+    children,
+    className,
+    rotulo,
+  }: {
+    origem: string;
+    children: React.ReactNode;
+    className?: string;
+    rotulo?: string;
+  }) => (
+    <a href={TELEFONE_LINK} aria-label={rotulo} onClick={() => registrarLigacao(origem)} className={className}>
+      {children}
+    </a>
+  );
 
   const LinkWhatsApp = ({
     origem,
@@ -389,15 +423,19 @@ export default function VendasNovembro() {
   );
 
   // Pergunta aberta logo depois de onde surgem as objeções (regras, perguntas).
-  const DuvidaNoWhatsApp = ({ origem, escuro = false }: { origem: string; escuro?: boolean }) => (
-    <p className={`mt-8 text-center text-sm ${escuro ? 'text-[#a9c2ba]' : 'text-[#52625e]'}`}>
+  // Mensagem pelo WhatsApp do ManyChat; quem prefere ouvir alguém liga para o
+  // telefone do hotel, porque o número do ManyChat não recebe ligações.
+  const DuvidaNoWhatsApp = ({ origem }: { origem: string }) => (
+    <p className="mt-8 text-center text-sm leading-relaxed text-[#52625e]">
       Ficou alguma dúvida?{' '}
-      <LinkWhatsApp
-        origem={origem}
-        className={`font-semibold underline ${escuro ? 'text-[#e1c084]' : 'text-[#0f5c45]'}`}
-      >
+      <LinkWhatsApp origem={origem} className="font-semibold text-[#0f5c45] underline">
         Fale com a gente no WhatsApp
-      </LinkWhatsApp>
+      </LinkWhatsApp>{' '}
+      ou ligue para{' '}
+      <LinkLigacao origem={origem} className="whitespace-nowrap font-semibold text-[#0f5c45] underline">
+        {TELEFONE_HOTEL}
+      </LinkLigacao>
+      .
     </p>
   );
 
@@ -414,7 +452,7 @@ export default function VendasNovembro() {
   }) => {
     if (!podeComprar && !modoTeste) {
       const texto = avisoJanela.tom === 'encerrado'
-        ? `As vendas foram encerradas. Fale com a gente pelo WhatsApp ${WHATSAPP_ATENDIMENTO} para saber das próximas datas.`
+        ? `As vendas foram encerradas. Fale com a gente pelo WhatsApp ${WHATSAPP_ATENDIMENTO} ou ligue para ${TELEFONE_HOTEL} para saber das próximas datas.`
         : avisoJanela.texto;
       return (
         <div className="rounded-xl border border-[#cbd8d3] bg-[#f4f8f6] px-5 py-4 text-center text-sm leading-relaxed text-[#284f48]">
@@ -782,9 +820,13 @@ export default function VendasNovembro() {
           </div>
           <p className="mt-6 text-sm leading-relaxed text-[#74817d]">
             Dúvidas?{' '}
-            <LinkWhatsApp origem="rodape" className="font-semibold text-[#0f5c45] underline">
+            <LinkWhatsApp origem="rodape" className="whitespace-nowrap font-semibold text-[#0f5c45] underline">
               WhatsApp {WHATSAPP_ATENDIMENTO}
-            </LinkWhatsApp>{' '}
+            </LinkWhatsApp>
+            , ligação{' '}
+            <LinkLigacao origem="rodape" className="whitespace-nowrap font-semibold text-[#0f5c45] underline">
+              {TELEFONE_HOTEL}
+            </LinkLigacao>{' '}
             ou{' '}
             <a href={`mailto:${EMAIL_RESERVAS}`} className="underline">
               {EMAIL_RESERVAS}
@@ -820,11 +862,18 @@ export default function VendasNovembro() {
             mostrarBarra ? 'translate-y-0' : 'translate-y-full'
           }`}
         >
-          <div className="mx-auto flex max-w-lg items-center gap-3">
+          <div className="mx-auto flex max-w-lg items-center gap-2">
             <p className="min-w-0 flex-1 text-xs leading-tight text-[#52625e]">
-              <strong className="block text-sm text-[#173a35]">{NOME_DO_PACOTE}</strong>
-              a partir de {brl(PRECO_BASE_CENTAVOS)} no Pix
+              a partir de
+              <strong className="block text-sm text-[#173a35]">{brlInteiro(PRECO_BASE_CENTAVOS)} no Pix</strong>
             </p>
+            <LinkLigacao
+              origem="barra_celular"
+              rotulo={`Ligar para o hotel, ${TELEFONE_HOTEL}`}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#cbd8d3] bg-white text-[#0f5c45]"
+            >
+              <IconeTelefone />
+            </LinkLigacao>
             <LinkWhatsApp
               origem="barra_celular"
               rotulo="Tirar dúvidas no WhatsApp"
@@ -843,14 +892,23 @@ export default function VendasNovembro() {
         </div>
       )}
 
-      {/* Computador: botão flutuante do WhatsApp. No celular ele vive na barra. */}
-      <LinkWhatsApp
-        origem="flutuante"
-        className="fixed bottom-6 right-6 z-40 hidden items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-[#1ebe5a] sm:flex"
-      >
-        <IconeWhatsApp />
-        Dúvidas? WhatsApp
-      </LinkWhatsApp>
+      {/* Computador: WhatsApp e telefone flutuantes. No celular eles vivem na barra. */}
+      <div className="fixed bottom-6 right-6 z-40 hidden flex-col items-end gap-2 sm:flex">
+        <LinkWhatsApp
+          origem="flutuante"
+          className="flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-[#1ebe5a]"
+        >
+          <IconeWhatsApp />
+          Dúvidas? WhatsApp
+        </LinkWhatsApp>
+        <LinkLigacao
+          origem="flutuante"
+          className="flex items-center gap-2 rounded-full border border-[#cbd8d3] bg-white px-4 py-2 text-sm font-semibold text-[#0f5c45] shadow-md transition hover:bg-[#f4f8f6]"
+        >
+          <IconeTelefone />
+          Prefere ligar? {TELEFONE_HOTEL}
+        </LinkLigacao>
+      </div>
     </div>
   );
 }
