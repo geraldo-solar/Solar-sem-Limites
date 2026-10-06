@@ -37,9 +37,10 @@ export default function App() {
   const [hash, setHash] = useState(window.location.hash);
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
   const isMainSiteCaptureRoute = pathname === '/solarsemlimitescadastro';
-  // Página de vendas de novembro. Publicada em /solarsemlimites2026, endereço
-  // que hoje redireciona para a captação enquanto esta página não entra no ar.
-  const isSalesRoute = pathname === '/solarsemlimites2026';
+  // Página de vendas do Solar Sem Limites 2027. Desde 06/10/2026 o endereço
+  // oficial é /solarsemlimites2027; o antigo /solarsemlimites2026 redireciona
+  // para ele no site principal e continua aceito aqui por segurança.
+  const isSalesRoute = pathname === '/solarsemlimites2027' || pathname === '/solarsemlimites2026';
 
   useEffect(() => {
     const handleHashChange = () => setHash(window.location.hash);

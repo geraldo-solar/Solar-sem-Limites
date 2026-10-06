@@ -1,7 +1,8 @@
 // Código de indicação que viaja do link até o pedido.
 //
 // O comprador aprovado recebe um link individual (criativo A8):
-//   hotelsolar.tur.br/solarsemlimites2026?ref=CODIGO
+//   hotelsolar.tur.br/solarsemlimites2027?ref=CODIGO
+// (links antigos com /solarsemlimites2026 redirecionam mantendo o ?ref=)
 //
 // O código precisa sobreviver a duas travessias: da página de vendas para o
 // checkout, e de um recarregamento no meio do preenchimento. Por isso fica em
