@@ -33,14 +33,19 @@ type WindowStatus = {
 
 const CHECKOUT_URL = '#/checkout';
 const REGULAMENTO_URL = 'Regulamento_SSL.pdf';
-const WHATSAPP = '(91) 98100-0800';
+// Reservas: canal citado no regulamento (item 7) e aceito no checkout. Não
+// trocar sem nova versão do regulamento.
+const WHATSAPP_RESERVAS = '(91) 98100-0800';
+// Dúvidas e atendimento: número oficial conectado ao ManyChat (decisão de
+// 06/10/2026), o mesmo do botão do site principal.
+const WHATSAPP_ATENDIMENTO = '(91) 98122-9825';
 const EMAIL_RESERVAS = 'reserva@hotelsolar.tur.br';
 
-// WhatsApp do hotel com a mensagem já escrita (decisão de 06/10/2026). Texto
-// natural de propósito: não aciona a entrada automática do ManyChat e cai no
-// atendimento normal. Na página de vendas o clique não conta como conversão do
-// Google Ads; isso é configurado no index.html publicado no site principal.
-const WHATSAPP_LINK = `https://wa.me/5591981000800?text=${encodeURIComponent(
+// WhatsApp de atendimento com a mensagem já escrita (decisão de 06/10/2026).
+// Texto natural de propósito: não é a frase exata da entrada do lançamento no
+// ManyChat. Na página de vendas o clique não conta como conversão do Google
+// Ads; isso é configurado no index.html publicado no site principal.
+const WHATSAPP_LINK = `https://wa.me/5591981229825?text=${encodeURIComponent(
   `Olá! Tenho uma dúvida sobre o ${NOME_DO_PACOTE}.`,
 )}`;
 
@@ -172,7 +177,7 @@ const REGRAS = [
   },
   {
     titulo: 'Reservas dependem de disponibilidade',
-    texto: `A reserva é garantida desde que haja vaga na data solicitada. O pedido é feito pelo WhatsApp ${WHATSAPP} ou por ${EMAIL_RESERVAS}.`,
+    texto: `A reserva é garantida desde que haja vaga na data solicitada. O pedido é feito pelo WhatsApp ${WHATSAPP_RESERVAS} ou por ${EMAIL_RESERVAS}.`,
   },
   {
     titulo: 'Cancelamento de uma reserva',
@@ -337,7 +342,7 @@ export default function VendasNovembro() {
     }
     // O servidor ainda não respondeu ou não confirma abertura.
     if (status) {
-      return { tom: 'espera' as const, texto: `As vendas não estão disponíveis neste momento. Fale com a gente pelo WhatsApp ${WHATSAPP}.` };
+      return { tom: 'espera' as const, texto: `As vendas não estão disponíveis neste momento. Fale com a gente pelo WhatsApp ${WHATSAPP_ATENDIMENTO}.` };
     }
     return { tom: 'espera' as const, texto: 'Consultando a disponibilidade das vendas…' };
   }, [podeComprar, modoTeste, encerrado, statusIndisponivel, status]);
@@ -409,7 +414,7 @@ export default function VendasNovembro() {
   }) => {
     if (!podeComprar && !modoTeste) {
       const texto = avisoJanela.tom === 'encerrado'
-        ? `As vendas foram encerradas. Fale com a gente pelo WhatsApp ${WHATSAPP} para saber das próximas datas.`
+        ? `As vendas foram encerradas. Fale com a gente pelo WhatsApp ${WHATSAPP_ATENDIMENTO} para saber das próximas datas.`
         : avisoJanela.texto;
       return (
         <div className="rounded-xl border border-[#cbd8d3] bg-[#f4f8f6] px-5 py-4 text-center text-sm leading-relaxed text-[#284f48]">
@@ -778,7 +783,7 @@ export default function VendasNovembro() {
           <p className="mt-6 text-sm leading-relaxed text-[#74817d]">
             Dúvidas?{' '}
             <LinkWhatsApp origem="rodape" className="font-semibold text-[#0f5c45] underline">
-              WhatsApp {WHATSAPP}
+              WhatsApp {WHATSAPP_ATENDIMENTO}
             </LinkWhatsApp>{' '}
             ou{' '}
             <a href={`mailto:${EMAIL_RESERVAS}`} className="underline">

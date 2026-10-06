@@ -32,14 +32,14 @@ const { renderPage } = await import(`data:text/javascript;base64,${Buffer.from(o
 
 const MENSAGEM = 'Olá! Tenho uma dúvida sobre o Solar Sem Limites 2027.';
 
-test('WhatsApp do hotel com a mensagem natural decidida em 06/10, em nova aba', () => {
+test('WhatsApp do atendimento no ManyChat, com a mensagem natural decidida em 06/10, em nova aba', () => {
   const html = renderPage();
   const links = [...html.matchAll(/<a [^>]*href="(https:\/\/wa\.me\/[^"]+)"[^>]*>/g)];
   // Flutuante, depois das regras, depois das perguntas e no rodapé.
   assert.ok(links.length >= 4, `esperava ao menos 4 links, achou ${links.length}`);
   for (const [tag, href] of links) {
     const url = new URL(href.replaceAll('&amp;', '&'));
-    assert.equal(url.pathname, '/5591981000800');
+    assert.equal(url.pathname, '/5591981229825');
     assert.equal(url.searchParams.get('text'), MENSAGEM);
     assert.match(tag, /target="_blank"/);
     assert.match(tag, /rel="noopener noreferrer"/);
@@ -47,6 +47,12 @@ test('WhatsApp do hotel com a mensagem natural decidida em 06/10, em nova aba', 
   // A frase da entrada automática do ManyChat não é usada.
   assert.doesNotMatch(html, /atendimento solar sem limites/i);
   assert.match(html, /Fale com a gente no WhatsApp/);
+  assert.match(html, /WhatsApp \(91\) 98122-9825/);
+});
+
+test('o canal de reservas do regulamento continua o mesmo', () => {
+  const html = renderPage();
+  assert.match(html, /O pedido é feito pelo WhatsApp \(91\) 98100-0800 ou por reserva@hotelsolar\.tur\.br/);
 });
 
 test('sem confirmação do servidor não há barra fixa nem botão de compra', () => {
