@@ -26,7 +26,7 @@ test('manifest has unique names and complete launch/guard fields', () => {
   assert.ok(TAGS.includes('SSL26_QA')); assert.ok(TAGS.includes('SSL26_ATENDIMENTO_PAUSA'));
   assert.equal(new Set(TAGS).size, TAGS.length);
   assert.equal(new Set(FIELDS.map(f => f.name)).size, FIELDS.length);
-  assert.ok(TAGS.includes('SSL26_CANAL_VIP_CLICK'));
+  assert.ok(TAGS.includes('SSL26_CANAL_SALINAS_CLICK')); assert.ok(!TAGS.some(t => /VIP/.test(t)));
   assert.ok(TAGS.includes('ATENDIMENTO_HOTEL_ATIVO'));
   assert.ok(TAGS.includes('SSL26_PAUSA_REVISAO'));
   assert.equal(FIELDS.find(f => f.name === 'ssl26_support_pause_ok').type, 'boolean');

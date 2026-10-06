@@ -67,7 +67,7 @@ test('ManyChat: invalid or missing tag snapshot requires review',()=>{
   for(const tags of [undefined,null,'SSL26_LEAD',[null],[{}],['']])assert.equal(inspect('manychat',{...base(),tags},now).status,'review');
 });
 test('lead/capture/click/pending-order tags do not prove exclusion or permission',()=>{
-  const r=inspect('manychat',manychat(['SSL26_LEAD','SSL26_CAPTADO','SSL26_CANAL_VIP_CLICK','SSL26_PAGAMENTO_PENDENTE']),now);
+  const r=inspect('manychat',manychat(['SSL26_LEAD','SSL26_CAPTADO','SSL26_CANAL_SALINAS_CLICK','SSL26_PAGAMENTO_PENDENTE']),now);
   assert.equal(r.status,'no_marked_block');assert.equal(r.sendAllowed,false);
 });
 test('unknown provider is rejected; null snapshots stay in review',()=>{
