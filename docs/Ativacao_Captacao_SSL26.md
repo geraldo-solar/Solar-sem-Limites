@@ -158,8 +158,8 @@ Próxima etapa: a parte página → banco ERP já foi conferida com cadastro/per
 
 - `SSL26_LEAD`
 - `SSL26_CAPTADO`
-- `SSL26_CANAL_VIP_CLICK` (no ManyChat, renomear para `SSL26_CANAL_SALINAS_CLICK`; pendente em 06/10/2026)
-- `SSL26_CANAL_VIP` (no ManyChat, renomear para `SSL26_CANAL_SALINAS`; pendente em 06/10/2026)
+- `SSL26_CANAL_SALINAS_CLICK` (antiga `SSL26_CANAL_VIP_CLICK`, renomeada em 06/10/2026 com o mesmo ID)
+- `SSL26_CANAL_SALINAS` (antiga `SSL26_CANAL_VIP`, renomeada em 06/10/2026 com o mesmo ID)
 - `SSL26_ENGAJADO`
 - `SSL26_LIVE`
 - `SSL26_PAGINA_VENDAS`
