@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AVISO_DE_PRIVACIDADE_URL } from './avisoDePrivacidade';
 import { registrarIndicacaoDaUrl } from './codigoDeIndicacao';
 import VideoVendas from './VideoVendas';
@@ -35,6 +35,20 @@ const CHECKOUT_URL = '#/checkout';
 const REGULAMENTO_URL = 'Regulamento_SSL.pdf';
 const WHATSAPP = '(91) 98100-0800';
 const EMAIL_RESERVAS = 'reserva@hotelsolar.tur.br';
+
+// WhatsApp do hotel com a mensagem já escrita (decisão de 06/10/2026). Texto
+// natural de propósito: não aciona a entrada automática do ManyChat e cai no
+// atendimento normal. Na página de vendas o clique não conta como conversão do
+// Google Ads; isso é configurado no index.html publicado no site principal.
+const WHATSAPP_LINK = `https://wa.me/5591981000800?text=${encodeURIComponent(
+  `Olá! Tenho uma dúvida sobre o ${NOME_DO_PACOTE}.`,
+)}`;
+
+const IconeWhatsApp = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-current">
+    <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.5 9.5 0 0 1-4.84-1.33l-.35-.21-3.6.94.96-3.5-.23-.36a9.46 9.46 0 0 1-1.45-5.05c0-5.24 4.27-9.5 9.52-9.5 2.54 0 4.93.99 6.72 2.79a9.43 9.43 0 0 1 2.78 6.72c0 5.24-4.27 9.5-9.5 9.5zm8.08-17.58A11.35 11.35 0 0 0 12.05.5C5.76.5.64 5.62.64 11.9c0 2.01.52 3.97 1.52 5.7L.54 23.5l6.04-1.58a11.4 11.4 0 0 0 5.46 1.39h.01c6.29 0 11.41-5.12 11.41-11.41 0-3.05-1.19-5.91-3.33-8.07z" />
+  </svg>
+);
 
 // Data anunciada de encerramento. Serve só para o que a página escreve na
 // tela. Quem autoriza a compra é sempre o servidor, nunca esta constante nem o
@@ -242,6 +256,27 @@ export default function VendasNovembro() {
   const [status, setStatus] = useState<WindowStatus | null>(null);
   const [statusIndisponivel, setStatusIndisponivel] = useState(false);
   const [faqAberta, setFaqAberta] = useState<number | null>(null);
+  const [mostrarBarra, setMostrarBarra] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+  const opcoesRef = useRef<HTMLDivElement>(null);
+  const finalRef = useRef<HTMLElement>(null);
+
+  // Barra fixa do celular: aparece depois do topo e some quando os cartões com
+  // os botões de compra ou o botão final já estão na tela, para não repetir o
+  // que se vê.
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return;
+    const visiveis = new Set<Element>();
+    const observador = new IntersectionObserver((entradas) => {
+      for (const entrada of entradas) {
+        if (entrada.isIntersecting) visiveis.add(entrada.target);
+        else visiveis.delete(entrada.target);
+      }
+      setMostrarBarra(visiveis.size === 0);
+    });
+    for (const ref of [heroRef, opcoesRef, finalRef]) if (ref.current) observador.observe(ref.current);
+    return () => observador.disconnect();
+  }, []);
 
   useEffect(() => {
     if (modoTeste) return;
@@ -320,14 +355,57 @@ export default function VendasNovembro() {
     }
   }
 
+  function registrarWhatsApp(origem: string) {
+    if (modoTeste) return;
+    trackEvent('ssl26_vendas_whatsapp', { origem });
+  }
+
+  const LinkWhatsApp = ({
+    origem,
+    children,
+    className,
+    rotulo,
+  }: {
+    origem: string;
+    children: React.ReactNode;
+    className?: string;
+    rotulo?: string;
+  }) => (
+    <a
+      href={WHATSAPP_LINK}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={rotulo}
+      onClick={() => registrarWhatsApp(origem)}
+      className={className}
+    >
+      {children}
+    </a>
+  );
+
+  // Pergunta aberta logo depois de onde surgem as objeções (regras, perguntas).
+  const DuvidaNoWhatsApp = ({ origem, escuro = false }: { origem: string; escuro?: boolean }) => (
+    <p className={`mt-8 text-center text-sm ${escuro ? 'text-[#a9c2ba]' : 'text-[#52625e]'}`}>
+      Ficou alguma dúvida?{' '}
+      <LinkWhatsApp
+        origem={origem}
+        className={`font-semibold underline ${escuro ? 'text-[#e1c084]' : 'text-[#0f5c45]'}`}
+      >
+        Fale com a gente no WhatsApp
+      </LinkWhatsApp>
+    </p>
+  );
+
   const Cta = ({
     origem,
     children,
     destino = CHECKOUT_URL,
+    claro = false,
   }: {
     origem: string;
     children: React.ReactNode;
     destino?: string;
+    claro?: boolean;
   }) => {
     if (!podeComprar && !modoTeste) {
       const texto = avisoJanela.tom === 'encerrado'
@@ -343,7 +421,11 @@ export default function VendasNovembro() {
       <a
         href={destino}
         onClick={() => registrarClique(origem, destino.split('?')[0] === CHECKOUT_URL)}
-        className="block w-full rounded-xl bg-[#0f5c45] px-6 py-4 text-center text-base font-bold text-white transition hover:bg-[#0b3d2e] focus:outline-none focus:ring-4 focus:ring-[#0f5c45]/20"
+        className={`block w-full rounded-xl px-6 py-4 text-center text-base font-bold transition focus:outline-none focus:ring-4 ${
+          claro
+            ? 'bg-[#e1c084] text-[#0b3d2e] hover:bg-[#d6ad5b] focus:ring-[#e1c084]/30'
+            : 'bg-[#0f5c45] text-white hover:bg-[#0b3d2e] focus:ring-[#0f5c45]/20'
+        }`}
       >
         {children}
       </a>
@@ -351,7 +433,7 @@ export default function VendasNovembro() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf7f0] font-sans text-[#173a35]">
+    <div className={`min-h-screen bg-[#faf7f0] font-sans text-[#173a35] ${podeComprar || modoTeste ? 'pb-20 sm:pb-0' : ''}`}>
       {modoTeste && (
         <aside className="border-b border-amber-300 bg-amber-100 px-4 py-4 text-center text-sm leading-relaxed text-amber-950">
           <strong className="block">{testeReal ? 'Teste real local — pedido, e-mails e pagamento ativos' : 'Modo de teste local — botões ativos'}</strong>
@@ -374,7 +456,7 @@ export default function VendasNovembro() {
         {avisoJanela.texto}
       </div>
 
-      <header className="relative overflow-hidden">
+      <header ref={heroRef} className="relative overflow-hidden">
         <img
           src={assetUrl('hotel-panoramica-rio.jpg')}
           alt="Vista panorâmica do Hotel Solar em Salinópolis"
@@ -497,7 +579,7 @@ export default function VendasNovembro() {
             desconto adicional na opção de dois pacotes: o preço por pacote é o mesmo.
           </p>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <div ref={opcoesRef} className="mt-10 grid gap-6 md:grid-cols-2">
             {OPCOES.map((opcao) => (
               <article
                 key={opcao.pacotes}
@@ -584,6 +666,11 @@ export default function VendasNovembro() {
           <img src={assetUrl('google-reviews-logo.png')} alt="Avaliações no Google" className="h-7 w-auto" loading="lazy" />
           <img src={assetUrl('booking-logo.png')} alt="Avaliações no Booking" className="h-6 w-auto" loading="lazy" />
         </div>
+        <div className="mx-auto mt-10 max-w-sm">
+          <Cta origem="apos_depoimentos" destino="#opcoes">
+            Escolher meu pacote
+          </Cta>
+        </div>
       </section>
 
       {/* Garantias, exatamente como no item 7 do regulamento. */}
@@ -607,6 +694,11 @@ export default function VendasNovembro() {
             </a>
             .
           </p>
+          <div className="mx-auto mt-8 max-w-sm">
+            <Cta origem="apos_garantias" destino="#opcoes" claro>
+              Escolher meu pacote
+            </Cta>
+          </div>
         </div>
       </section>
 
@@ -624,6 +716,7 @@ export default function VendasNovembro() {
             </div>
           ))}
         </div>
+        <DuvidaNoWhatsApp origem="apos_regras" />
       </section>
 
       {/* Indicação: o incentivo é declarado, não escondido. */}
@@ -666,9 +759,10 @@ export default function VendasNovembro() {
             );
           })}
         </div>
+        <DuvidaNoWhatsApp origem="apos_perguntas" />
       </section>
 
-      <section className="bg-white px-4 py-14 sm:px-6 sm:py-20">
+      <section ref={finalRef} className="bg-white px-4 py-14 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-lg text-center">
           <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
             {podeComprar ? 'Garanta suas diárias' : NOME_DO_PACOTE}
@@ -682,7 +776,15 @@ export default function VendasNovembro() {
             <Cta origem="rodape">Ir para o checkout</Cta>
           </div>
           <p className="mt-6 text-sm leading-relaxed text-[#74817d]">
-            Dúvidas? WhatsApp {WHATSAPP} ou {EMAIL_RESERVAS}.
+            Dúvidas?{' '}
+            <LinkWhatsApp origem="rodape" className="font-semibold text-[#0f5c45] underline">
+              WhatsApp {WHATSAPP}
+            </LinkWhatsApp>{' '}
+            ou{' '}
+            <a href={`mailto:${EMAIL_RESERVAS}`} className="underline">
+              {EMAIL_RESERVAS}
+            </a>
+            .
           </p>
         </div>
       </section>
@@ -703,6 +805,47 @@ export default function VendasNovembro() {
           A diária bônus é cortesia válida em baixa temporada, fora de férias e feriados.
         </p>
       </footer>
+
+      {/* Celular: barra fixa com o caminho de compra e o WhatsApp lado a lado.
+          Só existe quando o servidor confirma vendas abertas, como os botões. */}
+      {(podeComprar || modoTeste) && (
+        <div
+          inert={!mostrarBarra}
+          className={`fixed inset-x-0 bottom-0 z-40 border-t border-[#d9e3df] bg-white/95 px-4 py-3 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] backdrop-blur transition-transform duration-300 sm:hidden ${
+            mostrarBarra ? 'translate-y-0' : 'translate-y-full'
+          }`}
+        >
+          <div className="mx-auto flex max-w-lg items-center gap-3">
+            <p className="min-w-0 flex-1 text-xs leading-tight text-[#52625e]">
+              <strong className="block text-sm text-[#173a35]">{NOME_DO_PACOTE}</strong>
+              a partir de {brl(PRECO_BASE_CENTAVOS)} no Pix
+            </p>
+            <LinkWhatsApp
+              origem="barra_celular"
+              rotulo="Tirar dúvidas no WhatsApp"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#25D366] text-white"
+            >
+              <IconeWhatsApp />
+            </LinkWhatsApp>
+            <a
+              href="#opcoes"
+              onClick={() => registrarClique('barra_celular', false)}
+              className="shrink-0 rounded-xl bg-[#0f5c45] px-4 py-3 text-sm font-bold text-white"
+            >
+              Ver opções
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Computador: botão flutuante do WhatsApp. No celular ele vive na barra. */}
+      <LinkWhatsApp
+        origem="flutuante"
+        className="fixed bottom-6 right-6 z-40 hidden items-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-[#1ebe5a] sm:flex"
+      >
+        <IconeWhatsApp />
+        Dúvidas? WhatsApp
+      </LinkWhatsApp>
     </div>
   );
 }

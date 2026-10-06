@@ -64,3 +64,31 @@ for (const cenario of cenarios) {
     await contexto.close();
   });
 }
+
+// Celular: a barra fixa aparece fora do topo e some nas opções e no botão
+// final; os botões do meio levam às opções, não direto ao checkout.
+test('celular — barra fixa, WhatsApp e botões no meio da página', async ({ browser }) => {
+  const contexto = await browser.newContext({ ...devices['iPhone 13'] });
+  await contexto.route('**/api/solar-status', (rota) => rota.fulfill(respostaDoErp(true)));
+  await contexto.clock.install({ time: new Date('2026-10-06T12:00:00-03:00') });
+  const pagina = await contexto.newPage();
+  await pagina.goto('/solarsemlimitescadastro/#/vendas', { waitUntil: 'networkidle' });
+
+  const barra = pagina.locator('a[href="#opcoes"]', { hasText: 'Ver opções' });
+  await expect(barra).toHaveCount(1);
+  await expect(barra).not.toBeInViewport();
+
+  await pagina.getByRole('heading', { name: 'O que está garantido em contrato' }).scrollIntoViewIfNeeded();
+  await expect(barra).toBeInViewport();
+  const whatsappDaBarra = pagina.locator('a[aria-label="Tirar dúvidas no WhatsApp"]');
+  await expect(whatsappDaBarra).toBeInViewport();
+  expect(await whatsappDaBarra.getAttribute('href')).toMatch(/^https:\/\/wa\.me\/5591981000800\?text=/);
+
+  await pagina.getByRole('link', { name: 'Quero um pacote' }).scrollIntoViewIfNeeded();
+  await expect(barra).not.toBeInViewport();
+
+  const meio = pagina.locator('a[href="#opcoes"]', { hasText: 'Escolher meu pacote' });
+  await expect(meio).toHaveCount(2);
+
+  await contexto.close();
+});
