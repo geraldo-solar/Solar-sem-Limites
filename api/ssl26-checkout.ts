@@ -27,7 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const data = await response.json();
     if (!response.ok || data?.success !== true) return res.status(response.ok ? 502 : response.status).json({
       success: false, error: { carrinhoFechado: data?.carrinhoFechado === true,
-        error: data?.carrinhoFechado === true ? 'Compra disponível de 25/11 às 8h até 01/12 às 23h59.' : 'Pedido não confirmado. Confira com a recepção.' },
+        error: data?.carrinhoFechado === true ? 'Compra disponível até 01/12 às 23h59.' : 'Pedido não confirmado. Confira com a recepção.' },
     });
     return res.status(200).json({ success: true, id: data.id,
       checkoutUrl: typeof data.checkoutUrl === 'string' && /^https:\/\/cieloecommerce\.cielo\.com\.br\//.test(data.checkoutUrl) ? data.checkoutUrl : undefined,
