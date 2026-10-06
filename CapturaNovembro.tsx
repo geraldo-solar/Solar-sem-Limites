@@ -271,7 +271,7 @@ export default function CapturaNovembro() {
           <div className="relative mx-auto grid max-w-7xl gap-8 px-4 pb-12 pt-28 sm:gap-10 sm:px-8 sm:pb-16 sm:pt-32 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-16 lg:px-12 lg:pb-20">
             <div className="max-w-2xl text-white">
               <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-[#e1c084]/40 bg-[#e1c084]/10 px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#f1d9aa] backdrop-blur-sm sm:mb-6 sm:px-4 sm:text-sm sm:tracking-[0.18em]">
-                <Sparkles size={15} /> Guia gratuito + Lista VIP
+                <Sparkles size={15} /> Guia gratuito + visita ao vivo
               </div>
               <h1 className="font-serif text-[2.65rem] font-semibold leading-[1.02] tracking-[-0.03em] min-[360px]:text-5xl sm:text-6xl lg:text-7xl">
                 Salinas começa antes da estrada.
@@ -418,7 +418,7 @@ export default function CapturaNovembro() {
                       })}
                       className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#0f5c45] bg-white px-4 py-3.5 text-center text-sm font-bold leading-snug text-[#0f5c45] transition hover:bg-[#f0f7f4] sm:px-5 sm:text-base"
                     >
-                      <MessageCircle className="shrink-0" size={19} /> Entrar no Canal VIP do WhatsApp
+                      <MessageCircle className="shrink-0" size={19} /> Seguir o canal Salinas em Família no WhatsApp
                     </a>
                     <p className="mt-2 text-center text-xs leading-relaxed text-slate-500">
                       Receba os lembretes do encontro e as novidades do lançamento sem participar de grupos.

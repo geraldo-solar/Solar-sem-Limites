@@ -502,7 +502,7 @@ export function confirmationEmail(firstName: string) {
     replyTo: { name: REPLY_TO_NAME, email: REPLY_TO_EMAIL },
     to: [{ email: '', name: firstName }],
     subject: `${firstName}, seu Guia Salinas em Família chegou`,
-    textContent: `Olá, ${firstName}! Seu Guia Salinas em Família: ${guideUrl}\nCanal VIP: ${WHATSAPP_CHANNEL_URL}\nVisita guiada: 24 de novembro de 2026, às 19h (horário de Belém).\nVocê recebeu esta mensagem porque solicitou o guia do Hotel Solar.`,
+    textContent: `Olá, ${firstName}! Seu Guia Salinas em Família: ${guideUrl}\nCanal Salinas em Família no WhatsApp: ${WHATSAPP_CHANNEL_URL}\nVisita guiada: 24 de novembro de 2026, às 19h (horário de Belém).\nVocê recebeu esta mensagem porque solicitou o guia do Hotel Solar.`,
     htmlContent: `
       <!doctype html>
       <html lang="pt-BR">
@@ -520,9 +520,9 @@ export function confirmationEmail(firstName: string) {
                 <a href="${guideUrl}" style="display:inline-block;background:#0f5c45;color:#fff;text-decoration:none;font-weight:bold;padding:15px 24px;border-radius:10px">Baixar o Guia Salinas em Família</a>
               </p>
               <div style="border:1px solid #d9e4df;background:#f4f8f6;padding:20px;margin:24px 0;border-radius:12px">
-                <strong style="font-size:17px">Acompanhe pelo Canal VIP do WhatsApp</strong>
+                <strong style="font-size:17px">Siga o canal Salinas em Família no WhatsApp</strong>
                 <p style="font-size:15px;line-height:1.6;color:#52625e;margin:8px 0 16px">Receba os lembretes do encontro e as novidades do lançamento sem participar de grupos.</p>
-                <a href="${WHATSAPP_CHANNEL_URL}" style="display:inline-block;border:2px solid #0f5c45;color:#0f5c45;text-decoration:none;font-weight:bold;padding:12px 18px;border-radius:10px">Entrar no Canal VIP</a>
+                <a href="${WHATSAPP_CHANNEL_URL}" style="display:inline-block;border:2px solid #0f5c45;color:#0f5c45;text-decoration:none;font-weight:bold;padding:12px 18px;border-radius:10px">Seguir o canal Salinas em Família</a>
               </div>
               <div style="border-left:4px solid #d6ad5b;background:#f7f4eb;padding:16px 18px;margin-top:26px">
                 <strong>Reserve na agenda: 24 de novembro, às 19h.</strong>

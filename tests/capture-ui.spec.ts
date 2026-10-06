@@ -21,10 +21,14 @@ test('form, download, channel and profile work without live provider writes', as
   });
   await page.goto('/solarsemlimitescadastro/?utm_source=qa&utm_campaign=ssl26_novembro_2026&ref=test');
   await expect(page.getByLabel('Primeiro nome', { exact: true })).toBeVisible();
+  await expect(page.getByText('Guia gratuito + visita ao vivo')).toBeVisible();
+  expect(await page.locator('body').innerText()).not.toMatch(/VIP/i);
   await fillLead(page);
   await expect(page.getByText('Cadastro concluído', { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Baixar o guia agora' })).toHaveAttribute('href', '/solarsemlimitescadastro/guia-salinas-em-familia.pdf');
-  await expect(page.getByRole('link', { name: 'Entrar no Canal VIP do WhatsApp' })).toHaveAttribute('href', 'https://whatsapp.com/channel/0029Vb8iEz73gvWjJea5rt3k');
+  await expect(page.getByRole('link', { name: 'Seguir o canal Salinas em Família no WhatsApp' })).toHaveAttribute('href', 'https://whatsapp.com/channel/0029Vb8iEz73gvWjJea5rt3k');
+  // VIP fica só no funil de venda (decisão de 06/10/2026), nunca no contato do guia.
+  expect(await page.locator('body').innerText()).not.toMatch(/VIP/i);
   expect(requests[0].utmSource).toBe('qa');
   expect(requests[0].referral).toBe('test');
   await page.getByRole('button', { name: /Ainda não conheço o hotel/ }).click();

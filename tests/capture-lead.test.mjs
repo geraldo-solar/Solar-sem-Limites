@@ -141,6 +141,11 @@ test('saves contact before delivery and preserves attribution', async () => {
   assert.equal(calls[0].payload.attributes.SSL26_REFERRAL, 'teste-indicacao');
   assert.equal(calls[0].payload.attributes.SSL26_SOURCE, 'qa');
   assert.ok(calls[1].payload.textContent.includes('0029Vb8iEz73gvWjJea5rt3k'));
+  // O canal do guia é o Salinas em Família; VIP fica só no funil de venda (06/10/2026).
+  for (const content of [calls[1].payload.textContent, calls[1].payload.htmlContent]) {
+    assert.match(content, /canal Salinas em Família/i);
+    assert.doesNotMatch(content, /VIP/i);
+  }
   assert.ok(calls.every(call => call.options.signal instanceof AbortSignal));
   assert.ok(!logs.join(' ').includes('teste@example.test'));
 });
