@@ -1,16 +1,12 @@
 import { devices, expect, test } from '@playwright/test';
 
-// A página de vendas só pode oferecer compra dentro da janela anunciada E com o
-// servidor confirmando. As duas condições existem por motivos diferentes:
+// A página de vendas oferece compra quando o servidor confirma e o encerramento
+// anunciado ainda não passou. Desde 06/10/2026 não há mais trava antes de
+// 25/11: o botão fica ativo para testes e venda antecipada, e a página não
+// anuncia data de abertura.
 //
-// - O ERP responde "aberto" fora da campanha de propósito, porque o checkout
-//   vende o pacote o ano inteiro. Sozinho, ele faria a página vender em
-//   setembro, contradizendo o aviso de abertura no próprio topo dela.
-// - O relógio do visitante é ajustável, então ele só pode SEGURAR a oferta,
-//   nunca liberá-la. Adiantar o relógio não abre o carrinho.
-//
-// Sem estes casos, um erro de sinal só apareceria em 25/11 às 8h — quando não
-// há tempo de corrigir.
+// O relógio do visitante é ajustável, então ele só pode SEGURAR a oferta
+// depois do fechamento, nunca liberá-la. Adiantar o relógio não abre o carrinho.
 
 const ABERTURA = '2026-11-25T08:00:00-03:00';
 const FECHAMENTO = '2026-12-01T23:59:59-03:00';
@@ -30,8 +26,9 @@ function respostaDoErp(aberto: boolean) {
 }
 
 const cenarios: Array<{ nome: string; quando: string; erpAberto: boolean; vende: boolean }> = [
-  { nome: 'muito antes da abertura', quando: '2026-09-22T12:00:00-03:00', erpAberto: true, vende: false },
-  { nome: 'véspera, com o ERP já aberto', quando: '2026-11-24T20:00:00-03:00', erpAberto: true, vende: false },
+  { nome: 'antes de 25/11, com o ERP aberto', quando: '2026-10-06T12:00:00-03:00', erpAberto: true, vende: true },
+  { nome: 'véspera, com o ERP aberto', quando: '2026-11-24T20:00:00-03:00', erpAberto: true, vende: true },
+  { nome: 'antes de 25/11, mas o ERP recusou', quando: '2026-10-06T12:00:00-03:00', erpAberto: false, vende: false },
   { nome: 'logo após abrir', quando: '2026-11-25T08:05:00-03:00', erpAberto: true, vende: true },
   { nome: 'no meio da janela', quando: '2026-11-28T12:00:00-03:00', erpAberto: true, vende: true },
   { nome: 'último minuto', quando: '2026-12-01T23:50:00-03:00', erpAberto: true, vende: true },
@@ -61,10 +58,8 @@ for (const cenario of cenarios) {
     const texto = await pagina.locator('body').innerText();
     expect(texto).not.toMatch(/vagas restantes|últimas vagas|esgotad/i);
 
-    // Uma data já passada não pode aparecer como promessa de abertura.
-    if (cenario.quando > ABERTURA && !cenario.vende) {
-      expect(texto.split('\n')[0]).not.toMatch(/abrem em 25 de novembro/i);
-    }
+    // A página não anuncia mais data de abertura, em nenhum cenário.
+    expect(texto).not.toMatch(/abrem em|abertura em/i);
 
     await contexto.close();
   });

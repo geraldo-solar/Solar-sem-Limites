@@ -61,7 +61,9 @@ test('nome comercial 2027 acompanha vendas, checkout e retorno sem alterar a cam
   const vendas = readFileSync(new URL('../VendasNovembro.tsx', import.meta.url), 'utf8');
   const checkout = readFileSync(new URL('../CheckoutPage.tsx', import.meta.url), 'utf8');
   const app = readFileSync(new URL('../App.tsx', import.meta.url), 'utf8');
-  assert.match(vendas, /2026-11-25T08:00:00-03:00/);
+  // Desde 06/10/2026 a página não trava nem anuncia a abertura de 25/11;
+  // o encerramento anunciado continua.
+  assert.doesNotMatch(vendas, /2026-11-25T08:00:00-03:00/);
   assert.match(vendas, /2026-12-01T23:59:59-03:00/);
   assert.match(checkout, /sendOrderToErp\(order, 'ssl26_novembro_2026'/);
   assert.match(app, /pathname === '\/solarsemlimites2026'/);

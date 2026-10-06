@@ -36,12 +36,11 @@ const REGULAMENTO_URL = 'Regulamento_SSL.pdf';
 const WHATSAPP = '(91) 98100-0800';
 const EMAIL_RESERVAS = 'reserva@hotelsolar.tur.br';
 
-// Datas anunciadas. Servem só para o que a página escreve na tela: informar
-// quando as vendas abrem e fecham. Quem autoriza a compra é sempre o servidor,
-// nunca estas constantes nem o relógio do visitante.
-const ABERTURA_TEXTO = '25 de novembro, às 8h';
+// Data anunciada de encerramento. Serve só para o que a página escreve na
+// tela. Quem autoriza a compra é sempre o servidor, nunca esta constante nem o
+// relógio do visitante. Desde 06/10/2026 a página não anuncia mais data de
+// abertura: o botão de compra fica ativo sempre que o servidor confirma.
 const FECHAMENTO_TEXTO = '1º de dezembro, às 23h59';
-const ABERTURA_ISO = '2026-11-25T08:00:00-03:00';
 const FECHAMENTO_ISO = '2026-12-01T23:59:59-03:00';
 
 const assetUrl = (fileName: string) => `${import.meta.env.BASE_URL}${fileName.replace(/^\/+/, '')}`;
@@ -280,48 +279,33 @@ export default function VendasNovembro() {
     };
   }, [modoTeste]);
 
-  // Em que ponto da janela anunciada estamos, segundo o relógio do visitante.
-  const faseAnunciada = useMemo(() => {
-    const agora = Date.now();
-    if (agora < new Date(ABERTURA_ISO).getTime()) return 'antes' as const;
-    if (agora > new Date(FECHAMENTO_ISO).getTime()) return 'depois' as const;
-    return 'durante' as const;
-  }, []);
+  // Se o encerramento anunciado já passou, segundo o relógio do visitante.
+  const passouDoFechamento = useMemo(() => Date.now() > new Date(FECHAMENTO_ISO).getTime(), []);
 
-  // Duas condições, e as duas precisam valer.
+  // Decisão de 06/10/2026: o botão de compra fica ativo antes de 25/11, para
+  // testes e venda antecipada. Vale a resposta do servidor (o ERP responde
+  // "aberto" o ano inteiro) até o encerramento anunciado.
   //
-  // O ERP responde "aberto" fora da janela de novembro de propósito: o checkout
-  // vende o pacote o ano inteiro, e bloquear até 25/11 derrubaria venda real que
-  // chega pela recepção. Mas esta página anuncia uma campanha com data marcada.
-  // Só com a resposta do ERP, ela ofereceria compra hoje, contradizendo o aviso
-  // de abertura no próprio topo.
-  //
-  // O relógio do visitante entra apenas para SEGURAR a oferta, nunca para
-  // liberá-la: ele pode deixar a página mais restritiva que o servidor, jamais
-  // mais permissiva. Adiantar o relógio não abre o carrinho — e a ingestão do
-  // ERP recusa pedido fora do prazo de qualquer forma.
-  const podeComprar = status?.aberto === true && faseAnunciada === 'durante';
+  // O relógio do visitante entra apenas para SEGURAR a oferta depois do
+  // fechamento, nunca para liberá-la. Adiantar o relógio não abre o carrinho —
+  // e a ingestão do ERP recusa pedido fora do prazo de qualquer forma.
+  const podeComprar = status?.aberto === true && !passouDoFechamento;
   const encerrado = (status?.aberto === false && Boolean(status?.fechaEm) && new Date(status.fechaEm) < new Date())
-    || faseAnunciada === 'depois';
+    || passouDoFechamento;
 
   const avisoJanela = useMemo(() => {
-    if (podeComprar) return { tom: 'aberto' as const, texto: `As vendas estão abertas até ${FECHAMENTO_TEXTO}.` };
+    // No teste local o status não é consultado; a faixa mostra o que o visitante veria.
+    if (podeComprar || modoTeste) return { tom: 'aberto' as const, texto: `As vendas estão abertas até ${FECHAMENTO_TEXTO}.` };
     if (encerrado) return { tom: 'encerrado' as const, texto: 'As vendas desta edição foram encerradas.' };
     if (statusIndisponivel) {
-      if (faseAnunciada === 'durante') {
-        return { tom: 'espera' as const, texto: 'As vendas estão no ar, mas não conseguimos confirmar agora. Recarregue em instantes ou fale com a gente.' };
-      }
-      if (faseAnunciada === 'depois') {
-        return { tom: 'encerrado' as const, texto: 'As vendas desta edição foram encerradas.' };
-      }
+      return { tom: 'espera' as const, texto: 'As vendas estão no ar, mas não conseguimos confirmar agora. Recarregue em instantes ou fale com a gente.' };
     }
-    // Estamos dentro da janela anunciada, mas o servidor não confirma abertura.
-    // Repetir "abrem em 25 de novembro" aqui seria apontar uma data já passada.
-    if (faseAnunciada === 'durante') {
+    // O servidor ainda não respondeu ou não confirma abertura.
+    if (status) {
       return { tom: 'espera' as const, texto: `As vendas não estão disponíveis neste momento. Fale com a gente pelo WhatsApp ${WHATSAPP}.` };
     }
-    return { tom: 'espera' as const, texto: `As vendas abrem em ${ABERTURA_TEXTO}, horário de Belém.` };
-  }, [podeComprar, encerrado, statusIndisponivel, faseAnunciada]);
+    return { tom: 'espera' as const, texto: 'Consultando a disponibilidade das vendas…' };
+  }, [podeComprar, modoTeste, encerrado, statusIndisponivel, status]);
 
   function registrarClique(origem: string, vaiParaCheckout: boolean) {
     if (modoTeste) return;
@@ -346,14 +330,9 @@ export default function VendasNovembro() {
     destino?: string;
   }) => {
     if (!podeComprar && !modoTeste) {
-      // Três situações diferentes, e dizer a errada custa caro: afirmar a data
-      // de abertura quando nem sabemos o estado atual soa confiante logo abaixo
-      // de um aviso dizendo que não conseguimos confirmar nada.
       const texto = avisoJanela.tom === 'encerrado'
         ? `As vendas foram encerradas. Fale com a gente pelo WhatsApp ${WHATSAPP} para saber das próximas datas.`
-        : faseAnunciada === 'durante'
-        ? avisoJanela.texto
-        : `As vendas abrem em ${ABERTURA_TEXTO}. Guarde esta página ou acompanhe pelo Canal VIP.`;
+        : avisoJanela.texto;
       return (
         <div className="rounded-xl border border-[#cbd8d3] bg-[#f4f8f6] px-5 py-4 text-center text-sm leading-relaxed text-[#284f48]">
           {texto}
@@ -695,9 +674,9 @@ export default function VendasNovembro() {
             {podeComprar ? 'Garanta suas diárias' : NOME_DO_PACOTE}
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-[#52625e]">
-            {podeComprar
-              ? `As vendas vão até ${FECHAMENTO_TEXTO}, horário de Belém.`
-              : `Abertura em ${ABERTURA_TEXTO} e encerramento em ${FECHAMENTO_TEXTO}, horário de Belém.`}
+            {encerrado
+              ? 'As vendas desta edição foram encerradas.'
+              : `As vendas vão até ${FECHAMENTO_TEXTO}, horário de Belém.`}
           </p>
           <div className="mt-6">
             <Cta origem="rodape">Ir para o checkout</Cta>
