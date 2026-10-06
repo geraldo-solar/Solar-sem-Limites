@@ -5,6 +5,10 @@ import VideoVendas from './VideoVendas';
 import { VIDEO_APRESENTACAO, VIDEO_EXPLICACAO, VIDEOS_DEPOIMENTOS } from './videosVendas';
 import { testeManualCheckoutAtivo, testeRealCheckoutAtivo } from './testeManualCheckout';
 import { NOME_DO_PACOTE, TITULO_DO_PACOTE } from './nomeDoPacote';
+import {
+  EMAIL_RESERVAS, IconeTelefone, IconeWhatsApp, linkWhatsApp, MENSAGEM_DUVIDA, TELEFONE_HOTEL, TELEFONE_LINK,
+  WHATSAPP_ATENDIMENTO,
+} from './contatosDoHotel';
 
 // Página de vendas do lançamento de novembro de 2026 (VEN-01).
 //
@@ -33,36 +37,10 @@ type WindowStatus = {
 
 const CHECKOUT_URL = '#/checkout';
 const REGULAMENTO_URL = 'Regulamento_SSL.pdf';
-// Telefone do hotel: recebe ligações e também tem WhatsApp. É o canal de
-// reservas citado no regulamento (item 7), aceito no checkout; não trocar sem
-// nova versão do regulamento. Quem prefere ligar usa este número.
-const TELEFONE_HOTEL = '(91) 98100-0800';
-const TELEFONE_LINK = 'tel:+5591981000800';
-// WhatsApp de dúvidas e atendimento: número oficial conectado ao ManyChat
-// (decisão de 06/10/2026), o mesmo do botão do site principal. Não recebe
-// ligações.
-const WHATSAPP_ATENDIMENTO = '(91) 98122-9825';
-const EMAIL_RESERVAS = 'reserva@hotelsolar.tur.br';
-
-// WhatsApp de atendimento com a mensagem já escrita (decisão de 06/10/2026).
-// Texto natural de propósito: não é a frase exata da entrada do lançamento no
-// ManyChat. Na página de vendas o clique não conta como conversão do Google
-// Ads; isso é configurado no index.html publicado no site principal.
-const WHATSAPP_LINK = `https://wa.me/5591981229825?text=${encodeURIComponent(
-  `Olá! Tenho uma dúvida sobre o ${NOME_DO_PACOTE}.`,
-)}`;
-
-const IconeTelefone = () => (
-  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-none stroke-current" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
-  </svg>
-);
-
-const IconeWhatsApp = () => (
-  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 shrink-0 fill-current">
-    <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.5 9.5 0 0 1-4.84-1.33l-.35-.21-3.6.94.96-3.5-.23-.36a9.46 9.46 0 0 1-1.45-5.05c0-5.24 4.27-9.5 9.52-9.5 2.54 0 4.93.99 6.72 2.79a9.43 9.43 0 0 1 2.78 6.72c0 5.24-4.27 9.5-9.5 9.5zm8.08-17.58A11.35 11.35 0 0 0 12.05.5C5.76.5.64 5.62.64 11.9c0 2.01.52 3.97 1.52 5.7L.54 23.5l6.04-1.58a11.4 11.4 0 0 0 5.46 1.39h.01c6.29 0 11.41-5.12 11.41-11.41 0-3.05-1.19-5.91-3.33-8.07z" />
-  </svg>
-);
+// Telefones, WhatsApp e ícones vêm de contatosDoHotel.tsx, compartilhado com
+// o checkout e o retorno do pagamento. Na página de vendas o clique no WhatsApp
+// não conta como conversão do Google Ads (configurado no index.html publicado).
+const WHATSAPP_LINK = linkWhatsApp(MENSAGEM_DUVIDA);
 
 // Data anunciada de encerramento. Serve só para o que a página escreve na
 // tela. Quem autoriza a compra é sempre o servidor, nunca esta constante nem o

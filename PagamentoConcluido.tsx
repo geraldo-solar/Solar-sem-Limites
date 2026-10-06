@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { NOME_DO_PACOTE, TITULO_DO_PACOTE } from './nomeDoPacote';
+import { ContatosDoHotel, EMAIL_RESERVAS, MENSAGEM_PAGAMENTO } from './contatosDoHotel';
 
 // Para onde a Cielo devolve o cliente depois da página de pagamento. A Cielo
 // manda para cá quem pagou e quem desistiu, sem dizer qual: por isso a tela
@@ -19,9 +20,14 @@ export default function PagamentoConcluido() {
           confirmação da compra no seu e-mail.
         </p>
         <p className="text-gray-500 text-sm">
-          Se não concluiu, o link para pagar está no e-mail de pedido recebido. Dúvidas:
-          WhatsApp (91) 98100-0800 ou reserva@hotelsolar.tur.br.
+          Se não concluiu, o link para pagar está no e-mail de pedido recebido.
         </p>
+        <div className="mt-6 border-t border-gray-100 pt-6">
+          <p className="mb-3 text-sm text-gray-500">
+            Dúvidas sobre o pagamento? Fale com a gente, ou escreva para {EMAIL_RESERVAS}.
+          </p>
+          <ContatosDoHotel evento="ssl26_retorno" origem="retorno_pagamento" mensagem={MENSAGEM_PAGAMENTO} />
+        </div>
         <a href="#/" className="mt-8 inline-block bg-moss-800 text-white font-bold py-3 px-6 rounded hover:bg-moss-900 transition-colors">
           Voltar
         </a>

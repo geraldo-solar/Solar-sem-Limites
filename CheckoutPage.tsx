@@ -8,6 +8,7 @@ import { UNIT_PRICE, CREDIT_CARD_SURCHARGE, formatCurrency } from './Checkout-So
 import { nextCampaignOrder, type CampaignOrderIdentity } from './identidadePedidoNovembro';
 import { executarCheckoutComTeste, testeManualCheckoutAtivo, testeRealCheckoutAtivo } from './testeManualCheckout';
 import { NOME_DO_PACOTE, TITULO_DO_PACOTE } from './nomeDoPacote';
+import { ContatosDoHotel, EMAIL_RESERVAS, MENSAGEM_CHECKOUT, MENSAGEM_DUVIDA, MENSAGEM_PAGAMENTO } from './contatosDoHotel';
 
 interface StatusCarrinho {
   aberto: boolean;
@@ -151,10 +152,10 @@ export default function CheckoutPage({ quantidadeInicial = 1 }: { quantidadeInic
           <p className="text-gray-600 mb-6 font-medium">
             {fechouAgora || 'As vendas deste lote foram encerradas.'}
           </p>
-          <p className="text-gray-500 text-sm">
-            Fale com a gente pelo WhatsApp (91) 98100-0800 ou por reserva@hotelsolar.tur.br
-            para saber das próximas datas.
+          <p className="text-gray-500 text-sm mb-4">
+            Fale com a gente para saber das próximas datas, ou escreva para {EMAIL_RESERVAS}.
           </p>
+          <ContatosDoHotel evento="ssl26_checkout" origem="vendas_encerradas" mensagem={MENSAGEM_DUVIDA} />
           <a href="#/" className="mt-8 inline-block bg-moss-800 text-white font-bold py-3 px-6 rounded hover:bg-moss-900 transition-colors">
             Voltar
           </a>
@@ -227,7 +228,12 @@ export default function CheckoutPage({ quantidadeInicial = 1 }: { quantidadeInic
             </div>
           )}
 
-          <a href="#/" className="mt-8 inline-block text-moss-800 font-bold py-3 px-6 hover:underline">
+          <div className="mt-8 border-t border-gray-100 pt-6">
+            <p className="mb-3 text-sm text-gray-500">Dúvidas sobre o pagamento? Fale com a gente:</p>
+            <ContatosDoHotel evento="ssl26_checkout" origem="pedido_registrado" mensagem={MENSAGEM_PAGAMENTO} semRegistro={modoTeste || testeReal} />
+          </div>
+
+          <a href="#/" className="mt-6 inline-block text-moss-800 font-bold py-3 px-6 hover:underline">
             Voltar
           </a>
         </div>
@@ -270,6 +276,10 @@ export default function CheckoutPage({ quantidadeInicial = 1 }: { quantidadeInic
           <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
             No cartão, o pagamento é concluído na página da Cielo. Não pedimos número do cartão nem código de segurança aqui.
           </p>
+          <div className="mt-5">
+            <p className="mb-2 text-sm text-gray-500">Precisa de ajuda para finalizar?</p>
+            <ContatosDoHotel evento="ssl26_checkout" origem="formulario" mensagem={MENSAGEM_CHECKOUT} semRegistro={modoTeste || testeReal} />
+          </div>
           {status && status.pacotesVendidos > 0 && (
             <p className="mt-4 inline-block rounded-full border border-gold-500/40 bg-gold-50 px-4 py-1.5 text-sm font-semibold text-moss-800">
               {status.pacotesVendidos} pacotes já garantidos por outras famílias
