@@ -1,6 +1,16 @@
 # Indicação a partir da Lista VIP
 
-Proposta de 10/10/2026 para a nova versão do programa de indicação do Solar Sem Limites 2027. **Aguarda a aprovação de Geraldo antes de qualquer mudança no regulamento, na página, no ERP ou no ManyChat.**
+Nova versão do programa de indicação do Solar Sem Limites 2027. Textos do item 10 e da página de vendas **aprovados por Geraldo em 10/10/2026**; construção iniciada no mesmo dia.
+
+## Situação da construção (10/10/2026)
+
+| Parte | Situação |
+| --- | --- |
+| ERP: migração `202610102000_ssl26_indicacao_lista_vip.sql`, regras, rotas `/api/ssl26/lista-vip` e `/api/ssl26/lista-vip/manychat` | Pronto e testado (961 testes do ERP, 24 no banco PGlite). Commit `7d8c1fb`, ainda não enviado. **A migração precisa ser rodada por Geraldo no SQL Editor.** |
+| Página: `/vip` (Lista VIP), `/api/lista-vip`, regulamento 2026-10-10 com PDF, bloco da página de vendas | Pronto e testado (8 testes de navegador no computador e no celular, 6 da rota). Commit `1065e6c`, enviado; a rota responde em solar-sem-limites.vercel.app. |
+| Site: `/vip` com prévia própria para o WhatsApp, PDF e pacotes novos | Pronto. Commit `4f20fdb`, ainda não enviado: sobe junto com o ERP, depois da migração. |
+| Brevo | Lista `SSL26_LISTA_VIP` (25) e campos `SSL26_LISTA_VIP_AT` e `SSL26_LINK_INDICACAO` criados. E-mail de boas-vindas com o link sai pela rota da página. |
+| ManyChat | Etiqueta `SSL26_LISTA_VIP` (98657630) e campo `ssl26_link_indicacao` (15049866) criados. Falta o fluxo de entrada pelo WhatsApp, com os textos aprovados por Geraldo. |
 
 ## Decisões de Geraldo
 

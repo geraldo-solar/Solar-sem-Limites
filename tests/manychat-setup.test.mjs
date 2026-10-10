@@ -22,11 +22,11 @@ function fakeAccount({ tags = [], fields = [], accountId = EXPECTED_ACCOUNT_ID }
 }
 
 test('manifest has unique names and complete launch/guard fields', () => {
-  assert.equal(TAGS.length, 16); assert.equal(FIELDS.length, 13);
+  assert.equal(TAGS.length, 17); assert.equal(FIELDS.length, 14);
   assert.ok(TAGS.includes('SSL26_QA')); assert.ok(TAGS.includes('SSL26_ATENDIMENTO_PAUSA'));
   assert.equal(new Set(TAGS).size, TAGS.length);
   assert.equal(new Set(FIELDS.map(f => f.name)).size, FIELDS.length);
-  assert.ok(TAGS.includes('SSL26_CANAL_SALINAS_CLICK')); assert.ok(!TAGS.some(t => /VIP/.test(t)));
+  assert.ok(TAGS.includes('SSL26_CANAL_SALINAS_CLICK')); assert.ok(!TAGS.some(t => /CANAL_VIP/.test(t))); assert.deepEqual(TAGS.filter(t => /VIP/.test(t)), ['SSL26_LISTA_VIP']);
   assert.ok(TAGS.includes('ATENDIMENTO_HOTEL_ATIVO'));
   assert.ok(TAGS.includes('SSL26_PAUSA_REVISAO'));
   assert.equal(FIELDS.find(f => f.name === 'ssl26_support_pause_ok').type, 'boolean');
@@ -40,7 +40,7 @@ test('default is dry-run and only reads three endpoints', async () => {
   const { state, request } = fakeAccount();
   const report = await provision({ request });
   assert.equal(report.mode, 'dry-run'); assert.equal(report.verified, false);
-  assert.equal(report.items.filter(i => i.action === 'create').length, 29);
+  assert.equal(report.items.filter(i => i.action === 'create').length, 31);
   assert.deepEqual(state.calls.map(c => c.operation), ['getInfo', 'getTags', 'getCustomFields']);
 });
 
@@ -56,7 +56,7 @@ test('apply uses official payloads, preserves legacy objects and is repeatable',
   const { state, request } = fakeAccount({ tags, fields });
   const report = await provision({ request, apply: true });
   assert.equal(report.verified, true);
-  assert.equal(report.items.filter(i => i.action === 'created').length, 28);
+  assert.equal(report.items.filter(i => i.action === 'created').length, 30);
   assert.deepEqual(state.tags.slice(0, 2), tags); assert.deepEqual(state.fields[0], fields[0]);
   const fieldPost = state.calls.find(c => c.operation === 'createCustomField');
   assert.ok(fieldPost.body.caption); assert.equal(fieldPost.body.name, undefined);

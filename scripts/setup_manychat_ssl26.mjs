@@ -13,6 +13,8 @@ export const TAGS = Object.freeze([
   'SSL26_PAGAMENTO_PENDENTE', 'SSL26_COMPRADOR', 'SSL26_OPT_OUT',
   'ATENDIMENTO_HOTEL_ATIVO', 'SSL26_PAUSA_REVISAO',
   'SSL26_QA', 'SSL26_ATENDIMENTO_PAUSA',
+  // Lista VIP: etapa do funil de venda (VIP só aqui, decisão de 06/10/2026).
+  'SSL26_LISTA_VIP',
 ]);
 export const FIELDS = Object.freeze([
   { name: 'ssl26_profile', type: 'text', description: 'SSL26 novembro/2026: ja_hospedou, conhece ou nao_conhece; opcional.' },
@@ -28,6 +30,7 @@ export const FIELDS = Object.freeze([
   { name: 'ssl26_opt_out_at', type: 'datetime', description: 'SSL26: instante do pedido de saida, com fuso; nao reativar por importacao.' },
   { name: 'ssl26_opt_out_source', type: 'text', description: 'SSL26: canal/origem do pedido de saida para conciliacao da supressao.' },
   { name: 'ssl26_support_pause_ok', type: 'boolean', description: 'SSL26: confirmacao da pausa central. Reiniciar como falso a cada pedido; verdadeiro somente apos resposta positiva do ERP. Nao representa consentimento nem libera envios.' },
+  { name: 'ssl26_link_indicacao', type: 'text', description: 'SSL26: link pessoal de indicacao da Lista VIP, devolvido pelo ERP (regulamento 2026-10-10).' },
 ]);
 
 const OPERATIONS = Object.freeze({
