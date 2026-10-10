@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import { fileURLToPath } from 'node:url';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 
 // Renderiza o componente real, sem abrir navegador, acessar a rede ou gravar bundle.
 const { outputFiles } = await build({
@@ -39,7 +40,8 @@ test('reserva exatamente quatro vídeos com IDs únicos, sem inventar mídia ou 
   const videos = [VIDEO_APRESENTACAO, VIDEO_EXPLICACAO, ...VIDEOS_DEPOIMENTOS];
   assert.equal(videos.length, 4);
   assert.equal(new Set(videos.map(video => video.id)).size, 4);
-  for (const video of videos) {
+  // A apresentação foi publicada em 10/10/2026; os outros três seguem reservados.
+  for (const video of [VIDEO_EXPLICACAO, ...VIDEOS_DEPOIMENTOS]) {
     assert.equal(video.midia, undefined);
     assert.equal(video.formato, 'vertical');
     const html = render(video);
@@ -53,7 +55,7 @@ test('reserva exatamente quatro vídeos com IDs únicos, sem inventar mídia ou 
 
 test('explicação aparece antes das opções e preserva apresentação, relatos e condições em texto', () => {
   const html = renderPage();
-  assert.equal((html.match(/Espaço reservado para vídeo/g) || []).length, 4);
+  assert.equal((html.match(/Espaço reservado para vídeo/g) || []).length, 3);
   const explicacao = html.indexOf('id="video-explicacao-pacote"');
   assert.ok(explicacao > html.indexOf('id="video-apresentacao"'));
   assert.ok(explicacao < html.indexOf('As duas opções'));
@@ -65,7 +67,7 @@ test('explicação aparece antes das opções e preserva apresentação, relatos
 });
 
 test('capa real é decorativa, lazy e respeita o caminho de publicação', () => {
-  const html = render(VIDEO_APRESENTACAO, true);
+  const html = render({ ...VIDEO_EXPLICACAO, capa: 'hotel-panoramica-rio.jpg' }, true);
   assert.match(html, /src="\/solarsemlimites2026\/hotel-panoramica-rio.jpg"/);
   assert.match(html, /alt=""/);
   assert.match(html, /loading="lazy"/);
@@ -76,7 +78,7 @@ test('capa real é decorativa, lazy e respeita o caminho de publicação', () =>
 
 test('mídia aprovada ativa controles, legendas e transcrição, sem autoplay ou download antecipado', () => {
   const html = render({
-    ...VIDEO_APRESENTACAO,
+    ...VIDEO_EXPLICACAO,
     midia: {
       arquivo: 'videos/ssl26/apresentacao.mp4',
       legendas: 'videos/ssl26/apresentacao.vtt',
@@ -118,4 +120,49 @@ test('transcrição é texto, não HTML executável', () => {
   });
   assert.doesNotMatch(html, /<script>/);
   assert.match(html, /&lt;script&gt;/);
+});
+
+test('apresentação do hotel publicada: horizontal, com capa, legendas e transcrição', () => {
+  const html = render(VIDEO_APRESENTACAO, true);
+  assert.match(html, /data-video-formato="horizontal"/);
+  assert.match(html, /aspect-video/);
+  assert.match(html, /<video[^>]*preload="none"/);
+  assert.match(html, /poster="\/solarsemlimites2026\/videos\/ssl26\/hotel-solar-apresentacao-capa.jpg"/);
+  assert.match(html, /src="\/solarsemlimites2026\/videos\/ssl26\/hotel-solar-apresentacao.mp4"/);
+  assert.match(html, /src="\/solarsemlimites2026\/videos\/ssl26\/hotel-solar-apresentacao.vtt"/);
+  assert.match(html, /Entre o rio, o mangue e o mar de Salinas, fica o Hotel Solar./);
+  assert.match(html, /Hotel Solar. Seu tempo merece esse lugar./);
+  assert.doesNotMatch(html, /autoplay|autoPlay|Vídeo em preparação|Espaço reservado/);
+
+  const page = renderPage();
+  assert.ok(page.indexOf('id="video-apresentacao"') < page.indexOf('id="video-explicacao-pacote"'));
+  assert.match(page, /<video[^>]*hotel-solar-apresentacao.mp4/);
+});
+
+test('arquivos da apresentação existem em public/ e as legendas acompanham a transcrição', () => {
+  const publico = (arquivo) => fileURLToPath(new URL(`../public/${arquivo}`, import.meta.url));
+  const { arquivo, legendas, transcricao } = VIDEO_APRESENTACAO.midia;
+  for (const caminho of [arquivo, legendas, VIDEO_APRESENTACAO.capa]) {
+    assert.ok(existsSync(publico(caminho)), caminho);
+  }
+  // Leve para a web: o arquivo só é baixado quando a pessoa aperta o play.
+  assert.ok(statSync(publico(arquivo)).size < 40 * 1024 * 1024);
+
+  const vtt = readFileSync(publico(legendas), 'utf8');
+  assert.match(vtt, /^WEBVTT\n/);
+  const tempos = [...vtt.matchAll(/(\d\d):(\d\d):(\d\d\.\d{3}) --> (\d\d):(\d\d):(\d\d\.\d{3})/g)].map((m) => [
+    Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]),
+    Number(m[4]) * 3600 + Number(m[5]) * 60 + Number(m[6]),
+  ]);
+  assert.equal(tempos.length, 13);
+  let anterior = 0;
+  for (const [inicio, fim] of tempos) {
+    assert.ok(inicio >= anterior && fim > inicio && fim <= 105.3);
+    anterior = fim;
+  }
+  const textoDasLegendas = vtt
+    .split('\n')
+    .filter((linha) => linha && !/^(WEBVTT|\d+|.*-->.*)$/.test(linha))
+    .join(' ');
+  assert.equal(textoDasLegendas, transcricao.split('\n').join(' '));
 });
