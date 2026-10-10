@@ -4,6 +4,7 @@ import CheckoutPage from './CheckoutPage';
 import CapturaNovembro from './CapturaNovembro';
 import VendasNovembro from './VendasNovembro';
 import PagamentoConcluido from './PagamentoConcluido';
+import ListaVip from './ListaVip';
 import { quantidadeDoLinkCheckout } from './testeManualCheckout';
 
 interface Props { children: React.ReactNode; }
@@ -41,6 +42,10 @@ export default function App() {
   // oficial é /solarsemlimites2027; o antigo /solarsemlimites2026 redireciona
   // para ele no site principal e continua aceito aqui por segurança.
   const isSalesRoute = pathname === '/solarsemlimites2027' || pathname === '/solarsemlimites2026';
+  // Lista VIP e endereço do link pessoal de indicação (decisão de 10/10/2026):
+  // até 25/11 às 8h abre a entrada da lista; depois, leva à página de vendas.
+  // O #/vip serve aos testes locais, que rodam a página em outro caminho.
+  const isListaVipRoute = pathname === '/vip' || hash.startsWith('#/vip');
 
   useEffect(() => {
     const handleHashChange = () => setHash(window.location.hash);
@@ -58,6 +63,8 @@ export default function App() {
   } else if (hash === '#/obrigado') {
     // Retorno da página de pagamento da Cielo.
     content = <PagamentoConcluido />;
+  } else if (isListaVipRoute) {
+    content = <ListaVip />;
   } else if (hash.startsWith('#/vendas') || isSalesRoute) {
     content = <VendasNovembro />;
   } else if (isMainSiteCaptureRoute || hash.startsWith('#/lista-vip')) {

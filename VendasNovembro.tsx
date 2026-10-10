@@ -745,10 +745,10 @@ export default function VendasNovembro() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-serif text-2xl font-semibold sm:text-3xl">Programa de indicação</h2>
           <p className="mt-4 leading-relaxed text-[#5c4a22]">
-            Quem compra recebe um link individual e ganha 1 diária adicional de baixa
-            temporada a cada novo comprador que comprar por ele com pagamento aprovado,
-            limitado a 5 diárias por CPF. A diária é liberada 30 dias após a compra do
-            indicado, com a validade do seu pacote mais recente. Condições no regulamento.
+            Venha com quem você gosta. Quem compra o pacote recebe um link individual e
+            ganha 1 diária adicional de baixa temporada a cada pessoa que comprar por ele
+            até 01/12, limitado a 5 diárias por CPF. A diária é liberada 30 dias após a
+            compra, com a validade do seu pacote mais recente. Condições no regulamento.
           </p>
         </div>
       </section>

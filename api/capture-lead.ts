@@ -29,22 +29,22 @@ interface LeadBody {
   profileToken?: string;
 }
 
-function normalizeBrazilianPhone(value: unknown = '') {
+export function normalizeBrazilianPhone(value: unknown = '') {
   const digits = clean(value, 40).replace(/\D/g, '');
   if (digits.length === 10 || digits.length === 11) return `+55${digits}`;
   if ((digits.length === 12 || digits.length === 13) && digits.startsWith('55')) return `+${digits}`;
   return '';
 }
 
-function validEmail(value = '') {
+export function validEmail(value = '') {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-function clean(value: unknown, maxLength = 180) {
+export function clean(value: unknown, maxLength = 180) {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
 }
 
-function escapeHtml(value: string) {
+export function escapeHtml(value: string) {
   return value.replace(/[&<>'"]/g, (character) => ({
     '&': '&amp;',
     '<': '&lt;',
@@ -78,7 +78,7 @@ async function readBrevoErrorCode(response: Response) {
   }
 }
 
-async function brevoRequest(path: string, payload: unknown) {
+export async function brevoRequest(path: string, payload: unknown) {
   const response = await fetch(`${BREVO_API_URL}${path}`, {
     method: 'POST',
     headers: {
@@ -108,7 +108,7 @@ async function brevoRequest(path: string, payload: unknown) {
 //
 // O telefone segue indo para o ManyChat pelo webhook, que é onde o WhatsApp
 // importa. O que se perde é o campo SMS no Brevo, não o lead.
-async function saveContact(payload: Record<string, unknown>) {
+export async function saveContact(payload: Record<string, unknown>) {
   try {
     await brevoRequest('/contacts', payload);
     return 'saved' as const;
@@ -196,7 +196,7 @@ async function alertIntegrationFailure(requestId: string | undefined, centralFir
 
 // Read only this submitted identity, never the whole contact database. Preserve
 // withdrawal even when a previously registered person requests the guide again.
-async function readContactState(email: string, phone: string) {
+export async function readContactState(email: string, phone: string) {
   const exclusionAttributes = ['SSL26_OPT_OUT', 'SSL26_QA', 'SSL26_ATENDIMENTO_PAUSA', 'SSL26_COMPRADOR'];
   const response = await fetch(`${BREVO_API_URL}/contacts/${encodeURIComponent(email)}`, {
     method: 'GET', headers: { accept: 'application/json', 'api-key': BREVO_API_KEY },

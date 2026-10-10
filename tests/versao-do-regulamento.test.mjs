@@ -19,11 +19,14 @@ test('regulamento, política e página dizem o mesmo sobre indicação e devolu�
   const pol = ler('Checkout-Solar-sem-Limites/components/CheckoutForm.tsx');
   const pag = ler('VendasNovembro.tsx');
   for (const texto of [reg, pol]) {
-    assert.match(texto, /liberada 30 dias após a compra do indicado/);
+    assert.match(texto, /liberada 30 dias após a mais recente das duas compras/);
+    assert.match(texto, /Vale a primeira indicação registrada/);
+    assert.match(texto, /até 01\/12\/2026 às 23h59/);
     assert.match(texto, /Limite de 5 diárias de indicação por CPF/);
     assert.match(texto, /acréscimo de 10% referente à operadora do cartão não é devolvido/);
   }
-  assert.match(pag, /liberada 30 dias após a compra do/);
+  assert.match(pag, /liberada 30 dias após a\s+compra/);
+  assert.match(pag, /até 01\/12/);
   assert.match(pag, /acréscimo de 10% da operadora não é devolvido/);
   assert.doesNotMatch(pag, /liberado somente depois que o pagamento do indicado for aprovado/);
 });

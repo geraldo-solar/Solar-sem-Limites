@@ -1,8 +1,12 @@
 // Código de indicação que viaja do link até o pedido.
 //
-// O comprador aprovado recebe um link individual (criativo A8):
-//   hotelsolar.tur.br/solarsemlimites2027?ref=CODIGO
-// (links antigos com /solarsemlimites2026 redirecionam mantendo o ?ref=)
+// Quem entra na Lista VIP e o comprador aprovado recebem um link individual
+// (regulamento item 10, versão 2026-10-10):
+//   hotelsolar.tur.br/vip?ref=CODIGO
+// Até 25/11 às 8h o /vip abre a entrada da Lista VIP; depois, leva a esta
+// página com o mesmo ?ref=. Links antigos para /solarsemlimites2027 ou
+// /solarsemlimites2026 continuam valendo. A indicação também fica gravada no
+// cadastro no ERP, então a compra é reconhecida mesmo sem o código na visita.
 //
 // O código precisa sobreviver a duas travessias: da página de vendas para o
 // checkout, e de um recarregamento no meio do preenchimento. Por isso fica em

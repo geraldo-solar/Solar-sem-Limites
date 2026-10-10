@@ -2,12 +2,17 @@ const API_URL = 'https://api.brevo.com/v3';
 const API_KEY = process.env.BREVO_API_KEY;
 const FOLDER_NAME = 'Solar Sem Limites 2026';
 const LIST_NAME = 'SSL26_LEADS';
+// Lista VIP: etapa do funil de venda (decisão de 06/10/2026), com o link
+// pessoal de indicação de cada pessoa (regulamento 2026-10-10).
+const LISTA_VIP_NAME = 'SSL26_LISTA_VIP';
 const ATTRIBUTES = [
   ['SSL26_PROFILE', 'text'],
   ['SSL26_SOURCE', 'text'],
   ['SSL26_CAMPAIGN', 'text'],
   ['SSL26_REFERRAL', 'text'],
   ['SSL26_CONSENT_AT', 'text'],
+  ['SSL26_LISTA_VIP_AT', 'text'],
+  ['SSL26_LINK_INDICACAO', 'text'],
 ];
 
 if (!API_KEY) {
@@ -61,17 +66,17 @@ async function ensureFolder() {
   return created.id;
 }
 
-async function ensureList(folderId) {
+async function ensureList(folderId, name = LIST_NAME) {
   const existing = await findAcrossPages(
     `/contacts/folders/${folderId}/lists`,
     'lists',
-    (list) => list.name === LIST_NAME,
+    (list) => list.name === name,
   );
   if (existing) return existing.id;
 
   const created = await request('/contacts/lists', {
     method: 'POST',
-    body: JSON.stringify({ folderId, name: LIST_NAME }),
+    body: JSON.stringify({ folderId, name }),
   });
   return created.id;
 }
@@ -91,9 +96,11 @@ async function ensureAttributes() {
 
 const folderId = await ensureFolder();
 const listId = await ensureList(folderId);
+const listaVipId = await ensureList(folderId, LISTA_VIP_NAME);
 await ensureAttributes();
 
 console.log('Estrutura SSL26 pronta no Brevo.');
 console.log(`BREVO_LEADS_LIST_ID=${listId}`);
+console.log(`BREVO_LISTA_VIP_LIST_ID=${listaVipId}`);
 console.log('BREVO_SSL26_ATTRIBUTES_ENABLED=true');
 console.log('BREVO_PROFILE_ATTRIBUTE=SSL26_PROFILE');

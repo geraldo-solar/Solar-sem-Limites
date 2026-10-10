@@ -66,11 +66,13 @@ Solicitações podem ser feitas pelo WhatsApp (91 98100-0800) ou e-mail (reserva
 • Contatos: reserva@hotelsolar.tur.br | 91 98100-0800
 
 10. PROGRAMA DE INDICAÇÃO
-10.1. O comprador com pagamento aprovado recebe um link individual de indicação. Por novo comprador que adquirir o pacote por esse link neste lançamento, com pagamento aprovado, recebe 1 diária adicional, válida em datas de baixa temporada (fora de férias e feriados).
-10.2. A diária é liberada 30 dias após a compra do indicado e segue a validade do pacote mais recente de quem indicou. Se a compra do indicado for cancelada nesse prazo, a diária não é concedida.
-10.3. Limite de 5 diárias de indicação por CPF. A compra feita pelo próprio comprador, com o próprio link, não conta como indicação.
+10.1. Recebe um link individual de indicação quem entrar na Lista VIP Solar Sem Limites 2027, pelo WhatsApp oficial do Hotel Solar ou pela página da Lista VIP, e o comprador com pagamento aprovado que ainda não tenha link.
+10.2. É indicado quem entrar na Lista VIP ou comprar o pacote a partir desse link. A indicação fica registrada no cadastro do indicado e é reconhecida na compra pelo WhatsApp, e-mail ou CPF informados. Vale a primeira indicação registrada; links abertos depois não a substituem.
+10.3. Por indicado que comprar o pacote até 01/12/2026 às 23h59, com pagamento aprovado, quem indicou recebe 1 diária adicional, válida em datas de baixa temporada (fora de férias e feriados), desde que também tenha comprado o pacote neste lançamento, com pagamento aprovado, até o mesmo prazo.
+10.4. A diária é liberada 30 dias após a mais recente das duas compras, a do indicado e a de quem indicou, e segue a validade do pacote mais recente de quem indicou. Se uma das duas compras for cancelada nesse prazo, a diária não é concedida.
+10.5. Limite de 5 diárias de indicação por CPF. Não conta como indicação a compra feita pela própria pessoa, com o próprio link ou com o mesmo CPF. A diária de indicação não é sorteio, não pode ser trocada por dinheiro e não pode ser transferida.
 
-Versão de 23/09/2026 do regulamento.
+Versão de 10/10/2026 do regulamento.
 `.trim();
 
 // CPF Validation Algorithm
