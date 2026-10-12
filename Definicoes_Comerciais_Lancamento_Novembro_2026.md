@@ -40,7 +40,7 @@ Etapa concluída em 16/09/2026. As definições abaixo formam a base comercial a
 - [x] Formas de pagamento: Pix/transferência/depósito, cartão em até 12 vezes e pagamento combinado; acréscimo de 10% sobre o valor processado no cartão.
 - [x] Apresentação comercial: 1 pacote por R$ 3.100,00 e validade de 1 ano, ou 2 pacotes por R$ 6.200,00 e validade de 2 anos, destacando a segunda opção para quem pretende viajar mais vezes.
 - [x] Recompensa por indicação: 1 diária adicional de baixa temporada por novo comprador aprovado, limitada a 5 diárias por CPF (revisto em 22/09).
-- [ ] Indicação a partir da Lista VIP (decisões de Geraldo em 06 e 10/10/2026): o link nasce na entrada da Lista VIP, pelo "sim" no WhatsApp ou pela página; até 25/11 às 8h o link leva à Lista VIP e depois à página de vendas; o prêmio exige que as duas pessoas comprem até 01/12 às 23h59 e que nenhuma cancele em 30 dias; comprador fora da Lista VIP também recebe link; vale a primeira indicação registrada. O novo item 10 do regulamento aguarda aprovação: [proposta](docs/SSL26_Indicacao_Lista_VIP.md).
+- [x] Indicação a partir da Lista VIP (decisões de Geraldo em 06 e 10/10/2026): o link nasce na entrada da Lista VIP, pelo "sim" no WhatsApp ou pela página; até 25/11 às 8h o link leva à Lista VIP e depois à página de vendas; o prêmio exige que as duas pessoas comprem até 01/12 às 23h59 e que nenhuma cancele em 30 dias; comprador fora da Lista VIP também recebe link; vale a primeira indicação registrada. Item 10 do regulamento aprovado em 10/10 e publicado em 12/10/2026 (versão 2026-10-10): [registro](docs/SSL26_Indicacao_Lista_VIP.md).
 - [x] Responsabilidades distribuídas entre Geraldo, Kaline e Andrey.
 
 ## Registro de decisões
