@@ -10,7 +10,7 @@ Nova versão do programa de indicação do Solar Sem Limites 2027. Textos do ite
 | Página: `/vip` (Lista VIP), `/api/lista-vip`, regulamento 2026-10-10 com PDF, bloco da página de vendas | Pronto e testado (8 testes de navegador no computador e no celular, 6 da rota). Commit `1065e6c`, enviado; a rota responde em solar-sem-limites.vercel.app. |
 | Site: `/vip` com prévia própria para o WhatsApp, PDF e pacotes novos | No ar desde 12/10/2026 (commit `4f20fdb`): hotelsolar.tur.br/vip com prévia própria, página de vendas com o texto novo e PDF na versão 10/10/2026. Conferido em navegador no computador e no celular. |
 | Brevo | Lista `SSL26_LISTA_VIP` (25) e campos `SSL26_LISTA_VIP_AT` e `SSL26_LINK_INDICACAO` criados. E-mail de boas-vindas com o link sai pela rota da página. |
-| ManyChat | Etiqueta `SSL26_LISTA_VIP` (98657630) e campo `ssl26_link_indicacao` (15049866) criados. Fluxo `SSL26_05_LISTA_VIP_WA` montado em 12/10 com os textos aprovados, publicado e deixado STOPPED com o gatilho desativado até Geraldo conferir. Detalhes em `SSL26_Operacao_ManyChat.md`. |
+| ManyChat | Etiqueta `SSL26_LISTA_VIP` (98657630) e campo `ssl26_link_indicacao` (15049866) criados. Fluxo `SSL26_05_LISTA_VIP_WA` montado em 12/10 com os textos aprovados, no ar desde 12/10, com o gatilho "Lista VIP" ligado a pedido de Geraldo. Detalhes em `SSL26_Operacao_ManyChat.md`. |
 | Teste real | 12/10: o teste do fluxo no ManyChat cadastrou Geraldo pelo WhatsApp, e o ERP devolveu o link `.../vip?ref=5Z9XXV29`. Isso confirma a migração no ar. Falta o cadastro pela página /vip, que testa o Brevo e o e-mail. |
 
 ## Decisões de Geraldo
