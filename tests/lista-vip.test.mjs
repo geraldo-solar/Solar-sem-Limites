@@ -105,12 +105,30 @@ test('sem o ERP nao ha link: nada e gravado no Brevo e a pessoa pode tentar de n
   assert.equal((await enviar(valido)).statusCode, 503, 'link fora do formato tambem e recusado');
 });
 
-test('quem pediu para sair recebe o link na tela, sem e-mail e sem regravar o contato', async () => {
-  contato = { email: 'bia@example.test', attributes: { SSL26_OPT_OUT: true }, emailBlacklisted: false };
+test('quem pediu para sair e marca o consentimento de novo volta a receber', async () => {
+  contato = { email: 'bia@example.test', attributes: { SSL26_OPT_OUT: true }, emailBlacklisted: true };
   const res = await enviar(valido);
   assert.equal(res.statusCode, 200);
-  assert.equal(res.body.emailDelivery, 'suppressed');
-  assert.equal(chamadas.filter((c) => c.metodo === 'POST' && !c.url.startsWith('https://erp.example.test')).length, 0);
+  assert.equal(res.body.emailDelivery, 'accepted');
+  const salvo = chamadas.find((c) => c.url.endsWith('/contacts') && c.metodo === 'POST');
+  assert.equal(salvo.corpo.attributes.SSL26_OPT_OUT, false, 'consentimento novo desfaz a saida');
+  assert.equal(salvo.corpo.emailBlacklisted, false);
+  assert.ok(chamadas.find((c) => c.url.endsWith('/smtp/email')), 'e-mail de boas-vindas enviado');
+});
+
+test('comprador ou contato de teste tambem recebe o link por e-mail, sem perder a marca', async () => {
+  contato = { email: 'bia@example.test', attributes: { SSL26_COMPRADOR: true, SSL26_QA: true }, emailBlacklisted: false };
+  const res = await enviar(valido);
+  assert.equal(res.body.emailDelivery, 'accepted');
+  const salvo = chamadas.find((c) => c.url.endsWith('/contacts') && c.metodo === 'POST');
+  assert.equal(salvo.corpo.attributes.SSL26_COMPRADOR, undefined, 'marca de comprador nao e regravada');
+  assert.equal(salvo.corpo.attributes.SSL26_QA, undefined);
+});
+
+test('e-mail de boas-vindas convida para o canal do lancamento', () => {
+  const email = emailDeBoasVindas('Ana', 'https://www.hotelsolar.tur.br/vip?ref=K7M2QX9A');
+  assert.match(email.htmlContent, /whatsapp\.com\/channel\/0029Vb8iEz73gvWjJea5rt3k/);
+  assert.match(email.textContent, /canal Solar Sem Limites/);
 });
 
 test('dados incompletos, sem consentimento ou robo nao chegam ao ERP', async () => {
@@ -164,7 +182,7 @@ test('entrada na lista vai para a Meta como Lead, com o id do navegador', async 
   }
 });
 
-test('sem id do navegador ou de quem pediu para sair, nada vai para a Meta', async () => {
+test('sem id do navegador nada vai para a Meta; quem volta com consentimento novo vai', async () => {
   process.env.META_CAPI_TOKEN = 'test-only-not-a-real-token';
   try {
     await enviar(valido);
@@ -172,7 +190,7 @@ test('sem id do navegador ou de quem pediu para sair, nada vai para a Meta', asy
     chamadas = [];
     contato = { email: 'bia@example.test', attributes: { SSL26_OPT_OUT: true }, emailBlacklisted: false };
     await enviar({ ...valido, eventId: 'b3f1c2d4-1111-2222-3333-444455556666' });
-    assert.equal(metaDaLista(), undefined, 'consentimento retirado vale para medição');
+    assert.ok(metaDaLista(), 'consentimento novo vale para medição');
   } finally {
     delete process.env.META_CAPI_TOKEN;
   }

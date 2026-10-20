@@ -17,6 +17,9 @@ import { IconeWhatsApp, linkWhatsApp } from './contatosDoHotel';
 export const ABERTURA_DAS_VENDAS = '2026-11-25T08:00:00-03:00';
 const PAGINA_DE_VENDAS = '/solarsemlimites2027';
 const REGULAMENTO_URL = '/solarsemlimites2026/Regulamento_SSL.pdf';
+// Canal do lançamento no WhatsApp, "Solar Sem Limites | Canal VIP" (o mesmo
+// link de antes; confirmado por Geraldo em 20/10/2026).
+export const CANAL_DO_LANCAMENTO = 'https://whatsapp.com/channel/0029Vb8iEz73gvWjJea5rt3k';
 export const MENSAGEM_ENTRAR_PELO_WHATSAPP = 'Quero entrar na Lista VIP Solar Sem Limites 2027';
 
 type Etapa = 'verificando' | 'formulario' | 'enviando' | 'pronto';
@@ -294,7 +297,7 @@ export default function ListaVip() {
               <h2 className="mt-2 font-serif text-3xl font-semibold leading-tight">Pronto, {primeiroNome}!</h2>
               <p className="mt-3 leading-relaxed text-slate-600">
                 {emailSuprimido
-                  ? 'Seu lugar na lista está garantido. Respeitamos sua preferência de não receber e-mails deste lançamento.'
+                  ? 'Seu lugar na lista está garantido. Desta vez não enviamos o e-mail: guarde o seu link abaixo.'
                   : 'Seu lugar na lista está garantido. Mandamos também um e-mail com o seu link; confira a caixa de spam.'}
               </p>
               <div className="mt-6 rounded-2xl border border-[#d9e4df] bg-[#f4f8f6] p-5">
@@ -319,6 +322,21 @@ export default function ListaVip() {
                   {REGRA_DA_INDICACAO}{' '}
                   <a href={REGULAMENTO_URL} target="_blank" rel="noopener noreferrer" className="underline">Condições no regulamento</a>.
                 </p>
+              </div>
+              <div className="mt-4 rounded-2xl border border-[#e4d5b5] bg-[#faf5e9] p-5">
+                <p className="text-sm font-bold text-[#284f48]">Canal do lançamento no WhatsApp</p>
+                <p className="mt-1 text-sm leading-relaxed text-[#5c4a22]">
+                  No canal Solar Sem Limites você recebe primeiro as datas, as condições e o aviso da abertura das vendas.
+                </p>
+                <a
+                  href={CANAL_DO_LANCAMENTO}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => registrar('ssl26_lista_vip_canal', { local: 'concluido' })}
+                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0f5c45] px-4 py-3.5 text-sm font-bold text-white transition hover:bg-[#0b4d3a] sm:text-base"
+                >
+                  <IconeWhatsApp /> Seguir o canal no WhatsApp
+                </a>
               </div>
               <a
                 href={linkWhatsApp(MENSAGEM_ENTRAR_PELO_WHATSAPP)}
