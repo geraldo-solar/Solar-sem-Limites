@@ -182,6 +182,11 @@ export default function ListaVip() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0b3d2e]/60 via-[#0b3d2e]/80 to-[#0b3d2e]" />
         <div className="relative mx-auto max-w-5xl px-4 pb-14 pt-12 sm:px-6 sm:pb-20 sm:pt-16">
+          <img
+            src={assetUrl('logoSOLAR2.png')}
+            alt="Hotel Solar"
+            className="mb-6 h-16 w-auto sm:mb-8 sm:h-20"
+          />
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e1c084]">Hotel Solar · Salinópolis</p>
           {convite && etapa !== 'pronto' && (
             <p className="mt-4 inline-flex rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-[#f3e8d2]">
