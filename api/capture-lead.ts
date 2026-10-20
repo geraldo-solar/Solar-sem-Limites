@@ -300,7 +300,7 @@ const META_GRAPH_URL = 'https://graph.facebook.com';
 // deduplicação sem erro visível.
 const META_PIXEL_ID_PADRAO = '743518114034395';
 
-type MetaCapiResult = 'accepted' | 'failed' | 'not_configured' | 'skipped';
+export type MetaCapiResult = 'accepted' | 'failed' | 'not_configured' | 'skipped';
 
 function sha256Hex(value: string) {
   return createHash('sha256').update(value, 'utf8').digest('hex');
@@ -353,7 +353,7 @@ function readFbclid(pageUrl: string) {
   }
 }
 
-interface MetaLead {
+export interface MetaLead {
   eventId: string;
   firstName: string;
   email: string;
@@ -364,9 +364,11 @@ interface MetaLead {
   clientIp: string;
   userAgent: string;
   eventTimeMs: number;
+  // Qual entrada gerou o lead. Sem valor, é o cadastro do guia de novembro.
+  contentName?: string;
 }
 
-async function notifyMeta(lead: MetaLead): Promise<MetaCapiResult> {
+export async function notifyMeta(lead: MetaLead): Promise<MetaCapiResult> {
   const pixelId = clean(process.env.META_PIXEL_ID, 40) || META_PIXEL_ID_PADRAO;
   // O token é o único valor que falta configurar: sem ele, nada é enviado.
   const token = process.env.META_CAPI_TOKEN || '';
@@ -411,7 +413,7 @@ async function notifyMeta(lead: MetaLead): Promise<MetaCapiResult> {
           action_source: 'website',
           ...(lead.pageUrl ? { event_source_url: lead.pageUrl } : {}),
           user_data: userData,
-          custom_data: { content_name: 'ssl26_novembro_2026', content_category: lead.source },
+          custom_data: { content_name: lead.contentName || 'ssl26_novembro_2026', content_category: lead.source },
         },
       ],
     }),

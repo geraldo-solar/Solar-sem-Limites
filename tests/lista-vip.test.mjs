@@ -139,3 +139,41 @@ test('e-mail escapa o nome e traz regulamento e WhatsApp de atendimento', () => 
   assert.match(email.htmlContent, /98122-9825/);
   assert.match(mensagemParaCompartilhar('L'), /Lista VIP do Solar Sem Limites 2027.*L$/);
 });
+
+// Pixel da Meta (Fase 1, otimização por entrada na Lista VIP): o servidor
+// manda o Lead pela Conversions API com o mesmo id do fbq do navegador.
+const metaDaLista = () => chamadas.find((c) => c.url.includes('graph.facebook.com'));
+
+test('entrada na lista vai para a Meta como Lead, com o id do navegador', async () => {
+  process.env.META_CAPI_TOKEN = 'test-only-not-a-real-token';
+  try {
+    const res = await enviar({ ...valido, eventId: 'b3f1c2d4-1111-2222-3333-444455556666', pageUrl: 'https://www.hotelsolar.tur.br/vip?fbclid=abc' });
+    assert.equal(res.statusCode, 200);
+    const meta = metaDaLista();
+    assert.ok(meta, 'chamada à Conversions API');
+    const [evento] = meta.corpo.data;
+    assert.equal(evento.event_name, 'Lead');
+    assert.equal(evento.event_id, 'b3f1c2d4-1111-2222-3333-444455556666');
+    assert.equal(evento.custom_data.content_name, 'ssl27_lista_vip');
+    assert.equal(evento.custom_data.content_category, 'indicacao');
+    assert.ok(evento.user_data.em[0].length === 64, 'e-mail só em hash');
+    assert.doesNotMatch(JSON.stringify(evento), /bia@example|98111/i, 'nenhum dado pessoal em claro');
+    assert.match(logs.join('\n'), /"metaCapi":"accepted"/);
+  } finally {
+    delete process.env.META_CAPI_TOKEN;
+  }
+});
+
+test('sem id do navegador ou de quem pediu para sair, nada vai para a Meta', async () => {
+  process.env.META_CAPI_TOKEN = 'test-only-not-a-real-token';
+  try {
+    await enviar(valido);
+    assert.equal(metaDaLista(), undefined, 'sem eventId não manda: evitaria contar em dobro');
+    chamadas = [];
+    contato = { email: 'bia@example.test', attributes: { SSL26_OPT_OUT: true }, emailBlacklisted: false };
+    await enviar({ ...valido, eventId: 'b3f1c2d4-1111-2222-3333-444455556666' });
+    assert.equal(metaDaLista(), undefined, 'consentimento retirado vale para medição');
+  } finally {
+    delete process.env.META_CAPI_TOKEN;
+  }
+});

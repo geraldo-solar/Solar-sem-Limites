@@ -5,6 +5,7 @@ import {
   clean,
   escapeHtml,
   normalizeBrazilianPhone,
+  notifyMeta,
   readContactState,
   saveContact,
   validEmail,
@@ -19,9 +20,15 @@ import {
 // 2. Salva o contato no Brevo, na lista SSL26_LISTA_VIP, com o link.
 // 3. Manda o e-mail de boas-vindas com o link.
 //
+// 4. Avisa a Meta pela Conversions API (evento Lead, content_name
+//    ssl27_lista_vip), com o mesmo event_id que o navegador manda no fbq.
+//    É o que permite a campanha da Fase 1 otimizar para entrada na Lista VIP
+//    sem contar a mesma pessoa duas vezes.
+//
 // Quem pediu para sair ou está em pausa não recebe e-mail e não tem o
 // cadastro do Brevo regravado, como na captação do guia. O link aparece na
-// tela do mesmo jeito: ele já foi gravado no ERP.
+// tela do mesmo jeito: ele já foi gravado no ERP. Essa pessoa também não é
+// enviada à Meta, e o mesmo vale quando não deu para conferir o estado dela.
 
 const ERP_URL = process.env.SOLAR_ERP_URL || 'https://erp-hotel-solar.vercel.app';
 const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'geraldo@hotelsolar.tur.br';
@@ -31,6 +38,7 @@ const REPLY_TO_NAME = process.env.BREVO_REPLY_TO_NAME || 'Reservas | Hotel Solar
 const REGULAMENTO_URL = 'https://www.hotelsolar.tur.br/solarsemlimites2026/Regulamento_SSL.pdf';
 const WHATSAPP_ATENDIMENTO = '(91) 98122-9825';
 const WHATSAPP_ATENDIMENTO_LINK = 'https://wa.me/5591981229825';
+const EVENTO_FORMATO = /^[A-Za-z0-9_-]{8,100}$/;
 const LINK_FORMATO = /^https:\/\/www\.hotelsolar\.tur\.br\/vip\?ref=[A-Z0-9_-]{4,40}$/;
 
 type RespostaDoErp = { codigo: string; link: string; indicacao: string };
@@ -152,12 +160,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // desfaz a entrada: a pessoa vê o link na tela e pode tentar receber de novo.
   let contactStorage = 'skipped';
   let emailDelivery: 'accepted' | 'suppressed' | 'failed' = 'failed';
+  // Só fica true depois de confirmar que a pessoa não pediu para sair.
+  let podeMedir = false;
   try {
     const estado = await readContactState(email, telefone);
     let suprimido = estado.suppressed;
     if (!suprimido && process.env.SSL26_CENTRAL_ELIGIBILITY_ENABLED === 'true') {
       suprimido = await centralEmailEligibility(email, telefone) !== 'eligible';
     }
+    podeMedir = !suprimido;
     if (suprimido) {
       emailDelivery = 'suppressed';
     } else {
@@ -185,9 +196,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     emailDelivery = emailDelivery === 'suppressed' ? 'suppressed' : 'failed';
   }
 
+  const eventoId = clean(body.eventId, 100);
+  let metaCapi = 'skipped';
+  if (podeMedir && EVENTO_FORMATO.test(eventoId)) {
+    try {
+      metaCapi = await notifyMeta({
+        eventId: eventoId,
+        firstName: nome.split(' ')[0],
+        email,
+        phone: telefone,
+        pageUrl: clean(body.pageUrl, 500),
+        source: convite ? 'indicacao' : 'lista_vip',
+        cookieHeader: String(req.headers?.cookie || ''),
+        clientIp: String(req.headers?.['x-forwarded-for'] || '').split(',')[0].trim()
+          || String(req.headers?.['x-real-ip'] || '').trim(),
+        userAgent: String(req.headers?.['user-agent'] || ''),
+        eventTimeMs: Date.now(),
+        contentName: 'ssl27_lista_vip',
+      });
+    } catch {
+      metaCapi = 'failed';
+    }
+  }
+
   console.log(JSON.stringify({
     level: 'info', message: 'SSL26 Lista VIP', route: '/api/lista-vip', indicacao: erp.indicacao,
-    contactStorage, emailDelivery, durationMs: Date.now() - startedAt,
+    contactStorage, emailDelivery, metaCapi, durationMs: Date.now() - startedAt,
   }));
   return res.status(200).json({ success: true, link: erp.link, codigo: erp.codigo, emailDelivery });
 }

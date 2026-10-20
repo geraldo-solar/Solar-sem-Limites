@@ -35,6 +35,17 @@ export function mensagemDeEntrada(convite: string) {
   return convite ? `${MENSAGEM_ENTRAR_PELO_WHATSAPP} (convite ${convite})` : MENSAGEM_ENTRAR_PELO_WHATSAPP;
 }
 
+// Id do evento Lead: o mesmo vai no fbq do navegador e na Conversions API do
+// servidor, para a Meta contar uma entrada só.
+function novoIdDeEvento() {
+  try {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+  } catch {
+    // Sem crypto: segue para o id montado à mão.
+  }
+  return `vip-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+}
+
 async function horaDoServidor(): Promise<Date> {
   try {
     const resposta = await fetch('/api/solar-status', { cache: 'no-store', signal: AbortSignal.timeout(2500) });
@@ -118,11 +129,12 @@ export default function ListaVip() {
       return;
     }
     setEtapa('enviando');
+    const eventId = novoIdDeEvento();
     try {
       const resposta = await fetch('/api/lista-vip', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome, telefone, email, consent: true, convite, website }),
+        body: JSON.stringify({ nome, telefone, email, consent: true, convite, website, eventId, pageUrl: window.location.href }),
       });
       const dados = await resposta.json().catch(() => ({}));
       if (!resposta.ok || dados.success !== true || typeof dados.link !== 'string') {
@@ -132,6 +144,11 @@ export default function ListaVip() {
       setEmailSuprimido(dados.emailDelivery === 'suppressed');
       setEtapa('pronto');
       registrar('ssl26_lista_vip_entrou', { convite_presente: Boolean(convite) });
+      // Evento de conversão da campanha da Fase 1 (cadastro na Lista VIP).
+      window.fbq?.('track', 'Lead', {
+        content_name: 'ssl27_lista_vip',
+        content_category: convite ? 'indicacao' : 'lista_vip',
+      }, { eventID: eventId });
     } catch (erro) {
       setMensagem(erro instanceof Error ? erro.message : 'Não conseguimos concluir agora. Tente novamente em instantes.');
       setEtapa('formulario');
