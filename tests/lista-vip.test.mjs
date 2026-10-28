@@ -294,3 +294,17 @@ test('contato existente so com o + no ManyChat tambem e achado; sem achar, nada 
   assert.equal(logFinal().manychat, 'not_found');
   assert.ok(!doManyChat().some((c) => c.url.endsWith('addTagByName')));
 });
+
+// Origem (28/10/2026): as UTMs do endereço da página vão para o ERP.
+test('UTMs do link da pagina vao para o ERP; endereco de fora do site e ignorado', async () => {
+  await enviar({ ...valido, pageUrl: 'https://www.hotelsolar.tur.br/vip?utm_source=meta&utm_medium=paid&utm_campaign=ssl27_fase1_listavip&utm_term=Quentes&utm_content=E1%20%C2%B7%20A%C3%A9rea' });
+  assert.deepEqual(chamadas[0].corpo.rastreio, {
+    utmSource: 'meta', utmMedium: 'paid', utmCampaign: 'ssl27_fase1_listavip', utmContent: 'E1 · Aérea', utmTerm: 'Quentes',
+  });
+  chamadas = [];
+  await enviar({ ...valido, pageUrl: 'https://outro-site.example/vip?utm_source=meta' });
+  assert.equal(chamadas[0].corpo.rastreio, undefined);
+  chamadas = [];
+  await enviar({ ...valido, pageUrl: 'https://www.hotelsolar.tur.br/vip?ref=K7M2QX9A' });
+  assert.equal(chamadas[0].corpo.rastreio, undefined, 'sem UTM, nada vai');
+});

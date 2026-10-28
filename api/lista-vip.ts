@@ -47,8 +47,31 @@ const LINK_FORMATO = /^https:\/\/www\.hotelsolar\.tur\.br\/vip\?ref=[A-Z0-9_-]{4
 
 type RespostaDoErp = { codigo: string; link: string; indicacao: string };
 
+type Rastreio = { utmSource: string; utmMedium: string; utmCampaign: string; utmContent: string; utmTerm: string };
+const HOSTS_DA_PAGINA = new Set(['www.hotelsolar.tur.br', 'hotelsolar.tur.br', 'solar-sem-limites.vercel.app']);
+
+/**
+ * UTMs do link por onde a pessoa chegou (anúncio, e-mail, canal), lidas do
+ * endereço da página (28/10/2026). O ERP grava na primeira entrada e o
+ * placar separa a origem. Endereço de fora do site é ignorado.
+ */
+export function rastreioDoEndereco(pageUrl: string): Rastreio | null {
+  let url: URL;
+  try { url = new URL(pageUrl); } catch { return null; }
+  if (url.protocol !== 'https:' || !HOSTS_DA_PAGINA.has(url.hostname)) return null;
+  // Na prévia local a rota vem depois do #, com as UTMs junto.
+  const params = new URLSearchParams(url.search || (url.hash.includes('?') ? url.hash.slice(url.hash.indexOf('?')) : ''));
+  const ler = (nome: string) => clean(params.get(nome) || '', 120);
+  const rastreio = {
+    utmSource: ler('utm_source'), utmMedium: ler('utm_medium'), utmCampaign: ler('utm_campaign'),
+    utmContent: ler('utm_content'), utmTerm: ler('utm_term'),
+  };
+  return Object.values(rastreio).some(Boolean) ? rastreio : null;
+}
+
 async function pedirLinkAoErp(dados: {
   nome: string; telefone: string; email: string; convite: string; consentimentoEm: string;
+  rastreio?: Rastreio;
 }): Promise<RespostaDoErp> {
   const segredo = process.env.SOLAR_INGEST_SECRET || '';
   if (!segredo) throw new Error('SOLAR_INGEST_SECRET_MISSING');
@@ -156,9 +179,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const consentimentoEm = new Date().toISOString();
   let erp: RespostaDoErp;
   try {
+    const rastreio = rastreioDoEndereco(clean(body.pageUrl, 500));
     erp = await pedirLinkAoErp({
       nome, telefone, email, consentimentoEm,
       convite: /^[A-Z0-9_-]{4,40}$/.test(convite) ? convite : '',
+      ...(rastreio ? { rastreio } : {}),
     });
   } catch {
     console.error(JSON.stringify({ level: 'error', message: 'SSL26 Lista VIP sem resposta do ERP', route: '/api/lista-vip',
