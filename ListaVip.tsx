@@ -3,6 +3,7 @@ import { ArrowRight, CalendarDays, Check, Copy, Gift, LockKeyhole, Megaphone, Us
 import { AVISO_DE_PRIVACIDADE_URL } from './avisoDePrivacidade';
 import { registrarIndicacaoDaUrl } from './codigoDeIndicacao';
 import { IconeWhatsApp, linkWhatsApp } from './contatosDoHotel';
+import { formatarTelefoneBR } from './telefoneBR';
 
 // Lista VIP Solar Sem Limites 2027, em hotelsolar.tur.br/vip (decisões de
 // Geraldo em 06 e 10/10/2026; regulamento item 10, versão 2026-10-10).
@@ -68,13 +69,7 @@ function registrar(evento: string, params: Record<string, string | boolean> = {}
   w.gtag?.('event', evento, params);
 }
 
-function formatarTelefone(valor: string) {
-  const digitos = valor.replace(/\D/g, '').slice(0, 11);
-  if (digitos.length <= 2) return digitos;
-  if (digitos.length <= 6) return `(${digitos.slice(0, 2)}) ${digitos.slice(2)}`;
-  if (digitos.length <= 10) return `(${digitos.slice(0, 2)}) ${digitos.slice(2, 6)}-${digitos.slice(6)}`;
-  return `(${digitos.slice(0, 2)}) ${digitos.slice(2, 7)}-${digitos.slice(7)}`;
-}
+const formatarTelefone = formatarTelefoneBR;
 
 const assetUrl = (arquivo: string) => `${import.meta.env.BASE_URL}${arquivo.replace(/^\/+/, '')}`;
 

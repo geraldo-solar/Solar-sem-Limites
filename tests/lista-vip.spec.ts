@@ -78,3 +78,14 @@ test('relogio do celular adiantado nao troca o destino: vale a hora do servidor'
   await page.goto('/solarsemlimitescadastro/#/vip?ref=abc12345');
   await expect(page.getByRole('button', { name: 'Entrar na Lista VIP' })).toBeVisible();
 });
+
+test('WhatsApp digitado com o 55 na frente chega inteiro (28/10/2026)', async ({ page }) => {
+  await servidorEm(page, '2026-10-28T09:00:00-03:00');
+  await page.goto('/solarsemlimitescadastro/#/vip');
+  const campo = page.getByLabel('WhatsApp', { exact: true });
+  await campo.pressSequentially('55 91 98111-0004');
+  await expect(campo).toHaveValue('(91) 98111-0004');
+  await campo.fill('');
+  await campo.pressSequentially('+55 (91) 98111-0005');
+  await expect(campo).toHaveValue('(91) 98111-0005');
+});
