@@ -89,3 +89,19 @@ test('WhatsApp digitado com o 55 na frente chega inteiro (28/10/2026)', async ({
   await campo.pressSequentially('+55 (91) 98111-0005');
   await expect(campo).toHaveValue('(91) 98111-0005');
 });
+
+test('quem chega por anuncio ou e-mail leva a origem na mensagem pronta do WhatsApp (28/10/2026)', async ({ page }) => {
+  await servidorEm(page, '2026-10-28T13:00:00-03:00');
+  await page.goto('/solarsemlimitescadastro/#/vip?ref=abc12345&utm_source=meta&utm_medium=paid&utm_campaign=ssl27_fase1_listavip');
+  const botao = page.getByRole('link', { name: 'Prefiro entrar pelo WhatsApp' });
+  await expect(botao).toHaveAttribute('href', new RegExp(`text=${encodeURIComponent('Quero entrar na Lista VIP Solar Sem Limites 2027 (vim pelo anúncio) (convite ABC12345)').replace(/[()]/g, '\\$&')}`));
+  const novaVisita = async (url: string) => {
+    await page.goto(url);
+    await page.evaluate(() => { try { localStorage.clear(); sessionStorage.clear(); } catch { /* sem armazenamento */ } });
+    await page.reload();
+  };
+  await novaVisita('/solarsemlimitescadastro/#/vip?utm_source=brevo&utm_medium=email');
+  await expect(page.getByRole('link', { name: 'Prefiro entrar pelo WhatsApp' })).toHaveAttribute('href', /\(vim%20pelo%20e-mail\)/);
+  await novaVisita('/solarsemlimitescadastro/#/vip');
+  await expect(page.getByRole('link', { name: 'Prefiro entrar pelo WhatsApp' })).toHaveAttribute('href', /text=Quero%20entrar%20na%20Lista%20VIP%20Solar%20Sem%20Limites%202027$/);
+});

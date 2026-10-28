@@ -34,9 +34,30 @@ export function mensagemParaCompartilhar(link: string) {
   return `Vem comigo para a Lista VIP do Solar Sem Limites 2027, do Hotel Solar, em Salinas. Entre pelo meu link: ${link}`;
 }
 
-/** Mensagem pronta para entrar pelo WhatsApp, com o convite de quem indicou. */
-export function mensagemDeEntrada(convite: string) {
-  return convite ? `${MENSAGEM_ENTRAR_PELO_WHATSAPP} (convite ${convite})` : MENSAGEM_ENTRAR_PELO_WHATSAPP;
+export type OrigemDaVisita = 'anuncio' | 'email' | null;
+
+/**
+ * De onde a pessoa chegou, pelas UTMs do endereço (decisão de Geraldo em
+ * 28/10/2026). Vai no fim da mensagem pronta do WhatsApp, porque quem sai da
+ * página para o WhatsApp deixa as UTMs para trás; o ERP lê a frase e grava a
+ * origem. Fora anúncio e e-mail, nada é acrescentado.
+ */
+export function origemDaVisita(endereco: string): OrigemDaVisita {
+  const consulta = endereco.includes('?') ? endereco.slice(endereco.indexOf('?')) : '';
+  const params = new URLSearchParams(consulta.split('#')[0] || '');
+  const fonte = (params.get('utm_source') || '').trim().toLowerCase();
+  const meio = (params.get('utm_medium') || '').trim().toLowerCase();
+  if (['paid', 'paid_social', 'cpc', 'ads', 'paid_search'].includes(meio)) return 'anuncio';
+  if (meio === 'email' || fonte === 'brevo') return 'email';
+  return null;
+}
+
+const FRASE_DA_ORIGEM = { anuncio: '(vim pelo anúncio)', email: '(vim pelo e-mail)' } as const;
+
+/** Mensagem pronta para entrar pelo WhatsApp, com a origem e o convite de quem indicou. */
+export function mensagemDeEntrada(convite: string, origem: OrigemDaVisita = null) {
+  return [MENSAGEM_ENTRAR_PELO_WHATSAPP, origem ? FRASE_DA_ORIGEM[origem] : '', convite ? `(convite ${convite})` : '']
+    .filter(Boolean).join(' ');
 }
 
 // Id do evento Lead: o mesmo vai no fbq do navegador e na Conversions API do
@@ -87,6 +108,9 @@ const campo = 'w-full rounded-xl border border-[#cbd8d3] bg-[#fbfcfa] px-4 py-3.
 export default function ListaVip() {
   const [etapa, setEtapa] = useState<Etapa>('verificando');
   const [convite, setConvite] = useState('');
+  // Lido do endereço na primeira tela; a prévia local traz as UTMs depois do #.
+  const [origem] = useState<OrigemDaVisita>(() => (typeof window === 'undefined' ? null
+    : origemDaVisita(window.location.search ? window.location.href : window.location.hash)));
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
   const [email, setEmail] = useState('');
@@ -271,7 +295,7 @@ export default function ListaVip() {
                 </button>
               </form>
               <a
-                href={linkWhatsApp(mensagemDeEntrada(convite))}
+                href={linkWhatsApp(mensagemDeEntrada(convite, origem))}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => registrar('ssl26_lista_vip_whatsapp', { convite_presente: Boolean(convite), local: 'formulario' })}
@@ -334,7 +358,7 @@ export default function ListaVip() {
                 </a>
               </div>
               <a
-                href={linkWhatsApp(MENSAGEM_ENTRAR_PELO_WHATSAPP)}
+                href={linkWhatsApp(mensagemDeEntrada('', origem))}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => registrar('ssl26_lista_vip_whatsapp', { local: 'concluido' })}
