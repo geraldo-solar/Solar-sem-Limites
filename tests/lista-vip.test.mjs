@@ -195,3 +195,83 @@ test('sem id do navegador nada vai para a Meta; quem volta com consentimento nov
     delete process.env.META_CAPI_TOKEN;
   }
 });
+
+// ManyChat (28/10/2026): a rota cria ou acha o contato, com etiqueta e link.
+function comManyChat(responder) {
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url, options = {}) => {
+    if (String(url).startsWith('https://api.manychat.com/')) {
+      chamadas.push({ url: String(url), metodo: options.method || 'GET', headers: options.headers, corpo: options.body ? JSON.parse(options.body) : undefined });
+      return responder(String(url).replace('https://api.manychat.com/fb/subscriber/', ''), options);
+    }
+    return original(url, options);
+  };
+}
+const ok = (data) => Response.json({ status: 'success', data });
+const doManyChat = () => chamadas.filter((c) => c.url.startsWith('https://api.manychat.com/'));
+const logFinal = () => JSON.parse(logs.find((l) => l.includes('"message":"SSL26 Lista VIP"')) || '{}');
+
+test('sem a chave do ManyChat nada vai para o ManyChat', async () => {
+  delete process.env.MANYCHAT_API_KEY;
+  comManyChat(() => ok({ id: '1' }));
+  const res = await enviar(valido);
+  assert.equal(res.statusCode, 200);
+  assert.equal(doManyChat().length, 0);
+  assert.equal(logFinal().manychat, 'skipped');
+});
+
+test('contato novo no ManyChat: WhatsApp autorizado, etiqueta da Lista VIP e link', async () => {
+  process.env.MANYCHAT_API_KEY = 'chave-de-teste';
+  comManyChat((operacao) => ok(operacao === 'createSubscriber' ? { id: '9001' } : {}));
+  const res = await enviar(valido);
+  delete process.env.MANYCHAT_API_KEY;
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.link, 'https://www.hotelsolar.tur.br/vip?ref=K7M2QX9A');
+  const [criar, etiqueta, campo] = doManyChat();
+  assert.equal(criar.headers.Authorization, 'Bearer chave-de-teste');
+  assert.match(criar.url, /createSubscriber$/);
+  assert.equal(criar.corpo.whatsapp_phone, '+5591981110002');
+  assert.equal(criar.corpo.first_name, 'Bia');
+  assert.equal(criar.corpo.last_name, 'Souza');
+  assert.match(criar.corpo.consent_phrase, /Lista VIP Solar Sem Limites 2027/);
+  assert.deepEqual(etiqueta.corpo, { subscriber_id: '9001', tag_name: 'SSL26_LISTA_VIP' });
+  assert.deepEqual(campo.corpo, { subscriber_id: '9001', field_name: 'ssl26_link_indicacao', field_value: 'https://www.hotelsolar.tur.br/vip?ref=K7M2QX9A' });
+  assert.equal(logFinal().manychat, 'created');
+  assert.ok(!logs.join(' ').includes('chave-de-teste'));
+});
+
+test('contato que ja existe no ManyChat e achado pelo telefone e ganha etiqueta e link', async () => {
+  process.env.MANYCHAT_API_KEY = 'chave-de-teste';
+  comManyChat((operacao) => {
+    if (operacao === 'createSubscriber') return Response.json({ status: 'error', message: 'Validation error' }, { status: 400 });
+    if (operacao.startsWith('findBySystemField')) return ok({ id: 7007 });
+    return ok({});
+  });
+  const res = await enviar(valido);
+  delete process.env.MANYCHAT_API_KEY;
+  assert.equal(res.statusCode, 200);
+  const operacoes = doManyChat().map((c) => c.url.replace('https://api.manychat.com/fb/subscriber/', ''));
+  assert.deepEqual(operacoes, ['createSubscriber', 'findBySystemField?phone=%2B5591981110002', 'addTagByName', 'setCustomFieldByName']);
+  assert.equal(doManyChat()[2].corpo.subscriber_id, '7007');
+  assert.equal(logFinal().manychat, 'updated');
+});
+
+test('ManyChat fora do ar nao atrapalha a entrada na lista', async () => {
+  process.env.MANYCHAT_API_KEY = 'chave-de-teste';
+  comManyChat(() => { throw new Error('rede'); });
+  const res = await enviar(valido);
+  delete process.env.MANYCHAT_API_KEY;
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.emailDelivery, 'accepted');
+  assert.equal(logFinal().manychat, 'failed');
+});
+
+test('sem o ERP nada vai para o ManyChat', async () => {
+  process.env.MANYCHAT_API_KEY = 'chave-de-teste';
+  erp = 'erro';
+  comManyChat(() => ok({ id: '1' }));
+  const res = await enviar(valido);
+  delete process.env.MANYCHAT_API_KEY;
+  assert.equal(res.statusCode, 503);
+  assert.equal(doManyChat().length, 0);
+});

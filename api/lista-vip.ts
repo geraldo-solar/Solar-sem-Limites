@@ -9,6 +9,7 @@ import {
   saveContact,
   validEmail,
 } from './capture-lead.js';
+import { salvarNaListaVipDoManyChat } from './manychat-lista-vip.js';
 
 // Entrada na Lista VIP Solar Sem Limites 2027 pela página /vip (decisões de
 // Geraldo em 06 e 10/10/2026; regulamento item 10, versão 2026-10-10).
@@ -18,6 +19,8 @@ import {
 //    primeira). Sem o ERP não há link, então nada mais é gravado.
 // 2. Salva o contato no Brevo, na lista SSL26_LISTA_VIP, com o link.
 // 3. Manda o e-mail de boas-vindas com o link.
+// 3b. Cria ou acha o contato no ManyChat, com o WhatsApp autorizado, a
+//    etiqueta SSL26_LISTA_VIP e o link (28/10/2026; ver manychat-lista-vip.ts).
 //
 // 4. Avisa a Meta pela Conversions API (evento Lead, content_name
 //    ssl27_lista_vip), com o mesmo event_id que o navegador manda no fbq.
@@ -163,6 +166,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(503).json({ error: 'Não conseguimos concluir agora. Tente novamente em instantes.' });
   }
 
+  // Em paralelo com o Brevo: o ManyChat nunca bloqueia nem desfaz a entrada.
+  const manychatPromise = salvarNaListaVipDoManyChat({ nome, telefone, link: erp.link });
+
   // O link já está gravado no ERP. Daqui em diante, uma falha do Brevo não
   // desfaz a entrada: a pessoa vê o link na tela e pode tentar receber de novo.
   let contactStorage = 'skipped';
@@ -225,9 +231,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
+  const manychat = await manychatPromise;
   console.log(JSON.stringify({
     level: 'info', message: 'SSL26 Lista VIP', route: '/api/lista-vip', indicacao: erp.indicacao,
-    contactStorage, emailDelivery, metaCapi, durationMs: Date.now() - startedAt,
+    contactStorage, emailDelivery, metaCapi, manychat, durationMs: Date.now() - startedAt,
   }));
   return res.status(200).json({ success: true, link: erp.link, codigo: erp.codigo, emailDelivery });
 }
