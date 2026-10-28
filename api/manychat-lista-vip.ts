@@ -67,7 +67,11 @@ export async function salvarNaListaVipDoManyChat(dados: {
       // ManyChat recusa a criação, e a gente procura pelo telefone.
       if (!(erro instanceof ErroManyChat) || erro.http >= 500) throw erro;
       resultado = 'updated';
-      id = idDoContato(await pedir(chave, `findBySystemField?phone=${encodeURIComponent(dados.telefone)}`, 'GET'));
+      // O ManyChat guarda o telefone do WhatsApp sem o "+"; tenta dos dois jeitos.
+      for (const telefone of [dados.telefone.replace(/^\+/, ''), dados.telefone]) {
+        id = idDoContato(await pedir(chave, `findBySystemField?phone=${encodeURIComponent(telefone)}`, 'GET').catch(() => null));
+        if (id) break;
+      }
       if (!id) return 'not_found';
     }
     if (!id) return 'failed';

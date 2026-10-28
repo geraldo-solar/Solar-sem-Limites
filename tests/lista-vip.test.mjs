@@ -251,7 +251,7 @@ test('contato que ja existe no ManyChat e achado pelo telefone e ganha etiqueta 
   delete process.env.MANYCHAT_API_KEY;
   assert.equal(res.statusCode, 200);
   const operacoes = doManyChat().map((c) => c.url.replace('https://api.manychat.com/fb/subscriber/', ''));
-  assert.deepEqual(operacoes, ['createSubscriber', 'findBySystemField?phone=%2B5591981110002', 'addTagByName', 'setCustomFieldByName']);
+  assert.deepEqual(operacoes, ['createSubscriber', 'findBySystemField?phone=5591981110002', 'addTagByName', 'setCustomFieldByName']);
   assert.equal(doManyChat()[2].corpo.subscriber_id, '7007');
   assert.equal(logFinal().manychat, 'updated');
 });
@@ -274,4 +274,23 @@ test('sem o ERP nada vai para o ManyChat', async () => {
   delete process.env.MANYCHAT_API_KEY;
   assert.equal(res.statusCode, 503);
   assert.equal(doManyChat().length, 0);
+});
+
+test('contato existente so com o + no ManyChat tambem e achado; sem achar, nada e gravado', async () => {
+  process.env.MANYCHAT_API_KEY = 'chave-de-teste';
+  comManyChat((operacao) => {
+    if (operacao === 'createSubscriber') return Response.json({ status: 'error' }, { status: 400 });
+    if (operacao === 'findBySystemField?phone=%2B5591981110002') return ok({ id: '55' });
+    if (operacao.startsWith('findBySystemField')) return Response.json({ status: 'error' }, { status: 400 });
+    return ok({});
+  });
+  await enviar(valido);
+  assert.equal(logFinal().manychat, 'updated');
+  comManyChat((operacao) => (operacao === 'createSubscriber' || operacao.startsWith('findBySystemField'))
+    ? Response.json({ status: 'error' }, { status: 400 }) : ok({}));
+  chamadas = []; logs = [];
+  await enviar(valido);
+  delete process.env.MANYCHAT_API_KEY;
+  assert.equal(logFinal().manychat, 'not_found');
+  assert.ok(!doManyChat().some((c) => c.url.endsWith('addTagByName')));
 });
