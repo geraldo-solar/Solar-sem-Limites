@@ -261,5 +261,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     level: 'info', message: 'SSL26 Lista VIP', route: '/api/lista-vip', indicacao: erp.indicacao,
     contactStorage, emailDelivery, metaCapi, manychat, durationMs: Date.now() - startedAt,
   }));
-  return res.status(200).json({ success: true, link: erp.link, codigo: erp.codigo, emailDelivery });
+  // Entrou pelo próprio link com o mesmo WhatsApp ou e-mail: a página avisa
+  // que não conta como indicação (decisão de Geraldo em 29/10/2026).
+  return res.status(200).json({
+    success: true, link: erp.link, codigo: erp.codigo, emailDelivery, propriaIndicacao: erp.indicacao === 'propria',
+  });
 }

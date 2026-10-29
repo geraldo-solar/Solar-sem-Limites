@@ -92,6 +92,37 @@ function registrar(evento: string, params: Record<string, string | boolean> = {}
 
 const formatarTelefone = formatarTelefoneBR;
 
+// Autoindicação (decisão de Geraldo em 29/10/2026): o aparelho lembra o código
+// de quem já entrou, para avisar quando a pessoa abre o próprio link. Não
+// bloqueia nada: o convite segue no envio, porque outra pessoa da casa pode
+// estar usando o mesmo celular; o ERP é que decide se a indicação vale.
+const CHAVE_DO_MEU_CODIGO = 'ssl27_meu_codigo_lista_vip';
+
+export function lembrarMeuCodigo(codigo: string) {
+  try {
+    if (/^[A-Z0-9_-]{4,40}$/i.test(codigo)) window.localStorage.setItem(CHAVE_DO_MEU_CODIGO, codigo.toUpperCase());
+  } catch {
+    // Sem armazenamento (aba anônima, por exemplo): só não haverá o aviso.
+  }
+}
+
+export function meuCodigoNoAparelho(): string {
+  try {
+    return (window.localStorage.getItem(CHAVE_DO_MEU_CODIGO) || '').toUpperCase();
+  } catch {
+    return '';
+  }
+}
+
+export const AVISO_DO_PROPRIO_LINK = 'Esse é o seu link pessoal. Você já está na Lista VIP. Compartilhe com família e amigos: quem entrar por ele conta como sua indicação.';
+export const AVISO_DA_PROPRIA_INDICACAO = 'Você entrou pelo seu próprio link, então essa entrada não conta como indicação. Seu lugar na Lista VIP continua garantido, e o seu link é este aqui embaixo.';
+export const AVISO_DO_DDD_55 = 'Se esse 55 é o código do Brasil, apague: digite só o DDD e o número.';
+
+/** DDD 55 digitado: quase sempre é o código do país, que corta os dois últimos dígitos. */
+export function pareceCodigoDoPais(telefone: string) {
+  return telefone.replace(/\D/g, '').startsWith('55');
+}
+
 const assetUrl = (arquivo: string) => `${import.meta.env.BASE_URL}${arquivo.replace(/^\/+/, '')}`;
 
 const VANTAGENS = [
@@ -120,6 +151,8 @@ export default function ListaVip() {
   const [link, setLink] = useState('');
   const [emailSuprimido, setEmailSuprimido] = useState(false);
   const [copiado, setCopiado] = useState(false);
+  const [proprioLink, setProprioLink] = useState(false);
+  const [propriaIndicacao, setPropriaIndicacao] = useState(false);
 
   useEffect(() => {
     document.title = 'Lista VIP Solar Sem Limites 2027 | Hotel Solar';
@@ -127,6 +160,7 @@ export default function ListaVip() {
     // segue até o checkout pela página de vendas.
     const codigo = registrarIndicacaoDaUrl().toUpperCase();
     setConvite(codigo);
+    setProprioLink(Boolean(codigo) && codigo === meuCodigoNoAparelho());
     let ativo = true;
     horaDoServidor().then((agora) => {
       if (!ativo) return;
@@ -163,6 +197,8 @@ export default function ListaVip() {
         throw new Error(typeof dados.error === 'string' ? dados.error : 'Não conseguimos concluir agora. Tente novamente em instantes.');
       }
       setLink(dados.link);
+      if (typeof dados.codigo === 'string') lembrarMeuCodigo(dados.codigo);
+      setPropriaIndicacao(dados.propriaIndicacao === true);
       setEmailSuprimido(dados.emailDelivery === 'suppressed');
       setEtapa('pronto');
       registrar('ssl26_lista_vip_entrou', { convite_presente: Boolean(convite) });
@@ -210,11 +246,15 @@ export default function ListaVip() {
             className="mb-6 h-16 w-auto sm:mb-8 sm:h-20"
           />
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e1c084]">Hotel Solar · Salinópolis</p>
-          {convite && etapa !== 'pronto' && (
+          {convite && etapa !== 'pronto' && (proprioLink ? (
+            <p id="aviso-proprio-link" className="mt-4 max-w-xl rounded-2xl bg-white/15 px-4 py-3 text-sm font-semibold leading-relaxed text-[#f3e8d2]">
+              {AVISO_DO_PROPRIO_LINK}
+            </p>
+          ) : (
             <p className="mt-4 inline-flex rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-[#f3e8d2]">
               Você recebeu um convite para a Lista VIP
             </p>
-          )}
+          ))}
           <h1 className="mt-4 max-w-2xl font-serif text-4xl font-semibold leading-tight sm:text-5xl">
             Lista VIP Solar Sem Limites 2027
           </h1>
@@ -268,7 +308,10 @@ export default function ListaVip() {
                   <label htmlFor="whatsapp" className="mb-1.5 block text-sm font-bold text-[#284f48]">WhatsApp</label>
                   <input id="whatsapp" name="whatsapp" type="tel" inputMode="tel" autoComplete="tel" required minLength={14}
                     value={telefone} onChange={(e) => setTelefone(formatarTelefone(e.target.value))} className={campo}
-                    placeholder="(91) 99999-9999" />
+                    placeholder="(91) 99999-9999" aria-describedby={pareceCodigoDoPais(telefone) ? 'aviso-ddd-55' : undefined} />
+                  {pareceCodigoDoPais(telefone) && (
+                    <p id="aviso-ddd-55" className="mt-1.5 text-sm font-semibold text-[#9a5b13]">{AVISO_DO_DDD_55}</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="email" className="mb-1.5 block text-sm font-bold text-[#284f48]">E-mail</label>
@@ -319,6 +362,11 @@ export default function ListaVip() {
                   ? 'Seu lugar na lista está garantido. Desta vez não enviamos o e-mail: guarde o seu link abaixo.'
                   : 'Seu lugar na lista está garantido. Mandamos também um e-mail com o seu link; confira a caixa de spam.'}
               </p>
+              {propriaIndicacao && (
+                <p id="aviso-propria-indicacao" className="mt-4 rounded-xl bg-[#fbf3e4] px-4 py-3 text-sm font-semibold leading-relaxed text-[#7a4f12]">
+                  {AVISO_DA_PROPRIA_INDICACAO}
+                </p>
+              )}
               <div className="mt-6 rounded-2xl border border-[#d9e4df] bg-[#f4f8f6] p-5">
                 <p className="text-sm font-bold text-[#284f48]">Seu link pessoal</p>
                 <p className="mt-2 break-all rounded-lg bg-white px-3 py-2.5 font-mono text-sm text-[#173a35]">{link}</p>

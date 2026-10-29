@@ -105,3 +105,60 @@ test('quem chega por anuncio ou e-mail leva a origem na mensagem pronta do Whats
   await novaVisita('/solarsemlimitescadastro/#/vip');
   await expect(page.getByRole('link', { name: 'Prefiro entrar pelo WhatsApp' })).toHaveAttribute('href', /text=Quero%20entrar%20na%20Lista%20VIP%20Solar%20Sem%20Limites%202027$/);
 });
+
+test('aviso do proprio link: o aparelho lembra quem ja entrou, sem tirar o convite do envio (29/10/2026)', async ({ page }) => {
+  await servidorEm(page, '2026-10-29T10:00:00-03:00');
+  let pedido: Record<string, unknown> | null = null;
+  let resposta = { success: true, link: LINK, codigo: 'K7M2QX9A', emailDelivery: 'accepted', propriaIndicacao: false };
+  await page.route('**/api/lista-vip', async (rota) => {
+    pedido = rota.request().postDataJSON();
+    await rota.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(resposta) });
+  });
+  const preencher = async () => {
+    await page.getByLabel('Nome', { exact: true }).fill('Bia Souza');
+    await page.getByLabel('WhatsApp', { exact: true }).fill('91981110002');
+    await page.getByLabel('E-mail', { exact: true }).fill('bia@example.test');
+    await page.getByRole('checkbox').check();
+    await page.getByRole('button', { name: 'Entrar na Lista VIP' }).click();
+  };
+
+  // Primeira entrada, sem convite: o aparelho guarda o código dela.
+  await page.goto('/solarsemlimitescadastro/#/vip');
+  await preencher();
+  await expect(page.getByText('Pronto, Bia!')).toBeVisible();
+  await expect(page.locator('#aviso-propria-indicacao')).toHaveCount(0);
+
+  // Ela abre o próprio link: aviso no lugar do "convite".
+  await page.goto('/solarsemlimitescadastro/#/vip?ref=k7m2qx9a');
+  await page.reload();
+  await expect(page.locator('#aviso-proprio-link')).toHaveText(/Esse é o seu link pessoal\. Você já está na Lista VIP\./);
+  await expect(page.getByText('Você recebeu um convite para a Lista VIP')).toHaveCount(0);
+
+  // Mesmo assim envia: o convite vai junto e o ERP responde que é a própria.
+  resposta = { ...resposta, propriaIndicacao: true };
+  await preencher();
+  expect(pedido).toMatchObject({ convite: 'K7M2QX9A' });
+  await expect(page.locator('#aviso-propria-indicacao')).toHaveText(/não conta como indicação/);
+  await expect(page.getByText(LINK)).toBeVisible();
+
+  // Link de outra pessoa continua como convite.
+  await page.goto('/solarsemlimitescadastro/#/vip?ref=abc12345');
+  await page.reload();
+  await expect(page.getByText('Você recebeu um convite para a Lista VIP')).toBeVisible();
+  await expect(page.locator('#aviso-proprio-link')).toHaveCount(0);
+});
+
+test('DDD 55 digitado mostra o aviso do codigo do pais; outro DDD nao (29/10/2026)', async ({ page }) => {
+  await servidorEm(page, '2026-10-29T10:00:00-03:00');
+  await page.goto('/solarsemlimitescadastro/#/vip');
+  const campo = page.getByLabel('WhatsApp', { exact: true });
+  await campo.pressSequentially('5591998');
+  await expect(page.locator('#aviso-ddd-55')).toHaveText('Se esse 55 é o código do Brasil, apague: digite só o DDD e o número.');
+  await expect(campo).toHaveAttribute('aria-describedby', 'aviso-ddd-55');
+  await campo.pressSequentially('123456');
+  await expect(campo).toHaveValue('(91) 99812-3456');
+  await expect(page.locator('#aviso-ddd-55')).toHaveCount(0);
+  await campo.fill('');
+  await campo.pressSequentially('91981110002');
+  await expect(page.locator('#aviso-ddd-55')).toHaveCount(0);
+});

@@ -71,7 +71,7 @@ const valido = { nome: ' Bia  Souza ', telefone: '(91) 98111-0002', email: ' Bia
 test('entra na lista: link do ERP, contato na lista 25 e e-mail com o link', async () => {
   const res = await enviar(valido);
   assert.equal(res.statusCode, 200);
-  assert.deepEqual(res.body, { success: true, link: 'https://www.hotelsolar.tur.br/vip?ref=K7M2QX9A', codigo: 'K7M2QX9A', emailDelivery: 'accepted' });
+  assert.deepEqual(res.body, { success: true, link: 'https://www.hotelsolar.tur.br/vip?ref=K7M2QX9A', codigo: 'K7M2QX9A', emailDelivery: 'accepted', propriaIndicacao: false });
 
   const [pedidoErp] = chamadas;
   assert.equal(pedidoErp.url, 'https://erp.example.test/api/ssl26/lista-vip');
@@ -307,4 +307,16 @@ test('UTMs do link da pagina vao para o ERP; endereco de fora do site e ignorado
   chamadas = [];
   await enviar({ ...valido, pageUrl: 'https://www.hotelsolar.tur.br/vip?ref=K7M2QX9A' });
   assert.equal(chamadas[0].corpo.rastreio, undefined, 'sem UTM, nada vai');
+});
+
+test('entrou pelo proprio link: a pagina fica sabendo que nao conta como indicacao (29/10/2026)', async () => {
+  erp.body.indicacao = 'propria';
+  const res = await enviar(valido);
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.propriaIndicacao, true);
+  assert.equal(res.body.link, 'https://www.hotelsolar.tur.br/vip?ref=K7M2QX9A');
+  for (const outra of ['registrada', 'outra_indicacao_vale', 'sem_convite', '']) {
+    erp.body.indicacao = outra;
+    assert.equal((await enviar(valido)).body.propriaIndicacao, false, outra);
+  }
 });
