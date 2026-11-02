@@ -2,6 +2,8 @@ import { CustomerData } from "../types";
 
 export interface ResultadoSincronizacao {
   ok: boolean;
+  /** Id da compra no ERP; a volta da Cielo confere o pagamento por ele. */
+  id?: string;
   /** Carrinho fora da janela de venda: o pedido não entrou e não deve ser reenviado. */
   carrinhoFechado?: boolean;
   /** Texto pronto para mostrar ao cliente quando o carrinho está fechado. */
@@ -43,7 +45,7 @@ export const sendOrderToErp = async (order: CustomerData, campaign?: 'ssl26_nove
     const dados = await response.json().catch(() => ({}));
     const url = typeof dados?.checkoutUrl === "string" && PAGINA_DA_CIELO.test(dados.checkoutUrl)
       ? dados.checkoutUrl : null;
-    return { ok: dados?.success === true, checkoutUrl: url, pagamentoIndisponivel: dados?.pagamentoIndisponivel === true };
+    return { ok: dados?.success === true, id: typeof dados?.id === "string" ? dados.id : undefined, checkoutUrl: url, pagamentoIndisponivel: dados?.pagamentoIndisponivel === true };
   } catch (error) {
     console.error("❌ Erro ao sincronizar pedido com o ERP:", error);
     return { ok: false };
