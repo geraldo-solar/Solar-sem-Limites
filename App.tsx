@@ -6,6 +6,7 @@ import VendasNovembro from './VendasNovembro';
 import PagamentoConcluido from './PagamentoConcluido';
 import ListaVip from './ListaVip';
 import { quantidadeDoLinkCheckout } from './testeManualCheckout';
+import { lerPedidoDaVolta } from './pagamentoDaCompra';
 
 interface Props { children: React.ReactNode; }
 interface State { hasError: boolean; error: Error | null; }
@@ -61,8 +62,8 @@ export default function App() {
   if (hash.split('?')[0] === '#/checkout') {
     content = <CheckoutPage quantidadeInicial={quantidadeDoLinkCheckout(hash)} />;
   } else if (hash === '#/obrigado') {
-    // Retorno da página de pagamento da Cielo.
-    content = <PagamentoConcluido />;
+    // Retorno da página de pagamento da Cielo, com a compra a conferir.
+    content = <PagamentoConcluido pedido={lerPedidoDaVolta()} />;
   } else if (isListaVipRoute) {
     content = <ListaVip />;
   } else if (hash.startsWith('#/vendas') || isSalesRoute) {

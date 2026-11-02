@@ -9,6 +9,7 @@ import { nextCampaignOrder, type CampaignOrderIdentity } from './identidadePedid
 import { executarCheckoutComTeste, testeManualCheckoutAtivo, testeRealCheckoutAtivo } from './testeManualCheckout';
 import { NOME_DO_PACOTE, TITULO_DO_PACOTE } from './nomeDoPacote';
 import { ContatosDoHotel, EMAIL_RESERVAS, MENSAGEM_CHECKOUT, MENSAGEM_DUVIDA, MENSAGEM_PAGAMENTO } from './contatosDoHotel';
+import { guardarPedidoParaAVolta } from './pagamentoDaCompra';
 
 interface StatusCarrinho {
   aberto: boolean;
@@ -122,10 +123,14 @@ export default function CheckoutPage({ quantidadeInicial = 1 }: { quantidadeInic
       } else if (!resultadoErp.checkoutUrl) {
         setConcluido({ tipo: 'cielo_indisponivel' });
       } else if (data.paymentMethod === 'credit_card') {
-        // Só cartão: segue direto para a Cielo, sem tela no meio.
+        // Só cartão: segue direto para a Cielo, sem tela no meio. Guarda o
+        // pedido para a tela de retorno saber o que conferir mesmo se a
+        // Cielo voltar sem o id no endereço.
+        guardarPedidoParaAVolta(resultadoErp.id);
         window.location.assign(resultadoErp.checkoutUrl);
         return;
       } else {
+        guardarPedidoParaAVolta(resultadoErp.id);
         // Pix + cartão: primeiro mostra o Pix da entrada, depois o botão da Cielo.
         setConcluido({ tipo: 'cartao_na_cielo', url: resultadoErp.checkoutUrl, entradaPix: true });
       }
