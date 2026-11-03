@@ -10,6 +10,7 @@ import { executarCheckoutComTeste, testeManualCheckoutAtivo, testeRealCheckoutAt
 import { NOME_DO_PACOTE, TITULO_DO_PACOTE } from './nomeDoPacote';
 import { ContatosDoHotel, EMAIL_RESERVAS, MENSAGEM_CHECKOUT, MENSAGEM_DUVIDA, MENSAGEM_PAGAMENTO } from './contatosDoHotel';
 import { guardarPedidoParaAVolta } from './pagamentoDaCompra';
+import { AVISO_WHATSAPP } from './avisoWhatsapp';
 
 interface StatusCarrinho {
   aberto: boolean;
@@ -91,6 +92,8 @@ export default function CheckoutPage({ quantidadeInicial = 1 }: { quantidadeInic
         referral: testeReal ? undefined : indicacaoDaVisita() || undefined,
         // O formulário só envia com o aceite marcado; o ERP grava a hora.
         aceite: { versao: VERSAO_DO_REGULAMENTO },
+        // O formulário mostra o aviso junto do telefone; o ERP grava a hora.
+        avisoWhatsapp: { versao: AVISO_WHATSAPP.versao },
         cartaoNaCielo: cartaoNaCielo || undefined,
         // Na Cielo o cartão é digitado lá; nada de cartão sai daqui.
         cardNumber: undefined, cardHolder: undefined, cardExpiryMonth: undefined,

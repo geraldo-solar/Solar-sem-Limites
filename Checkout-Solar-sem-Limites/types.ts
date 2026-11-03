@@ -39,6 +39,8 @@ export interface CustomerData {
   cartaoNaCielo?: boolean;
   /** Versão do regulamento aceita no checkout (prova do aceite, COM-05). */
   aceite?: { versao: string };
+  /** Versão do aviso de WhatsApp mostrado junto do telefone (avisoWhatsapp.ts). */
+  avisoWhatsapp?: { versao: string };
 }
 
 export interface OrderState {

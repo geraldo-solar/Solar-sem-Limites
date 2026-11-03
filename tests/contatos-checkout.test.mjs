@@ -73,3 +73,7 @@ test('o número do ManyChat nunca vira link de ligação; o regulamento aceito s
   for (const html of [renderCheckout(), renderRetorno()]) assert.doesNotMatch(html, /tel:\+5591981229825/);
   assert.match(renderForm(), /WhatsApp \(91 98100-0800\)/);
 });
+
+test('telefone: o aviso de WhatsApp aparece junto do campo, com o texto que o ERP espera', () => {
+  assert.match(renderForm(), /Também avisamos sobre o seu pedido pelo WhatsApp do Hotel Solar\./);
+});
