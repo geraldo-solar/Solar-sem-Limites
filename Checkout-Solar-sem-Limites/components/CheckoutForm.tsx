@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { Icons, UNIT_PRICE, CREDIT_CARD_SURCHARGE, formatCurrency } from '../constants';
 import { CustomerData } from '../types';
+import { AVISO_WHATSAPP } from '../../avisoWhatsapp';
 
 interface CheckoutFormProps {
   onSubmit: (data: CustomerData) => Promise<void>;
@@ -576,7 +577,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading,
               placeholder="(00) 00000-0000"
             />
             {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
-            <p className="text-xs text-gray-500 mt-1">Necessário para contato sobre assuntos relativos à reserva. Informe também o DDD</p>
+            <p className="text-xs text-gray-500 mt-1">Necessário para contato sobre assuntos relativos à reserva. Informe também o DDD. {AVISO_WHATSAPP.texto}</p>
           </div>
 
           <div>
