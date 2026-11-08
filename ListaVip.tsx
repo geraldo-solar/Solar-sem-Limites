@@ -31,6 +31,8 @@ export const MENSAGEM_ENTRAR_PELO_WHATSAPP = 'Quero entrar na Lista VIP Solar Se
 // semana mais procurado de julho), conferido no motor em 07/11/2026.
 export const RESUMO_DO_PACOTE = {
   titulo: 'Solar Sem Limites 2027',
+  // Mesmas palavras do topo da página de vendas (aprovado por Geraldo em 07/11/2026).
+  oQueE: 'É um pacote de diárias no Hotel Solar que você compra antecipadamente e usa quando fizer sentido para a sua família.',
   chamada: 'Economize de 23% a 67% nas diárias e escolha quando vir, na baixa ou na alta temporada, fora do Réveillon.',
   itens: [
     'Apartamento para até 4 pessoas',
@@ -48,7 +50,8 @@ function ResumoDoPacote({ id, escuro = false, className = '' }: { id: string; es
   return (
     <div id={id} className={`rounded-2xl border p-5 ${cor.caixa} ${className}`}>
       <p className={`font-serif text-xl font-semibold ${cor.titulo}`}>{RESUMO_DO_PACOTE.titulo}</p>
-      <p className={`mt-2 text-base font-semibold leading-relaxed ${cor.chamada}`}>{RESUMO_DO_PACOTE.chamada}</p>
+      <p className={`mt-2 text-base font-bold leading-relaxed ${cor.chamada}`}>{RESUMO_DO_PACOTE.oQueE}</p>
+      <p className={`mt-2 text-base leading-relaxed ${cor.chamada}`}>{RESUMO_DO_PACOTE.chamada}</p>
       <ul className="mt-3 space-y-1.5">
         {RESUMO_DO_PACOTE.itens.map(item => (
           <li key={item} className={`flex gap-2 text-[15px] leading-snug ${cor.item}`}>
