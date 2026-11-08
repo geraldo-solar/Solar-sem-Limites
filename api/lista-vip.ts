@@ -38,7 +38,8 @@ const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'geraldo@hotelsolar.tur.b
 const SENDER_NAME = process.env.BREVO_SENDER_NAME || 'Geraldo | Hotel Solar';
 const REPLY_TO_EMAIL = process.env.BREVO_REPLY_TO_EMAIL || 'reserva@hotelsolar.tur.br';
 const REPLY_TO_NAME = process.env.BREVO_REPLY_TO_NAME || 'Reservas | Hotel Solar';
-const REGULAMENTO_URL = 'https://www.hotelsolar.tur.br/solarsemlimites2026/Regulamento_SSL.pdf';
+// Só as regras da indicação (item 10) na Lista VIP; o regulamento completo fica na página de vendas (Geraldo, 08/11/2026).
+const REGRAS_DA_INDICACAO_URL = 'https://www.hotelsolar.tur.br/vip#regras-indicacao';
 const WHATSAPP_ATENDIMENTO = '(91) 98122-9825';
 const WHATSAPP_ATENDIMENTO_LINK = 'https://wa.me/5591981229825';
 const EVENTO_FORMATO = /^[A-Za-z0-9_-]{8,100}$/;
@@ -111,7 +112,7 @@ export function emailDeBoasVindas(nome: string, link: string) {
       'Visita guiada ao vivo pelo hotel: 24 de novembro de 2026, às 19h (horário de Belém).',
       'Abertura das vendas: 25 de novembro de 2026, às 8h.',
       `Seu link pessoal para chamar família e amigos: ${link}`,
-      `${regra} Condições no regulamento: ${REGULAMENTO_URL}`,
+      `${regra} Regras da indicação: ${REGRAS_DA_INDICACAO_URL}`,
       `Siga o canal Solar Sem Limites no WhatsApp para receber primeiro as datas, as condições e o aviso da abertura das vendas: ${CANAL_DO_LANCAMENTO}`,
       `Dúvidas? WhatsApp ${WHATSAPP_ATENDIMENTO}.`,
       'Você recebeu esta mensagem porque entrou na Lista VIP na página do Hotel Solar.',
@@ -140,7 +141,7 @@ export function emailDeBoasVindas(nome: string, link: string) {
                 <p style="font-size:15px;line-height:1.6;color:#52625e;margin:8px 0 12px">Chame família e amigos para a Lista VIP com o seu link:</p>
                 <p style="font-size:15px;margin:0 0 16px;word-break:break-all"><a href="${linkSeguro}" style="color:#0f5c45;font-weight:bold">${linkSeguro}</a></p>
                 <a href="${escapeHtml(compartilhar)}" style="display:inline-block;background:#0f5c45;color:#fff;text-decoration:none;font-weight:bold;padding:13px 20px;border-radius:10px">Compartilhar no WhatsApp</a>
-                <p style="font-size:14px;line-height:1.6;color:#52625e;margin:16px 0 0">${escapeHtml(regra)} <a href="${REGULAMENTO_URL}" style="color:#0f5c45">Condições no regulamento</a>.</p>
+                <p style="font-size:14px;line-height:1.6;color:#52625e;margin:16px 0 0">${escapeHtml(regra)} <a href="${REGRAS_DA_INDICACAO_URL}" style="color:#0f5c45">Regras da indicação</a>.</p>
               </div>
               <div style="border:1px solid #e4d5b5;background:#faf5e9;padding:20px;margin:24px 0;border-radius:12px">
                 <strong style="font-size:17px">Canal do lançamento no WhatsApp</strong>

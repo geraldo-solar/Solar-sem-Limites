@@ -17,7 +17,9 @@ import { formatarTelefoneBR } from './telefoneBR';
 // servidor, para um celular com relógio errado não mudar o destino.
 export const ABERTURA_DAS_VENDAS = '2026-11-25T08:00:00-03:00';
 const PAGINA_DE_VENDAS = '/solarsemlimites2027';
-const REGULAMENTO_URL = '/solarsemlimites2026/Regulamento_SSL.pdf';
+// O regulamento completo (com preço) fica para a página de vendas e o checkout;
+// na Lista VIP só as regras da indicação (item 10), por decisão de Geraldo em 08/11/2026.
+const REGRAS_DA_INDICACAO_ANCORA = '#regras-indicacao';
 // Canal do lançamento no WhatsApp, "Solar Sem Limites | Canal VIP" (o mesmo
 // link de antes; confirmado por Geraldo em 20/10/2026).
 export const CANAL_DO_LANCAMENTO = 'https://whatsapp.com/channel/0029Vb8iEz73gvWjJea5rt3k';
@@ -64,6 +66,22 @@ function ResumoDoPacote({ id, escuro = false, className = '' }: { id: string; es
       <p className={`mt-3 text-[11px] leading-snug ${cor.rodape}`}>{RESUMO_DO_PACOTE.rodape}</p>
     </div>
   );
+}
+
+// Texto do item 10 do regulamento (versão 2026-10-10), copiado sem alteração.
+const REGRAS_DA_INDICACAO_ITEM_10: [string, string][] = [
+  ['10.1.', 'Recebe um link individual de indicação quem entrar na Lista VIP Solar Sem Limites 2027, pelo WhatsApp oficial do Hotel Solar ou pela página da Lista VIP, e o COMPRADOR com pagamento aprovado que ainda não tenha link.'],
+  ['10.2.', 'É indicado quem entrar na Lista VIP ou comprar o pacote a partir desse link. A indicação fica registrada no cadastro do indicado e é reconhecida na compra pelo WhatsApp, e-mail ou CPF informados. Vale a primeira indicação registrada; links abertos depois não a substituem.'],
+  ['10.3.', 'Por indicado que comprar o pacote até 01/12/2026 às 23h59, com pagamento aprovado, quem indicou recebe 1 diária adicional, válida em datas de baixa temporada (fora de férias e feriados), desde que também tenha comprado o pacote neste lançamento, com pagamento aprovado, até o mesmo prazo.'],
+  ['10.4.', 'A diária é liberada 30 dias após a mais recente das duas compras, a do indicado e a de quem indicou, e segue a validade do pacote mais recente de quem indicou. Se uma das duas compras for cancelada nesse prazo, a diária não é concedida.'],
+  ['10.5.', 'Limite de 5 diárias de indicação por CPF. Não conta como indicação a compra feita pela própria pessoa, com o próprio link ou com o mesmo CPF. A diária de indicação não é sorteio, não pode ser trocada por dinheiro e não pode ser transferida.'],
+];
+
+// O app decide a página pelo hash (#/checkout, #/vip...), então o link para as
+// regras rola até a seção sem trocar o hash.
+function irParaRegrasDaIndicacao(evento: React.MouseEvent<HTMLAnchorElement>) {
+  evento.preventDefault();
+  document.getElementById('regras-indicacao')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 type Etapa = 'verificando' | 'formulario' | 'enviando' | 'pronto';
@@ -181,6 +199,15 @@ const campo = 'w-full rounded-xl border border-[#cbd8d3] bg-[#fbfcfa] px-4 py-3.
 
 export default function ListaVip() {
   const [etapa, setEtapa] = useState<Etapa>('verificando');
+
+  // Quem chega por hotelsolar.tur.br/vip#regras-indicacao (e-mail, WhatsApp)
+  // cai direto nas regras depois que a página aparece.
+  useEffect(() => {
+    if (etapa === 'verificando' || window.location.hash !== REGRAS_DA_INDICACAO_ANCORA) return;
+    const quadro = window.requestAnimationFrame(() =>
+      document.getElementById('regras-indicacao')?.scrollIntoView({ block: 'start' }));
+    return () => window.cancelAnimationFrame(quadro);
+  }, [etapa]);
   const [convite, setConvite] = useState('');
   // Lido do endereço na primeira tela; a prévia local traz as UTMs depois do #.
   const [origem] = useState<OrigemDaVisita>(() => (typeof window === 'undefined' ? null
@@ -335,8 +362,8 @@ export default function ListaVip() {
               <strong className="block text-base text-[#173a35]">Venha com quem você gosta</strong>
               <p className="mt-2">
                 {REGRA_DA_INDICACAO}{' '}
-                <a href={REGULAMENTO_URL} target="_blank" rel="noopener noreferrer" className="underline">
-                  Condições no regulamento
+                <a href={REGRAS_DA_INDICACAO_ANCORA} onClick={irParaRegrasDaIndicacao} className="underline">
+                  Regras da indicação
                 </a>.
               </p>
             </div>
@@ -437,7 +464,7 @@ export default function ListaVip() {
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-[#52625e]">
                   {REGRA_DA_INDICACAO}{' '}
-                  <a href={REGULAMENTO_URL} target="_blank" rel="noopener noreferrer" className="underline">Condições no regulamento</a>.
+                  <a href={REGRAS_DA_INDICACAO_ANCORA} onClick={irParaRegrasDaIndicacao} className="underline">Regras da indicação</a>.
                 </p>
               </div>
               <div className="mt-4 rounded-2xl border border-[#e4d5b5] bg-[#faf5e9] p-5">
@@ -466,6 +493,18 @@ export default function ListaVip() {
               </a>
             </div>
           )}
+        </div>
+      </section>
+
+      <section id="regras-indicacao" className="mx-auto max-w-6xl scroll-mt-6 px-5 pb-14 sm:px-8">
+        <div className="max-w-3xl rounded-2xl border border-[#d9e4df] bg-white p-5 text-sm leading-relaxed text-[#52625e] sm:p-6">
+          <h2 className="font-serif text-xl font-semibold text-[#173a35]">Regras da indicação</h2>
+          <p className="mt-1 text-xs text-slate-500">Item 10 do regulamento do Solar Sem Limites, versão de 10/10/2026.</p>
+          <ol className="mt-4 space-y-2.5">
+            {REGRAS_DA_INDICACAO_ITEM_10.map(([numero, texto]) => (
+              <li key={numero}><strong className="text-[#284f48]">{numero}</strong> {texto}</li>
+            ))}
+          </ol>
         </div>
       </section>
     </main>

@@ -150,10 +150,13 @@ test('convite fora do formato nao vai para o ERP', async () => {
   assert.equal(chamadas[0].corpo.convite, '');
 });
 
-test('e-mail escapa o nome e traz regulamento e WhatsApp de atendimento', () => {
+test('e-mail escapa o nome, traz as regras da indicação (sem o regulamento completo) e o WhatsApp de atendimento', () => {
   const email = emailDeBoasVindas('<b>Ana</b>', 'https://www.hotelsolar.tur.br/vip?ref=K7M2QX9A');
   assert.doesNotMatch(email.htmlContent, /<b>Ana<\/b>/);
-  assert.match(email.htmlContent, /Regulamento_SSL\.pdf/);
+  // Decisão de Geraldo em 08/11/2026: o regulamento (com preço) não vai para a Lista VIP.
+  assert.match(email.htmlContent, /vip#regras-indicacao/);
+  assert.doesNotMatch(email.htmlContent, /Regulamento_SSL\.pdf/);
+  assert.doesNotMatch(email.textContent, /Regulamento_SSL\.pdf/);
   assert.match(email.htmlContent, /98122-9825/);
   assert.match(mensagemParaCompartilhar('L'), /Lista VIP do Solar Sem Limites 2027.*L$/);
 });
