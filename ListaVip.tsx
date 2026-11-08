@@ -23,6 +23,46 @@ const REGULAMENTO_URL = '/solarsemlimites2026/Regulamento_SSL.pdf';
 export const CANAL_DO_LANCAMENTO = 'https://whatsapp.com/channel/0029Vb8iEz73gvWjJea5rt3k';
 export const MENSAGEM_ENTRAR_PELO_WHATSAPP = 'Quero entrar na Lista VIP Solar Sem Limites 2027';
 
+// O que é o pacote, em poucas linhas, para quem chega frio pelo anúncio
+// (texto aprovado por Geraldo em 07/11/2026). Sem preço: valores e detalhes
+// ficam para a visita ao vivo e a página de vendas. Os percentuais vêm do
+// comparativo com o balcão de 2026 da Suíte Quádruplo (R$ 620 por diária
+// regular contra R$ 810 num fim de semana comum e R$ 1.906,67 no fim de
+// semana mais procurado de julho), conferido no motor em 07/11/2026.
+export const RESUMO_DO_PACOTE = {
+  titulo: 'Solar Sem Limites 2027',
+  chamada: 'Economize de 23% a 67% nas diárias e escolha quando vir, na baixa ou na alta temporada, fora do Réveillon.',
+  itens: [
+    'Apartamento para até 4 pessoas',
+    'Café da manhã, bicicletas e passeio de barco incluídos',
+    'Compre sem risco: 30 dias para desistir, com 100% de volta',
+  ],
+  fechamento: 'Valores e detalhes na visita guiada ao vivo, em 24/11, às 19h.',
+  rodape: 'Comparação por diária com o balcão de 2026 do apartamento quádruplo, em fins de semana e feriados. Reservas conforme a disponibilidade. No cartão, o acréscimo de 10% não é devolvido.',
+} as const;
+
+function ResumoDoPacote({ id, escuro = false, className = '' }: { id: string; escuro?: boolean; className?: string }) {
+  const cor = escuro
+    ? { caixa: 'border-white/15 bg-white/10 backdrop-blur-sm', titulo: 'text-[#e1c084]', chamada: 'text-white', item: 'text-[#e8f0ed]', icone: 'text-[#e1c084]', fechamento: 'text-[#f3e8d2]', rodape: 'text-[#b9cdc6]' }
+    : { caixa: 'border-[#d9e4df] bg-white', titulo: 'text-[#0f5c45]', chamada: 'text-[#173a35]', item: 'text-[#284f48]', icone: 'text-[#b18433]', fechamento: 'text-[#0f5c45]', rodape: 'text-[#6b7b77]' };
+  return (
+    <div id={id} className={`rounded-2xl border p-5 ${cor.caixa} ${className}`}>
+      <p className={`font-serif text-xl font-semibold ${cor.titulo}`}>{RESUMO_DO_PACOTE.titulo}</p>
+      <p className={`mt-2 text-base font-semibold leading-relaxed ${cor.chamada}`}>{RESUMO_DO_PACOTE.chamada}</p>
+      <ul className="mt-3 space-y-1.5">
+        {RESUMO_DO_PACOTE.itens.map(item => (
+          <li key={item} className={`flex gap-2 text-[15px] leading-snug ${cor.item}`}>
+            <Check size={18} className={`mt-0.5 shrink-0 ${cor.icone}`} aria-hidden="true" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+      <p className={`mt-3 text-sm font-semibold ${cor.fechamento}`}>{RESUMO_DO_PACOTE.fechamento}</p>
+      <p className={`mt-3 text-[11px] leading-snug ${cor.rodape}`}>{RESUMO_DO_PACOTE.rodape}</p>
+    </div>
+  );
+}
+
 type Etapa = 'verificando' | 'formulario' | 'enviando' | 'pronto';
 
 export function destinoDoLink(agora: Date, codigo: string): string | null {
@@ -261,11 +301,18 @@ export default function ListaVip() {
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-[#dbe8e4]">
             Entre na lista e saiba de tudo primeiro: a visita guiada ao vivo, as condições do pacote e o aviso da abertura das vendas.
           </p>
+          {etapa !== 'pronto' && (
+            // No celular, antes do formulário; no computador, vai para a coluna ao lado dele.
+            <ResumoDoPacote id="resumo-do-pacote" escuro className="mt-6 max-w-xl lg:hidden" />
+          )}
         </div>
       </section>
 
       <section className="relative z-10 mx-auto -mt-8 grid max-w-5xl gap-8 px-4 pb-16 sm:px-6 lg:grid-cols-[1fr_1.05fr]">
         <div className="order-2 lg:order-1 lg:pt-14">
+          {etapa !== 'pronto' && (
+            <ResumoDoPacote id="resumo-do-pacote-lateral" className="mb-10 hidden lg:block" />
+          )}
           <h2 className="font-serif text-2xl font-semibold">Quem está na Lista VIP recebe</h2>
           <ul className="mt-6 space-y-5">
             {VANTAGENS.map(({ icone: Icone, titulo, texto }) => (
