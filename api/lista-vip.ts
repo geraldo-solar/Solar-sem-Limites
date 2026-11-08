@@ -107,6 +107,7 @@ export function emailDeBoasVindas(nome: string, link: string) {
     subject: `${nome}, você está na Lista VIP Solar Sem Limites 2027`,
     textContent: [
       `Olá, ${nome}! Você está na Lista VIP Solar Sem Limites 2027.`,
+      'O Solar Sem Limites 2027 é um pacote de diárias no Hotel Solar que você compra antecipadamente e usa quando fizer sentido para a sua família, com economia de 23% a 67% nas diárias e café da manhã, bicicletas e passeio de barco incluídos. (Comparação com o balcão de 2026, em fins de semana e feriados.)',
       'Visita guiada ao vivo pelo hotel: 24 de novembro de 2026, às 19h (horário de Belém).',
       'Abertura das vendas: 25 de novembro de 2026, às 8h.',
       `Seu link pessoal para chamar família e amigos: ${link}`,
@@ -127,6 +128,8 @@ export function emailDeBoasVindas(nome: string, link: string) {
             </div>
             <div style="background:#fff;padding:32px;border-radius:0 0 20px 20px">
               <p style="font-size:17px;line-height:1.7;margin-top:0">Olá, ${nomeSeguro}!</p>
+              <p style="font-size:16px;line-height:1.7;color:#173a35;margin:0 0 4px"><strong>O Solar Sem Limites 2027 é um pacote de diárias no Hotel Solar que você compra antecipadamente e usa quando fizer sentido para a sua família, com economia de 23% a 67% nas diárias e café da manhã, bicicletas e passeio de barco incluídos.</strong></p>
+              <p style="font-size:12px;line-height:1.5;color:#74817d;margin:0 0 16px">Comparação com o balcão de 2026, em fins de semana e feriados.</p>
               <p style="font-size:16px;line-height:1.7;color:#52625e">A partir de agora, você fica sabendo primeiro de tudo do Solar Sem Limites 2027:</p>
               <div style="border-left:4px solid #d6ad5b;background:#f7f4eb;padding:16px 18px;margin:20px 0">
                 <p style="margin:0 0 8px;line-height:1.6"><strong>24 de novembro, às 19h:</strong> visita guiada ao vivo pelo hotel.</p>
