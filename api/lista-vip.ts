@@ -92,7 +92,7 @@ async function pedirLinkAoErp(dados: {
 }
 
 export function mensagemParaCompartilhar(link: string) {
-  return `Vem comigo para a Lista VIP do Solar Sem Limites 2027, do Hotel Solar, em Salinas. Entre pelo meu link: ${link}`;
+  return `Vem comigo para a Lista VIP do Solar Sem Limites 2027, do Hotel Solar, em Salinas: é um pacote de diárias que a gente compra antecipadamente, com café, bicicletas e passeio de barco. Entre pelo meu link: ${link}`;
 }
 
 export function emailDeBoasVindas(nome: string, link: string) {
