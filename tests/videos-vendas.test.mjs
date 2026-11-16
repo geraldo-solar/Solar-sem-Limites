@@ -41,8 +41,9 @@ test('reserva exatamente quatro vídeos com IDs únicos, sem inventar mídia ou 
   assert.equal(videos.length, 4);
   assert.equal(new Set(videos.map(video => video.id)).size, 4);
   // A apresentação foi publicada em 10/10/2026 e a explicação do pacote em 16/11/2026;
-  // os dois relatos de clientes seguem reservados.
-  for (const video of VIDEOS_DEPOIMENTOS) {
+  // o depoimento 01 (Samara Chaar) também em 16/11/2026; o depoimento 02 segue reservado.
+  assert.ok(VIDEOS_DEPOIMENTOS[0].midia);
+  for (const video of VIDEOS_DEPOIMENTOS.slice(1)) {
     assert.equal(video.midia, undefined);
     assert.equal(video.formato, 'vertical');
     const html = render(video);
@@ -56,7 +57,7 @@ test('reserva exatamente quatro vídeos com IDs únicos, sem inventar mídia ou 
 
 test('explicação aparece antes das opções e preserva apresentação, relatos e condições em texto', () => {
   const html = renderPage();
-  assert.equal((html.match(/Espaço reservado para vídeo/g) || []).length, 2);
+  assert.equal((html.match(/Espaço reservado para vídeo/g) || []).length, 1);
   const explicacao = html.indexOf('id="video-explicacao-pacote"');
   assert.ok(explicacao > html.indexOf('id="video-apresentacao"'));
   assert.ok(explicacao < html.indexOf('As duas opções'));
@@ -75,7 +76,7 @@ test('passeio de barco: a página fala em barqueiros, como o vídeo', () => {
 });
 
 test('capa real é decorativa, lazy e respeita o caminho de publicação', () => {
-  const html = render({ ...VIDEOS_DEPOIMENTOS[0], capa: 'hotel-panoramica-rio.jpg' }, true);
+  const html = render({ ...VIDEOS_DEPOIMENTOS[1], capa: 'hotel-panoramica-rio.jpg' }, true);
   assert.match(html, /src="\/solarsemlimites2026\/hotel-panoramica-rio.jpg"/);
   assert.match(html, /alt=""/);
   assert.match(html, /loading="lazy"/);
@@ -243,6 +244,61 @@ test('arquivos da explicação existem em public/ e as legendas acompanham a fal
     .filter((linha) => linha && !/^(WEBVTT|\d+|.*-->.*)$/.test(linha))
     .join(' ');
   // A última linha da transcrição repete os avisos da tela; as legendas trazem só a fala.
+  const linhas = transcricao.split('\n');
+  assert.match(linhas.at(-1), /^Na tela, ao longo do vídeo: /);
+  assert.equal(textoDasLegendas, linhas.slice(0, -1).join(' '));
+});
+
+test('depoimento da Samara Chaar publicado: vertical, com capa, legendas, transcrição e avisos da tela', () => {
+  const video = VIDEOS_DEPOIMENTOS[0];
+  const html = render(video);
+  assert.match(html, /data-video-formato="vertical"/);
+  assert.match(html, /aspect-\[9\/16\] max-w-\[15rem\]/);
+  assert.match(html, /<video[^>]*preload="none"/);
+  assert.match(html, /poster="\/solarsemlimites2026\/videos\/ssl26\/depoimento-samara-chaar-capa.jpg"/);
+  assert.match(html, /src="\/solarsemlimites2026\/videos\/ssl26\/depoimento-samara-chaar.mp4"/);
+  assert.match(html, /src="\/solarsemlimites2026\/videos\/ssl26\/depoimento-samara-chaar.vtt"/);
+  assert.match(html, /Samara Chaar, cliente do Solar Sem Limites/);
+  assert.doesNotMatch(html, /autoplay|autoPlay|Vídeo em preparação|Espaço reservado/);
+
+  const { transcricao } = video.midia;
+  // Decisão de Geraldo em 16/11: a fala fica inteira e os trechos que não batem com o
+  // regulamento ganham aviso na tela, repetido na transcrição.
+  assert.match(transcricao, /^Olá, eu sou Samara Chaar, sou advogada\./);
+  assert.match(transcricao, /Praia em frente ao hotel, de acesso público\./);
+  assert.match(transcricao, /Reservas conforme a disponibilidade na data pedida\./);
+  assert.doesNotMatch(transcricao, /sem juros|últimas vagas|restam|ilimitad|sorteio|desconto extra|qualquer data|98122-9825/i);
+
+  const page = renderPage();
+  assert.match(page, /<video[^>]*depoimento-samara-chaar.mp4/);
+  assert.ok(page.indexOf('As duas opções') < page.indexOf('id="video-depoimento-1"'));
+});
+
+test('arquivos do depoimento existem em public/ e as legendas acompanham a fala da transcrição', () => {
+  const publico = (arquivo) => fileURLToPath(new URL(`../public/${arquivo}`, import.meta.url));
+  const video = VIDEOS_DEPOIMENTOS[0];
+  const { arquivo, legendas, transcricao } = video.midia;
+  for (const caminho of [arquivo, legendas, video.capa]) {
+    assert.ok(existsSync(publico(caminho)), caminho);
+  }
+  assert.ok(statSync(publico(arquivo)).size < 40 * 1024 * 1024);
+
+  const vtt = readFileSync(publico(legendas), 'utf8');
+  assert.match(vtt, /^WEBVTT\n/);
+  const tempos = [...vtt.matchAll(/(\d\d):(\d\d):(\d\d\.\d{3}) --> (\d\d):(\d\d):(\d\d\.\d{3})/g)].map((m) => [
+    Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]),
+    Number(m[4]) * 3600 + Number(m[5]) * 60 + Number(m[6]),
+  ]);
+  assert.equal(tempos.length, 22);
+  let anterior = 0;
+  for (const [inicio, fim] of tempos) {
+    assert.ok(inicio >= anterior && fim > inicio && fim <= 75.7);
+    anterior = fim;
+  }
+  const textoDasLegendas = vtt
+    .split('\n')
+    .filter((linha) => linha && !/^(WEBVTT|\d+|.*-->.*)$/.test(linha))
+    .join(' ');
   const linhas = transcricao.split('\n');
   assert.match(linhas.at(-1), /^Na tela, ao longo do vídeo: /);
   assert.equal(textoDasLegendas, linhas.slice(0, -1).join(' '));
