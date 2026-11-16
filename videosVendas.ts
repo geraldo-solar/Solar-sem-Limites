@@ -69,13 +69,35 @@ export const VIDEO_EXPLICACAO: VideoVendasConteudo = {
   },
 };
 
+// Depoimento 01 publicado em 16/11/2026, com aprovação de Geraldo: Samara Chaar, cliente do
+// Solar Sem Limites, gravado em 15/11 e enviado pelo álbum compartilhado do Wanderson. Geraldo
+// informou em 16/11 que tem a autorização dela para uso em anúncios, posts e na página.
+// A fala está inteira (só saiu a contagem antes de começar). Por decisão de Geraldo, os dois
+// trechos que não batem com o regulamento ficaram com aviso na tela: "Praia em frente ao hotel,
+// de acesso público." e "Reservas conforme a disponibilidade na data pedida." (item 8).
+// Versão da página: sem legenda queimada (a legenda vem do .vtt) e com a cartela "Regulamento
+// na página". Montagem e fontes: output/depoimento-samara-chaar-2026-11-16.
 export const VIDEOS_DEPOIMENTOS: VideoVendasConteudo[] = [
   {
     id: 'video-depoimento-1',
     categoria: 'Depoimento em vídeo · 01',
     formato: 'vertical',
-    titulo: 'A experiência de comprar o pacote',
-    descricao: 'Espaço reservado para um relato real de cliente do Solar Sem Limites.',
+    titulo: 'Samara Chaar, cliente do Solar Sem Limites',
+    descricao: 'Por que comprar o pacote foi uma das melhores decisões da família, em 1min16.',
+    capa: 'videos/ssl26/depoimento-samara-chaar-capa.jpg',
+    midia: {
+      arquivo: 'videos/ssl26/depoimento-samara-chaar.mp4',
+      legendas: 'videos/ssl26/depoimento-samara-chaar.vtt',
+      transcricao: [
+        'Olá, eu sou Samara Chaar, sou advogada. E a gente vem aqui pra dizer que a gente ama o Hotel Solar e ama Salinas. Ter adquirido o pacote Hotel Solar Sem Limites foi uma das melhores decisões que eu e meu marido tomamos.',
+        'Até porque o hotel tem uma estrutura completa, pra você, pra sua família. O hotel tem vários restaurantes, tem piscina, tem jacuzzi e até a capelinha.',
+        'Então a gente pode contar, principalmente com a estrutura que o hotel dá através do Reserva Solar, que é o restaurante que ele tem, à beira do mar, que te entrega um pôr do sol inesquecível.',
+        'E o principal, você e sua família terão uma praia particular, aonde você fica com a tua família de forma segura e com aquela vista incrível pra praia do Espadarte.',
+        'Então adquirir o pacote do Hotel Solar te traz uma praticidade de não ter que a cada viagem te programar pra uma hospedagem. Você já pode chegar direto ao hotel e ter a tua hospedagem garantida.',
+        'Então vir pra Salinas e ficar no Hotel Solar é certeza que você vai encontrar um ambiente familiar e se sentir em casa.',
+        'Na tela, ao longo do vídeo: Depoimento de cliente: “Uma das melhores decisões”. Samara Chaar, cliente do Solar Sem Limites. Praia em frente ao hotel, de acesso público. Reservas conforme a disponibilidade na data pedida. Regulamento na página.',
+      ].join('\n'),
+    },
   },
   {
     id: 'video-depoimento-2',
