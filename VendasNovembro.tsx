@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AVISO_DE_PRIVACIDADE_URL } from './avisoDePrivacidade';
 import { registrarIndicacaoDaUrl } from './codigoDeIndicacao';
 import VideoVendas from './VideoVendas';
+import AvaliacoesGoogle from './avaliacoesGoogle';
 import { VIDEO_APRESENTACAO, VIDEO_EXPLICACAO, VIDEOS_DEPOIMENTOS } from './videosVendas';
 import { testeManualCheckoutAtivo, testeRealCheckoutAtivo } from './testeManualCheckout';
 import { NOME_DO_PACOTE, TITULO_DO_PACOTE } from './nomeDoPacote';
@@ -662,6 +663,11 @@ export default function VendasNovembro() {
         <h2 className="text-center font-serif text-2xl font-semibold sm:text-3xl">
           Quem já usou
         </h2>
+        {/* Nota do Hotel Solar no Google, em destaque (pedido de Geraldo em 16/11/2026). */}
+        <AvaliacoesGoogle
+          logo={assetUrl('google-avaliacoes.png')}
+          aoAbrir={() => { if (!modoTeste) trackEvent('ssl26_vendas_avaliacoes_google', { origem: 'quem_ja_usou' }); }}
+        />
         <div className="mt-8 grid gap-5 sm:mt-10 md:grid-cols-2">
           {VIDEOS_DEPOIMENTOS.map((video) => (
             <div key={video.id} className="min-w-0">
@@ -682,10 +688,6 @@ export default function VendasNovembro() {
               </footer>
             </blockquote>
           ))}
-        </div>
-        <div className="mt-8 flex items-center justify-center gap-6 opacity-80">
-          <img src={assetUrl('google-reviews-logo.png')} alt="Avaliações no Google" className="h-7 w-auto" loading="lazy" />
-          <img src={assetUrl('booking-logo.png')} alt="Avaliações no Booking" className="h-6 w-auto" loading="lazy" />
         </div>
         <div className="mx-auto mt-10 max-w-sm">
           <Cta origem="apos_depoimentos" destino="#opcoes">
