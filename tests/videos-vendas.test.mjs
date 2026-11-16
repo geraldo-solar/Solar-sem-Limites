@@ -139,21 +139,24 @@ test('transcrição é texto, não HTML executável', () => {
   assert.match(html, /&lt;script&gt;/);
 });
 
-test('apresentação do hotel publicada: horizontal, com capa, legendas e transcrição', () => {
+test('apresentação do hotel publicada: vertical, com capa, legendas e transcrição', () => {
+  // Desde 16/11/2026 a apresentação é a versão vertical; a horizontal saiu da página.
   const html = render(VIDEO_APRESENTACAO, true);
-  assert.match(html, /data-video-formato="horizontal"/);
-  assert.match(html, /aspect-video/);
+  assert.match(html, /data-video-formato="vertical"/);
+  assert.match(html, /aspect-\[9\/16\] max-w-\[21rem\]/);
+  assert.doesNotMatch(html, /aspect-video/);
   assert.match(html, /<video[^>]*preload="none"/);
-  assert.match(html, /poster="\/solarsemlimites2026\/videos\/ssl26\/hotel-solar-apresentacao-capa.jpg"/);
-  assert.match(html, /src="\/solarsemlimites2026\/videos\/ssl26\/hotel-solar-apresentacao.mp4"/);
-  assert.match(html, /src="\/solarsemlimites2026\/videos\/ssl26\/hotel-solar-apresentacao.vtt"/);
+  assert.match(html, /poster="\/solarsemlimites2026\/videos\/ssl26\/hotel-solar-de-perto-vertical-capa.jpg"/);
+  assert.match(html, /src="\/solarsemlimites2026\/videos\/ssl26\/hotel-solar-de-perto-vertical.mp4"/);
+  assert.match(html, /src="\/solarsemlimites2026\/videos\/ssl26\/hotel-solar-de-perto-vertical.vtt"/);
   assert.match(html, /Entre o rio, o mangue e o mar de Salinas, fica o Hotel Solar./);
   assert.match(html, /Hotel Solar. Seu tempo merece esse lugar./);
   assert.doesNotMatch(html, /autoplay|autoPlay|Vídeo em preparação|Espaço reservado/);
 
   const page = renderPage();
   assert.ok(page.indexOf('id="video-apresentacao"') < page.indexOf('id="video-explicacao-pacote"'));
-  assert.match(page, /<video[^>]*hotel-solar-apresentacao.mp4/);
+  assert.match(page, /<video[^>]*hotel-solar-de-perto-vertical.mp4/);
+  assert.doesNotMatch(page, /hotel-solar-apresentacao\.mp4/);
 });
 
 test('arquivos da apresentação existem em public/ e as legendas acompanham a transcrição', () => {
@@ -174,7 +177,7 @@ test('arquivos da apresentação existem em public/ e as legendas acompanham a t
   assert.equal(tempos.length, 13);
   let anterior = 0;
   for (const [inicio, fim] of tempos) {
-    assert.ok(inicio >= anterior && fim > inicio && fim <= 105.3);
+    assert.ok(inicio >= anterior && fim > inicio && fim <= 107.0);
     anterior = fim;
   }
   const textoDasLegendas = vtt

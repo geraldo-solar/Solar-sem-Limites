@@ -7,21 +7,24 @@ import type { VideoVendasConteudo } from './VideoVendas';
 // MP4 e WebVTT devem ser arquivos aprovados, dentro de public/videos/ssl26/.
 // Prioridade para o acervo de Instagram: vertical (9:16). Cada vídeo também
 // aceita formato: 'horizontal' (16:9), sem cortar ou esticar a reprodução.
-// Apresentação publicada em 10/10/2026 a pedido de Geraldo: versão horizontal
-// de 1min45 (output/video-apresentacao-hotel-solar-horizontal-v1), com trilha e
-// narração sintética sem custo. Arquivo web em 720p, baixado só no play.
-// Autorizações de imagem de terceiros ainda em pedido nessa data; lista em
-// output/video-apresentacao-hotel-solar-horizontal-v1/Narracao_e_trilha.md.
+// Apresentação publicada em 10/10/2026 a pedido de Geraldo, em versão horizontal
+// (output/video-apresentacao-hotel-solar-horizontal-v1), com trilha e narração
+// sintética sem custo. Em 16/11/2026, também a pedido dele, passou a ser a versão
+// vertical de 1min47, com as imagens de drone novas e a mesma narração e legenda
+// (output/video-apresentacao-hotel-solar-vertical-2026-11-16). A horizontal saiu
+// da página. Arquivo web em 720 × 1280, baixado só no play. Geraldo informou em
+// 16/11 que tem as autorizações das imagens de terceiros creditadas no vídeo.
+// A capa antiga (hotel-solar-apresentacao-capa.jpg) continua no fundo da Lista VIP.
 export const VIDEO_APRESENTACAO: VideoVendasConteudo = {
   id: 'video-apresentacao',
   categoria: 'Apresentação do Solar',
-  formato: 'horizontal',
+  formato: 'vertical',
   titulo: 'O Hotel Solar, de perto',
-  descricao: 'O hotel, o rio, o mangue e as praias de Salinas, em 1min45.',
-  capa: 'videos/ssl26/hotel-solar-apresentacao-capa.jpg',
+  descricao: 'O hotel, o rio, o mangue e as praias de Salinas, em 1min47.',
+  capa: 'videos/ssl26/hotel-solar-de-perto-vertical-capa.jpg',
   midia: {
-    arquivo: 'videos/ssl26/hotel-solar-apresentacao.mp4',
-    legendas: 'videos/ssl26/hotel-solar-apresentacao.vtt',
+    arquivo: 'videos/ssl26/hotel-solar-de-perto-vertical.mp4',
+    legendas: 'videos/ssl26/hotel-solar-de-perto-vertical.vtt',
     transcricao: [
       'Entre o rio, o mangue e o mar de Salinas, fica o Hotel Solar.',
       'Aqui, o dia começa sem pressa: um bom descanso e a mesa posta para a família.',
