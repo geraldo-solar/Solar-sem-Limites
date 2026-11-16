@@ -303,3 +303,22 @@ test('arquivos do depoimento existem em public/ e as legendas acompanham a fala 
   assert.match(linhas.at(-1), /^Na tela, ao longo do vídeo: /);
   assert.equal(textoDasLegendas, linhas.slice(0, -1).join(' '));
 });
+
+test('nota do Google em destaque, com botão para as avaliações; Booking fora da página', () => {
+  // Pedido de Geraldo em 16/11/2026: tirar a logo do Booking e mostrar a nota do hotel no Google.
+  const page = renderPage();
+  assert.doesNotMatch(page, /booking/i);
+  assert.match(page, /id="avaliacoes-google"/);
+  assert.match(page, /src="\/solarsemlimites2026\/google-avaliacoes.png"/);
+  assert.match(page, /4,6<span[^>]*>\/5<\/span>/);
+  assert.match(page, /Nota 4,6 de 5 em 1\.076 avaliações no Google/);
+  assert.match(page, /href="https:\/\/search\.google\.com\/local\/reviews\?placeid=ChIJxxkGvlJGpQARBBsm-2gBI7k"/);
+  assert.match(page, /target="_blank" rel="noopener noreferrer"/);
+  assert.match(page, /Nota consultada em 16\/11\/2026\./);
+  // Logo de cara, logo abaixo do título da seção, antes dos vídeos e relatos.
+  const titulo = page.indexOf('Quem já usou');
+  const nota = page.indexOf('id="avaliacoes-google"');
+  assert.ok(titulo < nota && nota < page.indexOf('id="video-depoimento-1"'));
+  const logo = fileURLToPath(new URL('../public/google-avaliacoes.png', import.meta.url));
+  assert.ok(existsSync(logo));
+});
