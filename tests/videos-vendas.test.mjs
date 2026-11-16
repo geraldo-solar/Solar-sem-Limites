@@ -67,6 +67,13 @@ test('explicação aparece antes das opções e preserva apresentação, relatos
   assert.match(html, /Ana Paula/);
 });
 
+test('passeio de barco: a página fala em barqueiros, como o vídeo', () => {
+  // Pedido de Geraldo em 12/11 e 16/11/2026: nas peças, "barqueiros", não "pescadores".
+  const html = renderPage();
+  assert.match(html, /conduzido pelos barqueiros da\s+região, terminando com banho na Praia Ponta do Espadarte/);
+  assert.doesNotMatch(html, /pescador/i);
+});
+
 test('capa real é decorativa, lazy e respeita o caminho de publicação', () => {
   const html = render({ ...VIDEOS_DEPOIMENTOS[0], capa: 'hotel-panoramica-rio.jpg' }, true);
   assert.match(html, /src="\/solarsemlimites2026\/hotel-panoramica-rio.jpg"/);

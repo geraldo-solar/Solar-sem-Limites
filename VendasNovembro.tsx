@@ -577,8 +577,8 @@ export default function VendasNovembro() {
             O passeio de barco que já vem incluído
           </h3>
           <p className="mt-3 text-sm leading-relaxed text-[#52625e]">
-            Um passeio pelos manguezais do Rio Arapepó, conduzido por uma associação local
-            de pescadores, terminando com banho na Praia Ponta do Espadarte. Ele não é um
+            Um passeio pelos manguezais do Rio Arapepó, conduzido pelos barqueiros da
+            região, terminando com banho na Praia Ponta do Espadarte. Ele não é um
             extra a comprar: está incluído nas diárias do pacote, junto com o café da manhã
             e as bicicletas.
           </p>
