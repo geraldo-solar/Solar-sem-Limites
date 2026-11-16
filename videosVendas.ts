@@ -37,12 +37,33 @@ export const VIDEO_APRESENTACAO: VideoVendasConteudo = {
   },
 };
 
+// Explicação do pacote publicada em 16/11/2026, com aprovação de Geraldo: gravação
+// de 12/11 (Geraldo em câmera), vertical, 1min54. Arquivo web em 720 × 1280,
+// baixado só no play. As legendas trazem a fala; a última linha da transcrição
+// ("Na tela, ao longo do vídeo: ...") repete os avisos que aparecem na imagem.
+// Montagem e fontes: output/video-venda-ssl27-2026-11-16.
+
 export const VIDEO_EXPLICACAO: VideoVendasConteudo = {
   id: 'video-explicacao-pacote',
   categoria: 'Entenda o pacote',
   formato: 'vertical',
   titulo: 'O Solar Sem Limites, passo a passo',
   descricao: 'O que está incluído, validade, regras do bônus, formas de pagamento e como reservar conforme a disponibilidade.',
+  capa: 'videos/ssl26/solar-sem-limites-passo-a-passo-capa.jpg',
+  midia: {
+    arquivo: 'videos/ssl26/solar-sem-limites-passo-a-passo.mp4',
+    legendas: 'videos/ssl26/solar-sem-limites-passo-a-passo.vtt',
+    transcricao: [
+      'Em dois minutos eu te explico como funciona o Solar Sem Limites. Eu sou o Geraldo, do Hotel Solar, em Salinópolis. Recebemos famílias aqui desde 1973. Sabe aquela viagem com a família que fica sempre para depois? E, quando você decide, paga a diária do dia e tudo de uma vez. O Solar Sem Limites é para isso: você garante o preço agora, divide se quiser, e vem quando der.',
+      'Cada pacote tem 5 diárias, mais uma diária bônus, num apartamento quádruplo para até 4 pessoas. E já vem com café da manhã, bicicletas e o passeio de barco pelos manguezais do Rio Arapepó, com os barqueiros da região, até a praia Ponta do Espadarte.',
+      'Um pacote sai por R$ 3.100 no Pix. São cinco diárias que você pode usar até em julho e nos feriados, fora do Réveillon. E cada uma sai por R$ 620. Comparando com o balcão deste ano de 2026, no fim de semana mais procurado de julho, 67% a menos. No feriado de setembro, 46% a menos. No final de semana comum, 23% a menos. E ainda vem o passeio de barco e a diária bônus.',
+      'Vai vir mais vezes? Dois pacotes, 12 diárias e 2 anos para usar, por R$ 6.200. Dá para pagar no Pix ou em até 12 vezes no cartão.',
+      'E você não corre risco. Desistiu em até 30 dias da compra, devolvemos 100%. E, se não puder vir, o pacote pode ser transferido para outra pessoa.',
+      'Para usar, é só pedir sua data pelo nosso WhatsApp de reservas. E venha com quem você gosta, tá? Cada pessoa que comprar pelo seu link, até 1º de dezembro, te dá uma diária extra.',
+      'As vendas vão até 1º de dezembro, às 11h59 da noite. Escolha a sua opção aqui embaixo. Dúvida? Me chama no WhatsApp.',
+      'Na tela, ao longo do vídeo: 5 diárias regulares fora do Réveillon + 1 bônus na baixa temporada. Validade de 1 ano (2 anos com 2 pacotes). Reservas conforme a disponibilidade. Comparação por diária com as tarifas de balcão de 2026, apartamento quádruplo com café (julho R$ 1.906, 7 de Setembro R$ 1.150, fim de semana R$ 810; no pacote, R$ 620 por diária regular); tarifas de 2027 ainda não publicadas. Cartão em até 12 vezes: 12 × R$ 284,17, total R$ 3.410, com acréscimo de 10%, que não é devolvido em caso de desistência. Indicação: diária de baixa temporada, se você também comprar até 01/12; até 5 por CPF. Reservas pelo WhatsApp (91) 98100-0800 ou reserva@hotelsolar.tur.br. Regulamento na página.',
+    ].join('\n'),
+  },
 };
 
 export const VIDEOS_DEPOIMENTOS: VideoVendasConteudo[] = [

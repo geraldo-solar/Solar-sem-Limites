@@ -40,8 +40,9 @@ test('reserva exatamente quatro vídeos com IDs únicos, sem inventar mídia ou 
   const videos = [VIDEO_APRESENTACAO, VIDEO_EXPLICACAO, ...VIDEOS_DEPOIMENTOS];
   assert.equal(videos.length, 4);
   assert.equal(new Set(videos.map(video => video.id)).size, 4);
-  // A apresentação foi publicada em 10/10/2026; os outros três seguem reservados.
-  for (const video of [VIDEO_EXPLICACAO, ...VIDEOS_DEPOIMENTOS]) {
+  // A apresentação foi publicada em 10/10/2026 e a explicação do pacote em 16/11/2026;
+  // os dois relatos de clientes seguem reservados.
+  for (const video of VIDEOS_DEPOIMENTOS) {
     assert.equal(video.midia, undefined);
     assert.equal(video.formato, 'vertical');
     const html = render(video);
@@ -55,7 +56,7 @@ test('reserva exatamente quatro vídeos com IDs únicos, sem inventar mídia ou 
 
 test('explicação aparece antes das opções e preserva apresentação, relatos e condições em texto', () => {
   const html = renderPage();
-  assert.equal((html.match(/Espaço reservado para vídeo/g) || []).length, 3);
+  assert.equal((html.match(/Espaço reservado para vídeo/g) || []).length, 2);
   const explicacao = html.indexOf('id="video-explicacao-pacote"');
   assert.ok(explicacao > html.indexOf('id="video-apresentacao"'));
   assert.ok(explicacao < html.indexOf('As duas opções'));
@@ -67,13 +68,22 @@ test('explicação aparece antes das opções e preserva apresentação, relatos
 });
 
 test('capa real é decorativa, lazy e respeita o caminho de publicação', () => {
-  const html = render({ ...VIDEO_EXPLICACAO, capa: 'hotel-panoramica-rio.jpg' }, true);
+  const html = render({ ...VIDEOS_DEPOIMENTOS[0], capa: 'hotel-panoramica-rio.jpg' }, true);
   assert.match(html, /src="\/solarsemlimites2026\/hotel-panoramica-rio.jpg"/);
   assert.match(html, /alt=""/);
   assert.match(html, /loading="lazy"/);
   assert.match(html, /aspect-\[9\/16\]/);
-  assert.match(html, /max-w-\[15rem\]/);
   assert.match(html, /sm:grid/);
+});
+
+test('vídeo vertical em destaque fica maior, para os textos da tela serem lidos; os demais seguem compactos', () => {
+  const destaque = render(VIDEO_EXPLICACAO, true);
+  assert.match(destaque, /aspect-\[9\/16\] max-w-\[21rem\]/);
+  assert.match(destaque, /sm:grid-cols-\[minmax\(0,24rem\)_minmax\(0,1fr\)\]/);
+  assert.doesNotMatch(destaque, /max-w-\[15rem\]/);
+  const compacto = render(VIDEOS_DEPOIMENTOS[0]);
+  assert.match(compacto, /aspect-\[9\/16\] max-w-\[15rem\]/);
+  assert.doesNotMatch(compacto, /max-w-\[21rem\]/);
 });
 
 test('mídia aprovada ativa controles, legendas e transcrição, sem autoplay ou download antecipado', () => {
@@ -165,4 +175,65 @@ test('arquivos da apresentação existem em public/ e as legendas acompanham a t
     .filter((linha) => linha && !/^(WEBVTT|\d+|.*-->.*)$/.test(linha))
     .join(' ');
   assert.equal(textoDasLegendas, transcricao.split('\n').join(' '));
+});
+
+test('explicação do pacote publicada: vertical, com capa, legendas e transcrição', () => {
+  const html = render(VIDEO_EXPLICACAO, true);
+  assert.match(html, /data-video-formato="vertical"/);
+  assert.match(html, /<video[^>]*preload="none"/);
+  assert.match(html, /<video[^>]*object-contain/);
+  assert.match(html, /poster="\/solarsemlimites2026\/videos\/ssl26\/solar-sem-limites-passo-a-passo-capa.jpg"/);
+  assert.match(html, /src="\/solarsemlimites2026\/videos\/ssl26\/solar-sem-limites-passo-a-passo.mp4"/);
+  assert.match(html, /src="\/solarsemlimites2026\/videos\/ssl26\/solar-sem-limites-passo-a-passo.vtt"/);
+  assert.match(html, /Em dois minutos eu te explico como funciona o Solar Sem Limites./);
+  assert.match(html, /Ler transcrição do vídeo/);
+  assert.doesNotMatch(html, /autoplay|autoPlay|Vídeo em preparação|Espaço reservado/);
+
+  const page = renderPage();
+  assert.match(page, /<video[^>]*solar-sem-limites-passo-a-passo.mp4/);
+  assert.ok(page.indexOf('id="video-explicacao-pacote"') < page.indexOf('As duas opções'));
+});
+
+test('explicação do pacote diz as regras do lançamento sem promessa proibida', () => {
+  const { transcricao } = VIDEO_EXPLICACAO.midia;
+  assert.match(transcricao, /fora do Réveillon/);
+  assert.match(transcricao, /R\$ 3\.100 no Pix/);
+  assert.match(transcricao, /12 × R\$ 284,17, total R\$ 3\.410, com acréscimo de 10%/);
+  assert.match(transcricao, /1 bônus na baixa temporada/);
+  assert.match(transcricao, /Reservas conforme a disponibilidade/);
+  assert.match(transcricao, /tarifas de balcão de 2026/);
+  assert.match(transcricao, /\(91\) 98100-0800/);
+  assert.match(transcricao, /com os barqueiros da região/);
+  assert.doesNotMatch(transcricao, /sem juros|últimas vagas|restam|ilimitad|sorteio|desconto extra|qualquer data|pescadores|98122-9825/i);
+});
+
+test('arquivos da explicação existem em public/ e as legendas acompanham a fala da transcrição', () => {
+  const publico = (arquivo) => fileURLToPath(new URL(`../public/${arquivo}`, import.meta.url));
+  const { arquivo, legendas, transcricao } = VIDEO_EXPLICACAO.midia;
+  for (const caminho of [arquivo, legendas, VIDEO_EXPLICACAO.capa]) {
+    assert.ok(existsSync(publico(caminho)), caminho);
+  }
+  // Leve para a web: o arquivo só é baixado quando a pessoa aperta o play.
+  assert.ok(statSync(publico(arquivo)).size < 40 * 1024 * 1024);
+
+  const vtt = readFileSync(publico(legendas), 'utf8');
+  assert.match(vtt, /^WEBVTT\n/);
+  const tempos = [...vtt.matchAll(/(\d\d):(\d\d):(\d\d\.\d{3}) --> (\d\d):(\d\d):(\d\d\.\d{3})/g)].map((m) => [
+    Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]),
+    Number(m[4]) * 3600 + Number(m[5]) * 60 + Number(m[6]),
+  ]);
+  assert.equal(tempos.length, 39);
+  let anterior = 0;
+  for (const [inicio, fim] of tempos) {
+    assert.ok(inicio >= anterior && fim > inicio && fim <= 114.3);
+    anterior = fim;
+  }
+  const textoDasLegendas = vtt
+    .split('\n')
+    .filter((linha) => linha && !/^(WEBVTT|\d+|.*-->.*)$/.test(linha))
+    .join(' ');
+  // A última linha da transcrição repete os avisos da tela; as legendas trazem só a fala.
+  const linhas = transcricao.split('\n');
+  assert.match(linhas.at(-1), /^Na tela, ao longo do vídeo: /);
+  assert.equal(textoDasLegendas, linhas.slice(0, -1).join(' '));
 });

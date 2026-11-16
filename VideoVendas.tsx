@@ -30,8 +30,12 @@ export default function VideoVendas({ conteudo, destaque = false }: Props) {
   const midia = conteudo.midia;
   const vertical = conteudo.formato === 'vertical';
   const layoutDestaque = vertical
-    ? 'sm:grid sm:grid-cols-[minmax(0,19rem)_minmax(0,1fr)]'
+    ? 'sm:grid sm:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]'
     : 'lg:grid lg:grid-cols-[1.4fr_1fr]';
+  // Vídeo vertical em destaque: ocupa a largura do cartão no celular (até 21rem),
+  // para os textos da tela serem lidos sem precisar da tela cheia. Os demais
+  // espaços verticais seguem compactos.
+  const larguraVertical = destaque ? 'max-w-[21rem]' : 'max-w-[15rem]';
 
   return (
     <figure
@@ -46,7 +50,7 @@ export default function VideoVendas({ conteudo, destaque = false }: Props) {
         <div
           data-video-formato={conteudo.formato}
           className={`relative w-full shrink-0 overflow-hidden bg-[#0b3d2e] ${
-            vertical ? 'aspect-[9/16] max-w-[15rem] rounded-xl shadow-sm' : 'aspect-video'
+            vertical ? `aspect-[9/16] ${larguraVertical} rounded-xl shadow-sm` : 'aspect-video'
           }`}
         >
       {midia && !indisponivel ? (
