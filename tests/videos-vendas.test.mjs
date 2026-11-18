@@ -262,11 +262,12 @@ test('depoimento da Samara Chaar publicado: vertical, com capa, legendas, transc
   assert.doesNotMatch(html, /autoplay|autoPlay|Vídeo em preparação|Espaço reservado/);
 
   const { transcricao } = video.midia;
-  // Decisão de Geraldo em 16/11: a fala fica inteira e os trechos que não batem com o
-  // regulamento ganham aviso na tela, repetido na transcrição.
+  // Decisão de Geraldo em 16/11: aviso na tela nos trechos que não batem com o regulamento,
+  // repetido na transcrição. Em 18/11 saiu o trecho de "é só chegar" (toda reserva depende de vaga).
   assert.match(transcricao, /^Olá, eu sou Samara Chaar, sou advogada\./);
   assert.match(transcricao, /Praia em frente ao hotel, de acesso público\./);
-  assert.match(transcricao, /Reservas conforme a disponibilidade na data pedida\./);
+  assert.doesNotMatch(transcricao, /chegar direto|hospedagem garantida|programar pra uma hospedagem/);
+  assert.doesNotMatch(transcricao, /Reservas conforme a disponibilidade/);
   assert.doesNotMatch(transcricao, /sem juros|últimas vagas|restam|ilimitad|sorteio|desconto extra|qualquer data|98122-9825/i);
 
   const page = renderPage();
@@ -289,10 +290,10 @@ test('arquivos do depoimento existem em public/ e as legendas acompanham a fala 
     Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]),
     Number(m[4]) * 3600 + Number(m[5]) * 60 + Number(m[6]),
   ]);
-  assert.equal(tempos.length, 22);
+  assert.equal(tempos.length, 19);
   let anterior = 0;
   for (const [inicio, fim] of tempos) {
-    assert.ok(inicio >= anterior && fim > inicio && fim <= 75.7);
+    assert.ok(inicio >= anterior && fim > inicio && fim <= 59.9);
     anterior = fim;
   }
   const textoDasLegendas = vtt

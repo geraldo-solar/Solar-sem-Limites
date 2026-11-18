@@ -72,9 +72,12 @@ export const VIDEO_EXPLICACAO: VideoVendasConteudo = {
 // Depoimento 01 publicado em 16/11/2026, com aprovação de Geraldo: Samara Chaar, cliente do
 // Solar Sem Limites, gravado em 15/11 e enviado pelo álbum compartilhado do Wanderson. Geraldo
 // informou em 16/11 que tem a autorização dela para uso em anúncios, posts e na página.
-// A fala está inteira (só saiu a contagem antes de começar). Por decisão de Geraldo, os dois
-// trechos que não batem com o regulamento ficaram com aviso na tela: "Praia em frente ao hotel,
-// de acesso público." e "Reservas conforme a disponibilidade na data pedida." (item 8).
+// Em 16/11 a fala foi publicada inteira, só sem a contagem antes de começar, com aviso na tela nos
+// dois trechos que não batem com o regulamento. Em 18/11, a pedido de Geraldo, saiu o trecho em que
+// ela diz que não é preciso se programar e que é só chegar ao hotel com a hospedagem garantida
+// ("Então adquirir o pacote... a tua hospedagem garantida."), porque toda reserva depende de vaga
+// na data pedida (item 8). Com ele saiu o aviso "Reservas conforme a disponibilidade". O resto da
+// fala continua igual e na mesma ordem. Fica o aviso "Praia em frente ao hotel, de acesso público.".
 // Versão da página: sem legenda queimada (a legenda vem do .vtt) e com a cartela "Regulamento
 // na página". Montagem e fontes: output/depoimento-samara-chaar-2026-11-16.
 export const VIDEOS_DEPOIMENTOS: VideoVendasConteudo[] = [
@@ -83,7 +86,7 @@ export const VIDEOS_DEPOIMENTOS: VideoVendasConteudo[] = [
     categoria: 'Depoimento em vídeo · 01',
     formato: 'vertical',
     titulo: 'Samara Chaar, cliente do Solar Sem Limites',
-    descricao: 'Por que comprar o pacote foi uma das melhores decisões da família, em 1min16.',
+    descricao: 'Por que comprar o pacote foi uma das melhores decisões da família, em 1 minuto.',
     capa: 'videos/ssl26/depoimento-samara-chaar-capa.jpg',
     midia: {
       arquivo: 'videos/ssl26/depoimento-samara-chaar.mp4',
@@ -93,9 +96,8 @@ export const VIDEOS_DEPOIMENTOS: VideoVendasConteudo[] = [
         'Até porque o hotel tem uma estrutura completa, pra você, pra sua família. O hotel tem vários restaurantes, tem piscina, tem jacuzzi e até a capelinha.',
         'Então a gente pode contar, principalmente com a estrutura que o hotel dá através do Reserva Solar, que é o restaurante que ele tem, à beira do mar, que te entrega um pôr do sol inesquecível.',
         'E o principal, você e sua família terão uma praia particular, aonde você fica com a tua família de forma segura e com aquela vista incrível pra praia do Espadarte.',
-        'Então adquirir o pacote do Hotel Solar te traz uma praticidade de não ter que a cada viagem te programar pra uma hospedagem. Você já pode chegar direto ao hotel e ter a tua hospedagem garantida.',
         'Então vir pra Salinas e ficar no Hotel Solar é certeza que você vai encontrar um ambiente familiar e se sentir em casa.',
-        'Na tela, ao longo do vídeo: Depoimento de cliente: “Uma das melhores decisões”. Samara Chaar, cliente do Solar Sem Limites. Praia em frente ao hotel, de acesso público. Reservas conforme a disponibilidade na data pedida. Regulamento na página.',
+        'Na tela, ao longo do vídeo: Depoimento de cliente: “Uma das melhores decisões”. Samara Chaar, cliente do Solar Sem Limites. Praia em frente ao hotel, de acesso público. Regulamento na página.',
       ].join('\n'),
     },
   },
